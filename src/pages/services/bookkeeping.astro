@@ -1,0 +1,9 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ServiceDetail from '../../components/ServiceDetail.astro';
+import { getService } from '../../data/site.ts';
+const s = getService('bookkeeping');
+---
+<Layout title={`${s.name} — Mandrex VA Services`} description={s.lead}>
+  <ServiceDetail s={s} />
+</Layout>

@@ -1,0 +1,140 @@
+---
+import { footerLinks } from '../data/site.ts';
+---
+<footer class="site-footer">
+  <div class="site-footer__topbar"></div>
+  <div class="stripes site-footer__bg"></div>
+  <div class="site-footer__content">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <img src="/assets/mandrex-logo.png" alt="Mandrex Virtual Assistance Services" width="170" height="36" />
+        <p>Helping businesses stay organized, productive, and ready to grow — dependable virtual assistance, bookkeeping, and back-office support.</p>
+      </div>
+      <div>
+        <div class="site-footer__heading">Pages</div>
+        <div class="site-footer__links">
+          {footerLinks.pages.map((l) => <a href={l.href}>{l.label}</a>)}
+        </div>
+      </div>
+      <div>
+        <div class="site-footer__heading">Services</div>
+        <div class="site-footer__links">
+          {footerLinks.services.map((l) => <a href={l.href}>{l.label}</a>)}
+        </div>
+      </div>
+      <div>
+        <div class="site-footer__heading">Get in touch</div>
+        <div class="site-footer__links">
+          <a href={`mailto:${footerLinks.contact.email}`}>{footerLinks.contact.email}</a>
+          <a href={footerLinks.contact.phone1Href}>{footerLinks.contact.phone1}</a>
+        </div>
+        <div class="site-footer__socials">
+          <a href="https://www.facebook.com/share/195AmdwHV5/?mibextid=wwXIfr">Facebook</a>
+          <a href="https://www.linkedin.com/company/mandrex-va-services/">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <span>© 2026 Mandrex VA Services, LLC. All rights reserved.</span>
+      <span>mandrexvaservices.com</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    overflow: hidden;
+    background: var(--c-dark);
+  }
+  .site-footer__topbar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--c-green) 0%, var(--c-green) 34%, var(--c-yellow) 34%, var(--c-yellow) 67%, var(--c-red) 67%, var(--c-red) 100%);
+    z-index: 2;
+  }
+  .site-footer__bg {
+    position: absolute;
+    inset: 0;
+    opacity: 1;
+  }
+  .site-footer__content {
+    position: relative;
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 72px var(--pad) 34px;
+  }
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 0.75fr 0.85fr 1fr;
+    gap: 56px;
+  }
+  .site-footer__brand img {
+    height: 36px;
+    width: auto;
+    background: #fff;
+    padding: 10px 14px;
+  }
+  .site-footer__brand p {
+    margin: 24px 0 0;
+    font-size: 15.5px;
+    line-height: 1.66;
+    color: var(--on-dark-mute);
+    max-width: 330px;
+  }
+  .site-footer__heading {
+    font-family: var(--f-head);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-yellow);
+    margin-bottom: 18px;
+  }
+  .site-footer__links {
+    display: grid;
+    gap: 11px;
+  }
+  .site-footer__links a {
+    font-size: 15.5px;
+    color: #D6DDD6;
+    transition: color .18s ease;
+  }
+  .site-footer__links a:hover { color: var(--c-yellow); }
+  .site-footer__socials {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .site-footer__socials a {
+    font-family: var(--f-head);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--c-yellow);
+  }
+  .site-footer__bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    padding: 26px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  .site-footer__bottom span {
+    font-size: 14px;
+    color: #8B948C;
+  }
+
+  @media (max-width: 1024px) {
+    .site-footer__grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+      gap: 40px;
+    }
+  }
+  @media (max-width: 560px) {
+    .site-footer__bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
+  }
+</style>

@@ -1,0 +1,319 @@
+---
+import Icon from './Icon.astro';
+import CTABand from './CTABand.astro';
+import type { ServiceMeta } from '../data/site.ts';
+import { otherServices } from '../data/site.ts';
+
+export interface Props {
+  s: ServiceMeta;
+}
+const { s } = Astro.props;
+const others = otherServices(s.key);
+---
+<!-- HERO -->
+<section class="inner-hero">
+  <img src={s.heroImage} alt={s.heroAlt} class="inner-hero__img" style={`object-position:${s.heroObjectPosition}`} />
+  <div class="scrim"></div>
+  <div class="container inner-hero__content">
+    <div class="breadcrumb">
+      <a href="/services">Services</a><span>/</span><span>{s.name}</span>
+    </div>
+    <div class="eyebrow">
+      <span class="eyebrow__rule eyebrow__rule--yellow eyebrow__rule--lg"></span>
+      <span class="eyebrow__label eyebrow__label--yellow eyebrow__label--lg">{s.heroEyebrow}</span>
+    </div>
+    <h1>{s.h1}</h1>
+    <p class="inner-hero__lead">{s.lead}</p>
+    <div class="inner-hero__btns">
+      <a href="/contact" class="btn btn--yellow" style="height:58px;padding:0 30px;font-size:16px;">Request a quote</a>
+      <a href="/services" class="btn btn--outline-light" style="height:58px;padding:0 28px;font-size:16px;">All services</a>
+    </div>
+    <div class="factstrip">
+      {s.facts.map((f) => (
+        <div class="factstrip__item">
+          <div class="factstrip__label">{f.label}</div>
+          <div class="factstrip__value">{f.value}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- SCOPE -->
+<section class="container section">
+  <div class="eyebrow">
+    <span class="eyebrow__rule"></span>
+    <span class="eyebrow__label">What's included</span>
+  </div>
+  <h2 class="scope-title">Scope of work</h2>
+  <div class="hairline-grid scope-grid">
+    {s.scope.map((item) => (
+      <div class="scope-cell">
+        <h3>{item.title}</h3>
+        <p>{item.desc}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<!-- WHO / TOOLS -->
+<section class="container section">
+  <div class="whotools split">
+    <div class="whotools__panel">
+      <div class="dotgrid soft-dot whotools__bg"></div>
+      <div class="whotools__inner">
+        <h3>Who it's for</h3>
+        <div class="whotools__list">
+          {s.forWhom.map((item) => (
+            <div class="whotools__row">
+              <Icon name="check" size={20} />
+              <span>{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3 class="whotools__heading">Tools we work in</h3>
+      <p class="whotools__lead">We work inside your stack rather than asking you to change it. Commonly:</p>
+      <div class="whotools__chips">
+        {s.tools.map((t) => <span class="tool-chip">{t}</span>)}
+      </div>
+      <div class="pullquote">
+        <p>{s.pullQuote}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CROSS LINKS + CTA -->
+<section class="container section">
+  <div class="crosslinks">
+    {others.map((o) => (
+      <a href={'/' + o.slug} class="crosslink">
+        <div class="crosslink__eyebrow">Also explore</div>
+        <div class="crosslink__title">{o.name} →</div>
+      </a>
+    ))}
+  </div>
+</section>
+<CTABand variant="green" heading={s.ctaHeading} button="Book a discovery call" href="/contact" />
+</section>
+
+<style>
+  .inner-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--c-dark);
+    min-height: 460px;
+    display: flex;
+    align-items: center;
+  }
+  .inner-hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .inner-hero__content { position: relative; padding: 92px var(--pad); }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--f-head);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--on-dark-mute-4);
+    margin-bottom: 26px;
+  }
+  .breadcrumb a { color: var(--c-yellow); }
+  .breadcrumb a:hover { color: #fff; }
+  .inner-hero h1 {
+    margin: 0 0 24px;
+    font-size: clamp(28px, 4.7vw, 66px);
+    line-height: 0.94;
+    letter-spacing: -0.045em;
+    color: #fff;
+    max-width: 780px;
+  }
+  .inner-hero__lead {
+    font-size: clamp(17px, 1.35vw, 19.5px);
+    line-height: 1.58;
+    color: var(--on-dark-mute-3);
+    max-width: 600px;
+  }
+  .inner-hero__btns {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 34px;
+  }
+  .factstrip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 44px;
+    margin-top: 38px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .factstrip__label {
+    font-family: var(--f-head);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--on-dark-mute-4);
+    margin-bottom: 7px;
+  }
+  .factstrip__value {
+    font-family: var(--f-head);
+    font-size: 19px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* scope */
+  .scope-title {
+    margin: 0 0 40px;
+    font-size: clamp(25px, 3.4vw, 46px);
+    line-height: 1;
+    color: var(--c-dark);
+  }
+  .scope-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 900px) {
+    .scope-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .scope-grid { grid-template-columns: 1fr; }
+  }
+  .scope-cell {
+    background: #fff;
+    padding: 34px;
+  }
+  .scope-cell h3 {
+    margin: 0 0 10px;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--c-dark);
+  }
+  .scope-cell p {
+    font-size: 15.5px;
+    line-height: 1.62;
+    color: var(--c-muted-2);
+  }
+
+  /* who / tools */
+  .whotools {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .whotools__panel {
+    position: relative;
+    background: var(--c-dark);
+    padding: clamp(28px, 4vw, 52px) clamp(24px, 3.6vw, 48px);
+    overflow: hidden;
+  }
+  .soft-dot {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.3px, transparent 1.3px);
+    background-size: 22px 22px;
+  }
+  .whotools__inner { position: relative; }
+  .whotools__panel h3 {
+    margin: 0 0 26px;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: #fff;
+  }
+  .whotools__list { display: grid; gap: 18px; }
+  .whotools__row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .whotools__row span {
+    font-size: 16.5px;
+    line-height: 1.55;
+    color: #CBD5CB;
+  }
+  .whotools__heading {
+    margin: 0 0 20px;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--c-dark);
+  }
+  .whotools__lead {
+    margin: 0 0 26px;
+    font-size: 16.5px;
+    line-height: 1.64;
+    color: var(--c-muted);
+  }
+  .whotools__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 34px;
+  }
+  .tool-chip {
+    padding: 11px 18px;
+    background: #fff;
+    border: 1px solid var(--c-line);
+    font-family: var(--f-head);
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--c-dark);
+  }
+  .pullquote {
+    border-left: 4px solid var(--c-yellow);
+    padding: 6px 0 6px 22px;
+  }
+  .pullquote p {
+    font-family: var(--f-head);
+    font-size: 18.5px;
+    line-height: 1.45;
+    font-weight: 600;
+    color: var(--c-dark);
+  }
+
+  /* crosslinks */
+  .crosslinks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 900px) {
+    .crosslinks { grid-template-columns: 1fr; }
+  }
+  .crosslink {
+    display: block;
+    background: #fff;
+    border: 1px solid var(--c-line);
+    padding: 30px;
+    color: var(--c-text);
+    transition: border-color .18s ease;
+  }
+  .crosslink:hover { border-color: var(--c-green); color: var(--c-text); }
+  .crosslink__eyebrow {
+    font-family: var(--f-head);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-muted-3);
+    margin-bottom: 14px;
+  }
+  .crosslink__title {
+    font-family: var(--f-head);
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--c-dark);
+  }
+</style>

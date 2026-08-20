@@ -1,0 +1,52 @@
+---
+import Icon from './Icon.astro';
+export interface Props {
+  heading: string;
+  button: string;
+  href: string;
+  variant?: 'green' | 'dark';
+  paragraph?: string;
+}
+const { heading, button, href, variant = 'green', paragraph } = Astro.props;
+---
+<section class="cta-section">
+  <div class={`cta-band${variant === 'dark' ? ' cta-band--dark' : ''}`}>
+    <div class="stripes cta-band__bg"></div>
+    <div class="cta-band__inner">
+      <div class="cta-band__text">
+        <h2>{heading}</h2>
+        {paragraph && <p>{paragraph}</p>}
+      </div>
+      <a href={href} class="btn btn--yellow btn-lg">
+        {button}
+        <Icon name="arrow" size={18} />
+      </a>
+    </div>
+  </div>
+</section>
+<style>
+  .cta-section {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 100px var(--pad) 110px;
+  }
+  .cta-band__bg { position: absolute; inset: 0; }
+  .cta-band__text { max-width: 640px; }
+  .cta-band__text h2 {
+    color: #fff;
+    font-size: clamp(24px, 3.2vw, 42px);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+  }
+  .cta-band__text h2 + p {
+    margin-top: 14px;
+    font-size: 18px;
+    line-height: 1.58;
+    color: #D3E5D6;
+  }
+  .cta-band--dark .cta-band__text h2 { font-size: clamp(26px, 3.6vw, 50px); }
+  @media (max-width: 560px) {
+    .cta-section { padding-bottom: 80px; }
+  }
+</style>

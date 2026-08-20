@@ -1,0 +1,350 @@
+/* ==========================================================================
+   Mandrex VA Services — global styles & design tokens
+   ========================================================================== */
+
+:root {
+  --c-dark: #14231A;
+  --c-dark-2: #0F1A13;
+  --c-green: #306A42;
+  --c-yellow: #F6D548;
+  --c-yellow-dark: #6B5406;
+  --c-red: #D24A3C;
+  --c-deep-red: #9E3635;
+  --c-bg: #FBFBF8;
+  --c-text: #253028;
+  --c-muted: #4A554C;
+  --c-muted-2: #5A655C;
+  --c-muted-3: #8A938B;
+  --c-line: #E3E7DD;
+  --c-line-2: #E9ECE3;
+  --c-input: #D8DCD4;
+  --c-tint: #F2F6EF;
+  --c-tint-2: #F5F8F3;
+
+  --on-dark-mute: #9BA69C;
+  --on-dark-mute-2: #AFBBB1;
+  --on-dark-mute-3: #B9C4BA;
+  --on-dark-mute-4: #8F9C90;
+
+  --maxw: 1320px;
+  --pad: clamp(20px, 4.2vw, 44px);
+  --f-head: 'Archivo', sans-serif;
+  --f-body: 'Karla', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--c-bg);
+  font-family: var(--f-body);
+  color: var(--c-text);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--c-green);
+  text-decoration: none;
+  transition: color .18s ease;
+}
+
+a:hover {
+  color: var(--c-red);
+}
+
+input,
+textarea,
+button {
+  font-family: var(--f-body);
+}
+
+::selection {
+  background: var(--c-yellow);
+  color: var(--c-dark);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--f-head);
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  text-transform: uppercase;
+}
+
+p {
+  margin: 0;
+}
+
+/* ---- layout helpers ---- */
+.container {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+  width: 100%;
+}
+
+.container-pad {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-left: var(--pad);
+  padding-right: var(--pad);
+}
+
+.section {
+  padding-top: 100px;
+}
+
+.section--end {
+  padding-bottom: 110px;
+}
+
+/* ---- eyebrows ---- */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.eyebrow__rule {
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--c-red);
+}
+
+.eyebrow__rule--yellow {
+  background: var(--c-yellow);
+}
+
+.eyebrow__rule--green {
+  background: var(--c-green);
+}
+
+.eyebrow__rule--lg {
+  width: 48px;
+  height: 4px;
+}
+
+.eyebrow__label {
+  font-family: var(--f-head);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-deep-red);
+}
+
+.eyebrow__label--yellow {
+  color: var(--c-yellow);
+}
+
+.eyebrow__label--green {
+  color: var(--c-green);
+}
+
+.eyebrow__label--lg {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+}
+
+/* ---- buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--f-head);
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+
+.btn--yellow {
+  background: var(--c-yellow);
+  color: var(--c-dark);
+}
+
+.btn--yellow:hover {
+  background: #fff;
+  color: var(--c-dark);
+}
+
+.btn--dark {
+  background: var(--c-dark);
+  color: #fff;
+}
+
+.btn--dark:hover {
+  background: var(--c-green);
+  color: #fff;
+}
+
+.btn--outline-dark {
+  background: transparent;
+  border: 1.5px solid var(--c-dark);
+  color: var(--c-dark);
+}
+
+.btn--outline-dark:hover {
+  background: var(--c-dark);
+  color: #fff;
+}
+
+.btn--outline-light {
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, .4);
+  color: #fff;
+}
+
+.btn--outline-light:hover {
+  border-color: var(--c-yellow);
+  color: var(--c-yellow);
+}
+
+.btn--outline-faint {
+  border: 1px solid rgba(255, 255, 255, .32);
+  color: #fff;
+  background: transparent;
+}
+
+.btn--outline-faint:hover {
+  background: var(--c-yellow);
+  border-color: var(--c-yellow);
+  color: var(--c-dark);
+}
+
+.btn-lg {
+  height: 62px;
+  padding: 0 34px;
+  font-size: 16.5px;
+}
+
+.btn-md {
+  height: 54px;
+  padding: 0 26px;
+  font-size: 15px;
+}
+
+.btn-sm {
+  height: 48px;
+  padding: 0 26px;
+  font-size: 15px;
+}
+
+.btn .arrow {
+  width: 18px;
+  height: 18px;
+}
+
+.btn--md-arrow .arrow {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---- link row ---- */
+.link-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-head);
+  font-weight: 700;
+}
+
+.link-row .arrow {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---- dot-grid / textures ---- */
+.dotgrid {
+  background-image: radial-gradient(rgba(255, 255, 255, .14) 1.4px, transparent 1.4px);
+  background-size: 24px 24px;
+}
+
+.dotgrid--dark {
+  background-image: radial-gradient(#D8DED3 1.3px, transparent 1.3px);
+  background-size: 24px 24px;
+}
+
+.dotgrid--soft {
+  background-image: radial-gradient(rgba(255, 255, 255, .12) 1.3px, transparent 1.3px);
+  background-size: 22px 22px;
+}
+
+.stripes {
+  background-image: repeating-linear-gradient(135deg, rgba(255, 255, 255, .08) 0 1px, transparent 1px 11px);
+}
+
+/* hero scrim */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, rgba(15, 26, 19, .94) 0%, rgba(15, 26, 19, .86) 38%, rgba(15, 26, 19, .42) 72%, rgba(15, 26, 19, .3) 100%);
+}
+
+/* hairline grid */
+.hairline-grid {
+  display: grid;
+  gap: 1px;
+  background: var(--c-line);
+  border: 1px solid var(--c-line);
+}
+
+/* CTA band */
+.cta-band {
+  position: relative;
+  overflow: hidden;
+  background: var(--c-green);
+  padding: clamp(28px, 5vw, 70px) 0;
+  padding-left: clamp(28px, 5vw, 70px);
+}
+
+.cta-band--dark {
+  background: var(--c-dark);
+}
+
+.cta-band__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.cta-band h2 {
+  color: #fff;
+}
+
+/* responsive helpers */
+@media (max-width: 1024px) {
+  .split {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .cta-band__inner {
+    gap: 30px;
+  }
+}
