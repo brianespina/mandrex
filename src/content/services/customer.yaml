@@ -4,7 +4,7 @@ short: Email, live chat and phone coverage
 cardTitle: Customer support
 cardDesc: Email, live chat, and phone coverage with agreed response times.
 heroEyebrow: Customer Support
-heroImage: photo-meeting.jpg
+heroImage: /assets/customer/photo-meeting.jpg
 heroAlt: Customer support team
 heroObjectPosition: 50% 50%
 h1: Every customer, answered fast
@@ -51,4 +51,4 @@ tools:
   - HubSpot
   - RingCentral
 pullQuote: Response times measured weekly, with the themes behind repeat contacts reported back to you.
-homeImage: photo-meeting.jpg
+homeImage: /assets/customer/photo-meeting.jpg

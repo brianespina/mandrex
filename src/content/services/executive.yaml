@@ -4,7 +4,7 @@ short: Calendars, meetings, travel, triage
 cardTitle: Executive assistance
 cardDesc: Calendars, meetings, travel, and inbox triage for business leaders.
 heroEyebrow: Executive Assistance
-heroImage: photo-presentation.jpg
+heroImage: /assets/executive/photo-presentation.jpg
 heroAlt: Executive planning session
 heroObjectPosition: 50% 50%
 h1: Senior support for leaders
@@ -51,4 +51,4 @@ tools:
   - Notion
   - Slack
 pullQuote: A single dedicated assistant who learns your preferences and works to them.
-homeImage: photo-presentation.jpg
+homeImage: /assets/executive/photo-presentation.jpg

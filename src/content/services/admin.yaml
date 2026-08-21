@@ -4,7 +4,7 @@ short: Inbox, calendar, CRM, documents
 cardTitle: Admin support
 cardDesc: Inbox and calendar, CRM updates, data entry, documents, scheduling.
 heroEyebrow: Administrative Support
-heroImage: photo-conference-room.jpg
+heroImage: /assets/admin/photo-conference-room.jpg
 heroAlt: Administrative team at work
 heroObjectPosition: 50% 50%
 h1: Your day-to-day, handled
@@ -51,4 +51,4 @@ tools:
   - Notion
   - Slack
 pullQuote: One point of contact, documented processes, and a weekly summary of what moved.
-homeImage: photo-conference-room.jpg
+homeImage: /assets/admin/photo-conference-room.jpg

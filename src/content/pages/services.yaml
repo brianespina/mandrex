@@ -5,7 +5,7 @@ sections:
   - discriminant: innerHero
     value:
       sectionId: inner-hero
-      backgroundImage: photo-desk-laptops.jpg
+      backgroundImage: /assets/services/photo-desk-laptops.jpg
       backgroundPosition: 50% 45%
       eyebrow: Services
       headline: Support that fits how you work

@@ -5,7 +5,7 @@ sections:
   - discriminant: hero
     value:
       sectionId: hero
-      backgroundImage: photo-hero-boardroom.jpg
+      backgroundImage: /assets/home/photo-hero-boardroom.jpg
       backgroundPosition: 58% 55%
       eyebrow: Mandrex VA Services
       headline: Helping businesses stay organized, productive, and ready to grow
@@ -40,7 +40,7 @@ sections:
   - discriminant: whyChooseUs
     value:
       sectionId: why-us
-      backgroundImage: photo-partners.jpg
+      backgroundImage: /assets/home/photo-partners.jpg
       eyebrow: Why choose us
       title: Standards, not shortcuts
       intro: Outsourcing is about more than delegating tasks — it is trusting someone with an important part of your business. Every engagement is built around quality, accountability, and long-term partnership.
@@ -66,8 +66,8 @@ sections:
   - discriminant: globalReach
     value:
       sectionId: global-reach
-      mainImage: photo-statistics.jpg
-      insetImage: photo-meeting.jpg
+      mainImage: /assets/home/photo-statistics.jpg
+      insetImage: /assets/home/photo-meeting.jpg
       eyebrow: Global reach
       title: Four countries. One standard.
       description: We support businesses in the United States, Australia, Canada, and the United Kingdom — including Arizona, California, Texas, New Jersey, New York, Massachusetts, Florida, Colorado, Connecticut, Maryland, Mississippi, Missouri, Oklahoma, Oregon, and South Carolina.

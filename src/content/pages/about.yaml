@@ -5,7 +5,7 @@ sections:
   - discriminant: innerHero
     value:
       sectionId: inner-hero
-      backgroundImage: photo-desk-review.jpg
+      backgroundImage: /assets/about/photo-desk-review.jpg
       backgroundPosition: 52% 45%
       eyebrow: About Mandrex
       headline: Experience meets dependable support
@@ -27,7 +27,7 @@ sections:
   - discriminant: founder
     value:
       sectionId: founder
-      photo: founder-nikka.jpg
+      photo: /assets/about/founder-nikka.jpg
       photoPosition: center 20%
       name: Nikka Nava
       role: Founder & CEO
@@ -54,7 +54,7 @@ sections:
   - discriminant: team
     value:
       sectionId: team
-      backgroundImage: photo-team.jpg
+      backgroundImage: /assets/about/photo-team.jpg
       title: The team behind your account
       description: Thirteen specialists across bookkeeping, virtual assistance, SEO, and IT — every engagement led by a named point of contact.
       members:
