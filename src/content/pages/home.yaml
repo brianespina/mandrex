@@ -34,6 +34,15 @@ sections:
         - value: 1 day
           label: Average reply time
           accent: true
+  - discriminant: serviceGrid
+    value:
+      sectionId: services
+      eyebrow: What we do
+      title: Four service lines. One accountable team.
+      showAllButton:
+        label: All services
+        href: /services
+        variant: outline-dark
   - discriminant: whyChooseUs
     value:
       sectionId: why-us
@@ -59,15 +68,6 @@ sections:
           description: >-
             Flexible part-time or full-time solutions that grow alongside your
             business.
-  - discriminant: serviceGrid
-    value:
-      sectionId: services
-      eyebrow: What we do
-      title: Four service lines. One accountable team.
-      showAllButton:
-        label: All services
-        href: /services
-        variant: outline-dark
   - discriminant: industriesGrid
     value:
       sectionId: industries
