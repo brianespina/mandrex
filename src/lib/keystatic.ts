@@ -11,6 +11,18 @@ export type Industry = Awaited<ReturnType<typeof reader.collections.industries.r
 export type ReusableSection = Awaited<ReturnType<typeof reader.collections.reusableSections.read>>;
 export type PageSection = NonNullable<Page>['sections'][number];
 
+// Service entry slugs (CMS keys) don't match the page routes under src/pages/services/
+const serviceUrls: Record<string, string> = {
+  admin: '/services/administrative-support',
+  bookkeeping: '/services/bookkeeping',
+  customer: '/services/customer-support',
+  executive: '/services/executive-assistance',
+};
+
+export function getServiceUrl(key: string): string {
+  return serviceUrls[key] ?? `/services/${key}`;
+}
+
 export function getImageSrc(image?: string | { src: string } | null): string {
   if (!image) return '';
   const src = typeof image === 'string' ? image : image.src;

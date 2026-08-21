@@ -1,5 +1,5 @@
 ---
-import { getSite, getAllServices } from '../lib/keystatic.ts';
+import { getSite, getAllServices, getServiceUrl } from '../lib/keystatic.ts';
 
 const site = await getSite();
 const services = await getAllServices();
@@ -22,7 +22,7 @@ const services = await getAllServices();
       <div>
         <div class="site-footer__heading">Services</div>
         <div class="site-footer__links">
-          {services.map((s) => <a href={`/services/${s.slug}`}>{s.entry.name}</a>)}
+          {services.map((s) => <a href={getServiceUrl(s.slug)}>{s.entry.name}</a>)}
         </div>
       </div>
       <div>

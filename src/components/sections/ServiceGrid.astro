@@ -1,6 +1,6 @@
 ---
 import Icon from '../Icon.astro';
-import { getAllServices, getImageSrc } from '../../lib/keystatic.ts';
+import { getAllServices, getImageSrc, getServiceUrl } from '../../lib/keystatic.ts';
 
 export interface Props {
   section: {
@@ -31,7 +31,7 @@ const services = await getAllServices();
   </div>
   <div class="service-cards">
     {services.map((s) => (
-      <a href={`/services/${s.slug}`} class="service-card">
+      <a href={getServiceUrl(s.slug)} class="service-card">
         <img src={getImageSrc(s.entry.homeImage)} alt={s.entry.cardTitle} class="service-card__img" />
         <span class="service-card__scrim"></span>
         <span class="service-card__index">{s.entry.index}</span>

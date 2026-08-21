@@ -1,7 +1,7 @@
 ---
 import Icon from '../Icon.astro';
 import CTABand from '../CTABand.astro';
-import { getService, getAllServices, getImageSrc } from '../../lib/keystatic.ts';
+import { getService, getAllServices, getImageSrc, getServiceUrl } from '../../lib/keystatic.ts';
 
 export interface Props {
   section: {
@@ -96,7 +96,7 @@ if (!s) {
 <section class="container section">
   <div class="crosslinks">
     {others.map((o) => (
-      <a href={`/services/${o.slug}`} class="crosslink">
+      <a href={getServiceUrl(o.slug)} class="crosslink">
         <div class="crosslink__eyebrow">Also explore</div>
         <div class="crosslink__title">{o.entry.name} →</div>
       </a>

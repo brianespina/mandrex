@@ -1,6 +1,6 @@
 ---
 import Icon from '../Icon.astro';
-import { getAllServices } from '../../lib/keystatic.ts';
+import { getAllServices, getServiceUrl } from '../../lib/keystatic.ts';
 
 export interface Props {
   section: {
@@ -16,7 +16,7 @@ const descFor = (key: string) => section.descriptionOverrides?.find((o) => o.ser
 <section class="container section">
   <div class="svc-grid">
     {services.map((s) => (
-      <a href={`/services/${s.slug}`} class="svc-card">
+      <a href={getServiceUrl(s.slug)} class="svc-card">
         <span class="svc-card__bar" style={`background:${s.entry.topBarColor}`}></span>
         <span class="svc-card__icon"><Icon name={s.entry.key} size={28} /></span>
         <h2 class="svc-card__title">{s.entry.name}</h2>
