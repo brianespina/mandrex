@@ -9,16 +9,8 @@ export default defineConfig({
   adapter: cloudflare(),
   integrations: [react(), keystatic()],
   vite: {
-    optimizeDeps: {
-      exclude: ['astro:env/server'],
-    },
     ssr: {
-      external: ['astro:env/server', 'node:path', 'node:fs/promises'],
-    },
-    build: {
-      rollupOptions: {
-        external: ['astro:env/server'],
-      },
+      external: ['node:path', 'node:fs/promises'],
     },
   },
 });
