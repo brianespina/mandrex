@@ -1,0 +1,39 @@
+title: Testimonials — Mandrex VA Services
+description: What working with Mandrex looks like — client outcomes across bookkeeping, administrative, customer support, and executive assistance.
+slug: testimonials
+sections:
+  - discriminant: innerHero
+    value:
+      sectionId: inner-hero
+      backgroundImage: photo-partners.jpg
+      backgroundPosition: 50% 50%
+      eyebrow: Testimonials
+      headline: What working with Mandrex looks like
+      lead: The quotes on this page are samples written as placeholders — to be replaced with approved client feedback before launch.
+      facts: []
+  - discriminant: featuredTestimonial
+    value:
+      sectionId: featured
+      quote: Our books were three months behind. Within the first cycle Mandrex had everything reconciled, and we now get a clean monthly report we actually use in decisions.
+      authorInitials: OD
+      authorName: Operations Director
+      authorRole: Real estate group, Texas · sample testimonial
+      stats:
+        - value: 1 day
+          label: Average first response to inquiries
+        - value: Long-term
+          label: Client relationships built on accuracy and trust
+  - discriminant: testimonialsGrid
+    value:
+      sectionId: grid
+      ctaTitle: Your story next
+      ctaDescription: Start with a discovery call and see what a documented, accountable back office feels like.
+      ctaButton:
+        label: Book a call
+        href: /contact
+        variant: dark
+  - discriminant: closingBand
+    value:
+      sectionId: closing
+      image: photo-team.jpg
+      cardText: Every engagement is built on accuracy, responsiveness, and trust.

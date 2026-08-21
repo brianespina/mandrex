@@ -1,0 +1,8 @@
+title: Administrative Support — Mandrex VA Services
+description: Reduce your administrative workload with reliable day-to-day support — inbox and calendar, CRM updates, data entry, documents, research, and scheduling.
+slug: services-administrative-support
+sections:
+  - discriminant: serviceDetail
+    value:
+      sectionId: detail
+      service: admin

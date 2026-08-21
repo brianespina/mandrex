@@ -1,0 +1,142 @@
+---
+import Icon from '../Icon.astro';
+
+export interface Props {
+  section: {
+    quote: string;
+    authorInitials?: string;
+    authorName: string;
+    authorRole?: string;
+    heading?: string;
+    checks?: string[];
+    button?: { label: string; href: string; variant: string };
+  };
+}
+
+const { section } = Astro.props;
+---
+<section class="container section">
+  <div class="tfeature split">
+    <div class="tfeature__card">
+      <span class="tfeature__accent"></span>
+      <div class="tfeature__mark">"</div>
+      <blockquote class="tfeature__quote">{section.quote}</blockquote>
+      <div class="tfeature__author">
+        <div class="tfeature__avatar">{section.authorInitials}</div>
+        <div>
+          <div class="tfeature__name">{section.authorName}</div>
+          <div class="tfeature__role">{section.authorRole}</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      {section.heading && <h3 class="tfeature__heading">{section.heading}</h3>}
+      {section.checks && section.checks.length > 0 && (
+        <div class="tfeature__checks">
+          {section.checks.map((check) => (
+            <div class="tfeature__check"><Icon name="checkCircle" size={20} /><span>{check}</span></div>
+          ))}
+        </div>
+      )}
+      {section.button && (
+        <a href={section.button.href} class="btn btn--dark btn-md">
+          {section.button.label}
+          <Icon name="arrow" size={16} />
+        </a>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .tfeature {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .tfeature__card {
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--c-line);
+    padding: clamp(28px, 4vw, 52px) clamp(24px, 3.6vw, 48px);
+  }
+  .tfeature__accent {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    background: var(--c-yellow);
+  }
+  .tfeature__mark {
+    font-family: var(--f-head);
+    font-size: 64px;
+    line-height: 0.6;
+    font-weight: 800;
+    color: var(--c-yellow);
+  }
+  .tfeature__quote {
+    margin: 18px 0 30px;
+    font-family: var(--f-head);
+    font-size: 29px;
+    line-height: 1.26;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    color: var(--c-dark);
+  }
+  .tfeature__author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .tfeature__avatar {
+    width: 48px;
+    height: 48px;
+    background: var(--c-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--f-head);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-yellow);
+  }
+  .tfeature__name {
+    font-family: var(--f-head);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-dark);
+  }
+  .tfeature__role {
+    font-size: 14px;
+    color: var(--c-muted-3);
+    margin-top: 2px;
+  }
+  .tfeature__heading {
+    margin: 0 0 26px;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--c-dark);
+    text-transform: uppercase;
+  }
+  .tfeature__checks {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 34px;
+  }
+  .tfeature__check {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--c-line);
+    padding: 18px 20px;
+  }
+  .tfeature__check span {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--c-text);
+  }
+</style>

@@ -1,0 +1,31 @@
+title: Page not found — Mandrex VA Services
+description: The page you're looking for doesn't exist or has moved.
+slug: "404"
+sections:
+  - discriminant: notFound
+    value:
+      sectionId: not-found
+      backgroundImage: photo-hero-boardroom.jpg
+      backgroundPosition: 58% 55%
+      eyebrow: Error 404
+      title: This page has moved on
+      lead: The page you're looking for doesn't exist or has been moved. Let's get you back to business.
+      primaryButton:
+        label: Back to home
+        href: /
+        variant: yellow
+      secondaryButton:
+        label: See services
+        href: /services
+        variant: outline-light
+      navLinks:
+        - label: Home
+          href: /
+        - label: Services
+          href: /services
+        - label: About
+          href: /about
+        - label: Testimonials
+          href: /testimonials
+        - label: Contact
+          href: /contact

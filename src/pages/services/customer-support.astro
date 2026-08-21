@@ -1,9 +1,17 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import ServiceDetail from '../../components/ServiceDetail.astro';
-import { getService } from '../../data/site.ts';
-const s = getService('customer');
+import SectionRenderer from '../../components/SectionRenderer.astro';
+import { getPage, getAllReusableSections } from '../../lib/keystatic.ts';
+
+const page = await getPage('services-customer-support');
+const reusableSections = await getAllReusableSections();
+
+if (!page) {
+  throw new Error('Customer support page not found');
+}
 ---
-<Layout title={`${s.name} — Mandrex VA Services`} description={s.lead}>
-  <ServiceDetail s={s} />
+<Layout title={page.title} description={page.description}>
+  {page.sections.map((section) => (
+    <SectionRenderer section={section} reusableSections={reusableSections} />
+  ))}
 </Layout>

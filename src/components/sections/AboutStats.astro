@@ -1,0 +1,51 @@
+---
+export interface Props {
+  section: {
+    stats: { value: string; label: string }[];
+  };
+}
+
+const { section } = Astro.props;
+---
+<section class="container about-stats-wrap">
+  <div class="hairline-grid about-stats">
+    {section.stats.map((st) => (
+      <div class="about-stat">
+        <div class="about-stat__value">{st.value}</div>
+        <div class="about-stat__label">{st.label}</div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .about-stats-wrap { padding: 0 var(--pad); }
+  .about-stats {
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: -1px;
+  }
+  @media (max-width: 1024px) {
+    .about-stats { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .about-stats { grid-template-columns: 1fr; }
+  }
+  .about-stat {
+    background: #fff;
+    padding: 32px;
+  }
+  .about-stat__value {
+    font-family: var(--f-head);
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    color: var(--c-green);
+    line-height: 1;
+  }
+  .about-stat__label {
+    margin-top: 8px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--c-muted-2);
+  }
+</style>

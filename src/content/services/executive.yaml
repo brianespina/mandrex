@@ -1,0 +1,54 @@
+key: executive
+name: Executive Assistance
+short: Calendars, meetings, travel, triage
+cardTitle: Executive assistance
+cardDesc: Calendars, meetings, travel, and inbox triage for business leaders.
+heroEyebrow: Executive Assistance
+heroImage: photo-presentation.jpg
+heroAlt: Executive planning session
+heroObjectPosition: 50% 50%
+h1: Senior support for leaders
+lead: Stay focused on high-value priorities while we manage the details — calendars, meeting coordination, travel, inbox organization, and reporting support.
+ctaHeading: Ready to protect your calendar?
+accent: deep-red
+topBarColor: "#9E3635"
+index: "04"
+chips:
+  - Calendars
+  - Travel
+  - Inbox triage
+facts:
+  - label: Support model
+    value: Dedicated EA
+  - label: Coverage
+    value: 10–40 hrs / week
+  - label: Confidentiality
+    value: NDA as standard
+scope:
+  - title: Calendar management
+    desc: Priorities protected, conflicts resolved, and travel time built in.
+  - title: Meeting coordination
+    desc: Agendas circulated, materials prepared, minutes and actions tracked.
+  - title: Travel & itineraries
+    desc: Flights, hotels, ground transport, and a single itinerary document.
+  - title: Inbox organization
+    desc: Triage rules, drafted replies, and a daily list of what needs you.
+  - title: Reporting support
+    desc: Board and leadership packs assembled from the right sources.
+  - title: Confidential handling
+    desc: Sensitive documents managed with controlled access and clear logs.
+forWhom:
+  - Founders and executives with more meetings than focus time
+  - Leaders whose travel and logistics eat into strategic work
+  - Teams needing board and leadership reporting prepared reliably
+  - Executives who want one trusted assistant, not a rotating pool
+tools:
+  - Google Workspace
+  - Microsoft 365
+  - Calendly
+  - Navan
+  - Concur
+  - Notion
+  - Slack
+pullQuote: A single dedicated assistant who learns your preferences and works to them.
+homeImage: photo-presentation.jpg

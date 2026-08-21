@@ -1,0 +1,69 @@
+---
+import type { PageSection, ReusableSection } from '../lib/keystatic.ts';
+import Hero from './sections/Hero.astro';
+import InnerHero from './sections/InnerHero.astro';
+import StatsBar from './sections/StatsBar.astro';
+import ServiceGrid from './sections/ServiceGrid.astro';
+import WhyChooseUs from './sections/WhyChooseUs.astro';
+import IndustriesGrid from './sections/IndustriesGrid.astro';
+import GlobalReach from './sections/GlobalReach.astro';
+import TestimonialFeature from './sections/TestimonialFeature.astro';
+import CTABand from './sections/CTABand.astro';
+import AboutStats from './sections/AboutStats.astro';
+import Founder from './sections/Founder.astro';
+import VisionMission from './sections/VisionMission.astro';
+import Team from './sections/Team.astro';
+import HowWeWork from './sections/HowWeWork.astro';
+import ServiceCards from './sections/ServiceCards.astro';
+import EngagementSteps from './sections/EngagementSteps.astro';
+import FeaturedTestimonial from './sections/FeaturedTestimonial.astro';
+import TestimonialsGrid from './sections/TestimonialsGrid.astro';
+import ClosingBand from './sections/ClosingBand.astro';
+import ContactSection from './sections/ContactSection.astro';
+import NotFound from './sections/NotFound.astro';
+import ServiceDetail from './sections/ServiceDetail.astro';
+
+export interface Props {
+  section: PageSection;
+  reusableSections?: ReusableSection[];
+}
+
+const { section, reusableSections = [] } = Astro.props;
+
+let renderedSection = section;
+
+if (section.discriminant === 'reusable') {
+  const ref = reusableSections.find((s) => s?.slug === section.value.section);
+  if (ref && ref.entry) {
+    renderedSection = ref.entry.section as PageSection;
+  }
+}
+
+const components: Record<string, any> = {
+  hero: Hero,
+  innerHero: InnerHero,
+  statsBar: StatsBar,
+  serviceGrid: ServiceGrid,
+  whyChooseUs: WhyChooseUs,
+  industriesGrid: IndustriesGrid,
+  globalReach: GlobalReach,
+  testimonialFeature: TestimonialFeature,
+  ctaBand: CTABand,
+  aboutStats: AboutStats,
+  founder: Founder,
+  visionMission: VisionMission,
+  team: Team,
+  howWeWork: HowWeWork,
+  serviceCards: ServiceCards,
+  engagementSteps: EngagementSteps,
+  featuredTestimonial: FeaturedTestimonial,
+  testimonialsGrid: TestimonialsGrid,
+  closingBand: ClosingBand,
+  contactSection: ContactSection,
+  notFound: NotFound,
+  serviceDetail: ServiceDetail,
+};
+
+const Component = components[renderedSection.discriminant];
+---
+{Component && <Component section={renderedSection.value} />}

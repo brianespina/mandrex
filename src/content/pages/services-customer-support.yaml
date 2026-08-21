@@ -1,0 +1,8 @@
+title: Customer Support — Mandrex VA Services
+description: Responsive, professional customer experiences across every interaction — email, live chat, and phone support with agreed response times.
+slug: services-customer-support
+sections:
+  - discriminant: serviceDetail
+    value:
+      sectionId: detail
+      service: customer

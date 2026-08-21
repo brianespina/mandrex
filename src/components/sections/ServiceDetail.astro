@@ -1,18 +1,27 @@
 ---
-import Icon from './Icon.astro';
-import CTABand from './CTABand.astro';
-import type { ServiceMeta } from '../data/site.ts';
-import { otherServices } from '../data/site.ts';
+import Icon from '../Icon.astro';
+import CTABand from '../CTABand.astro';
+import { getService, getAllServices, getImageSrc } from '../../lib/keystatic.ts';
 
 export interface Props {
-  s: ServiceMeta;
+  section: {
+    service: string;
+  };
 }
-const { s } = Astro.props;
-const others = otherServices(s.key);
+
+const { section } = Astro.props;
+const s = await getService(section.service);
+const allServices = await getAllServices();
+const others = allServices.filter((o) => o.slug !== section.service);
+
+if (!s) {
+  throw new Error(`Service not found: ${section.service}`);
+}
+
+
 ---
-<!-- HERO -->
 <section class="inner-hero">
-  <img src={s.heroImage} alt={s.heroAlt} class="inner-hero__img" style={`object-position:${s.heroObjectPosition}`} />
+  <img src={getImageSrc(s.heroImage)} alt={s.heroAlt} class="inner-hero__img" style={`object-position:${s.heroObjectPosition}`} />
   <div class="scrim"></div>
   <div class="container inner-hero__content">
     <div class="breadcrumb">
@@ -39,7 +48,6 @@ const others = otherServices(s.key);
   </div>
 </section>
 
-<!-- SCOPE -->
 <section class="container section">
   <div class="eyebrow">
     <span class="eyebrow__rule"></span>
@@ -56,7 +64,6 @@ const others = otherServices(s.key);
   </div>
 </section>
 
-<!-- WHO / TOOLS -->
 <section class="container section">
   <div class="whotools split">
     <div class="whotools__panel">
@@ -86,19 +93,17 @@ const others = otherServices(s.key);
   </div>
 </section>
 
-<!-- CROSS LINKS + CTA -->
 <section class="container section">
   <div class="crosslinks">
     {others.map((o) => (
-      <a href={'/' + o.slug} class="crosslink">
+      <a href={`/services/${o.slug}`} class="crosslink">
         <div class="crosslink__eyebrow">Also explore</div>
-        <div class="crosslink__title">{o.name} →</div>
+        <div class="crosslink__title">{o.entry.name} →</div>
       </a>
     ))}
   </div>
 </section>
 <CTABand variant="green" heading={s.ctaHeading} button="Book a discovery call" href="/contact" />
-</section>
 
 <style>
   .inner-hero {
@@ -173,7 +178,6 @@ const others = otherServices(s.key);
     color: #fff;
   }
 
-  /* scope */
   .scope-title {
     margin: 0 0 40px;
     font-size: clamp(25px, 3.4vw, 46px);
@@ -205,7 +209,6 @@ const others = otherServices(s.key);
     color: var(--c-muted-2);
   }
 
-  /* who / tools */
   .whotools {
     display: grid;
     grid-template-columns: 0.95fr 1.05fr;
@@ -283,7 +286,6 @@ const others = otherServices(s.key);
     color: var(--c-dark);
   }
 
-  /* crosslinks */
   .crosslinks {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

@@ -1,0 +1,124 @@
+---
+import Icon from '../Icon.astro';
+import { getAllIndustries } from '../../lib/keystatic.ts';
+
+export interface Props {
+  section: {
+    eyebrow?: string;
+    title: string;
+    description?: string;
+    ctaTitle?: string;
+    ctaDescription?: string;
+    ctaHref?: string;
+  };
+}
+
+const { section } = Astro.props;
+const industries = await getAllIndustries();
+---
+<section class="container section">
+  <div class="grid-head">
+    <div>
+      <div class="eyebrow">
+        <span class="eyebrow__rule"></span>
+        <span class="eyebrow__label">{section.eyebrow}</span>
+      </div>
+      <h2 class="grid-head__title">{section.title}</h2>
+    </div>
+    {section.description && <p class="grid-head__p">{section.description}</p>}
+  </div>
+  <div class="industries">
+    {industries.map((ind) => (
+      <div class="industry">
+        <span class="industry__icon"><Icon name={ind.entry.icon} size={24} stroke="#306A42" /></span>
+        <h3>{ind.entry.name}</h3>
+        <p>{ind.entry.desc}</p>
+      </div>
+    ))}
+    <a href={section.ctaHref || '/contact'} class="industry industry--cta">
+      <Icon name="plus" size={24} stroke="#14231A" />
+      <span>
+        <span class="industry__cta-title">{section.ctaTitle}</span>
+        <span class="industry__cta-desc">{section.ctaDescription}</span>
+      </span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .grid-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 60px;
+    flex-wrap: wrap;
+    margin-bottom: 46px;
+  }
+  .grid-head__title {
+    font-size: clamp(26px, 4vw, 56px);
+    line-height: 0.98;
+    letter-spacing: -0.04em;
+    font-weight: 800;
+    color: var(--c-dark);
+    max-width: 640px;
+  }
+  .grid-head__p {
+    max-width: 360px;
+    font-size: 16.5px;
+    line-height: 1.62;
+    color: var(--c-muted);
+  }
+  .industries {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--c-line);
+    border: 1px solid var(--c-line);
+  }
+  .industry {
+    background: #fff;
+    padding: 30px;
+    transition: background .18s ease;
+  }
+  .industry:hover { background: var(--c-tint-2); }
+  .industry__icon { display: block; margin-bottom: 18px; }
+  .industry h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--c-dark);
+  }
+  .industry p {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--c-muted-2);
+  }
+  .industry--cta {
+    background: var(--c-yellow);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: var(--c-dark);
+  }
+  .industry--cta:hover { background: var(--c-dark); color: var(--c-yellow); }
+  .industry--cta .industry__icon { color: var(--c-dark); }
+  .industry__cta-title {
+    display: block;
+    font-family: var(--f-head);
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .industry__cta-desc {
+    display: block;
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 900px) {
+    .industries { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .industries { grid-template-columns: 1fr; }
+  }
+</style>

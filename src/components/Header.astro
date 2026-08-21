@@ -1,6 +1,9 @@
 ---
 import Icon from './Icon.astro';
-import { nav, services } from '../data/site.ts';
+import { getSite, getAllServices } from '../lib/keystatic.ts';
+
+const site = await getSite();
+const services = await getAllServices();
 
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
@@ -19,32 +22,33 @@ const isHome = path === '/';
     </button>
 
     <nav class="site-nav" data-nav>
-      <a href="/" class={`site-nav__link${isActive('/') ? ' is-active' : ''}`}>Home</a>
-
-      <div class="site-nav__menu" data-menu>
-        <a href="/services" class={`site-nav__link site-nav__link--with-chev${isActive('/services') ? ' is-active' : ''}`}>
-          Services
-          <Icon name="chevron" size={10} stroke="#F6D548" />
-        </a>
-        <div class="services-dropdown" data-dropdown>
-          {services.map((s) => (
-            <a href={'/' + s.slug} class="services-dropdown__item">
-              <span class="services-dropdown__icon">
-                <Icon name={s.key} size={21} />
-              </span>
-              <span>
-                <span class="services-dropdown__title">{s.name}</span>
-                <span class="services-dropdown__desc">{s.short}</span>
-              </span>
+      {site.nav.pages.map((page) => (
+        page.href === '/services' ? (
+          <div class="site-nav__menu" data-menu>
+            <a href="/services" class={`site-nav__link site-nav__link--with-chev${isActive('/services') ? ' is-active' : ''}`}>
+              Services
+              <Icon name="chevron" size={10} stroke="#F6D548" />
             </a>
-          ))}
-          <a href="/services" class="services-dropdown__all">View all services →</a>
-        </div>
-      </div>
-
-      <a href="/about" class={`site-nav__link${isActive('/about') ? ' is-active' : ''}`}>About</a>
-      <a href="/testimonials" class={`site-nav__link${isActive('/testimonials') ? ' is-active' : ''}`}>Testimonials</a>
-      <a href="/contact" class="btn btn--yellow btn-sm site-nav__cta">Let's talk</a>
+            <div class="services-dropdown" data-dropdown>
+{services.map((s) => (
+              <a href={`/services/${s.slug}`} class="services-dropdown__item">
+                <span class="services-dropdown__icon">
+                  <Icon name={s.entry.key} size={21} />
+                </span>
+                <span>
+                  <span class="services-dropdown__title">{s.entry.name}</span>
+                  <span class="services-dropdown__desc">{s.entry.short}</span>
+                </span>
+              </a>
+            ))}
+              <a href="/services" class="services-dropdown__all">View all services →</a>
+            </div>
+          </div>
+        ) : (
+          <a href={page.href} class={`site-nav__link${isActive(page.href) ? ' is-active' : ''}`}>{page.label}</a>
+        )
+      ))}
+      <a href={site.nav.cta.href} class="btn btn--yellow btn-sm site-nav__cta">{site.nav.cta.label}</a>
     </nav>
   </div>
 </header>

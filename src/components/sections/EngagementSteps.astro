@@ -1,0 +1,89 @@
+---
+export interface Props {
+  section: {
+    title: string;
+    steps: { number: string; title: string; description: string }[];
+  };
+}
+
+const { section } = Astro.props;
+---
+<section class="container section">
+  <div class="engage">
+    <div class="dotgrid-dark engage__bg"></div>
+    <div class="engage__inner">
+      <h2>{section.title}</h2>
+      <div class="hairline-grid engage__steps">
+        {section.steps.map((st) => (
+          <div class="engage__step">
+            <div class="engage__num">{st.number}</div>
+            <h3>{st.title}</h3>
+            <p>{st.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .engage {
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--c-line);
+    padding: 64px 0;
+  }
+  .dotgrid-dark {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(#E1E6DC 1.3px, transparent 1.3px);
+    background-size: 24px 24px;
+    opacity: 1;
+  }
+  .engage__inner { position: relative; }
+  .engage__inner h2 {
+    margin: 0 0 46px;
+    font-size: clamp(24px, 3vw, 40px);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    color: var(--c-dark);
+  }
+  .engage__steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media (max-width: 1024px) {
+    .engage__steps { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .engage__steps { grid-template-columns: 1fr; }
+  }
+  .engage__step {
+    background: #fff;
+    padding: 34px 30px;
+  }
+  .engage__num {
+    font-family: var(--f-head);
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--c-yellow);
+    line-height: 0.9;
+    margin-bottom: 18px;
+  }
+  .engage__step h3 {
+    margin: 0 0 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--c-dark);
+  }
+  .engage__step p {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--c-muted-2);
+  }
+
+  @media (max-width: 880px) {
+    .engage { padding: 40px 24px; }
+  }
+</style>

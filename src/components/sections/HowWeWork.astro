@@ -1,0 +1,65 @@
+---
+import Icon from '../Icon.astro';
+
+export interface Props {
+  section: {
+    title: string;
+    items: { icon: string; title: string; description: string }[];
+  };
+}
+
+const { section } = Astro.props;
+---
+<section class="container section">
+  <h2 class="hww__title">{section.title}</h2>
+  <div class="hairline-grid hww__grid">
+    {section.items.map((w) => (
+      <div class="hww__cell">
+        <span class="hww__icon"><Icon name={w.icon} size={24} stroke="#306A42" /></span>
+        <h3>{w.title}</h3>
+        <p>{w.description}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .hww__title {
+    margin: 0 0 40px;
+    font-size: clamp(24px, 3.2vw, 42px);
+    color: var(--c-dark);
+  }
+  .hww__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media (max-width: 1024px) {
+    .hww__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .hww__grid { grid-template-columns: 1fr; }
+  }
+  .hww__cell {
+    background: #fff;
+    padding: 36px 32px;
+  }
+  .hww__icon {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    background: var(--c-tint);
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+  .hww__cell h3 {
+    margin: 0 0 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--c-dark);
+  }
+  .hww__cell p {
+    font-size: 15.5px;
+    line-height: 1.62;
+    color: var(--c-muted-2);
+  }
+</style>

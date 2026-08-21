@@ -1,0 +1,178 @@
+---
+import Icon from '../Icon.astro';
+import { getImageSrc } from '../../lib/keystatic.ts';
+
+export interface Props {
+  section: {
+    backgroundImage?: string | { src: string };
+    backgroundPosition?: string;
+    eyebrow?: string;
+    eyebrowColor?: string;
+    eyebrowLarge?: boolean;
+    headline: string;
+    lead?: string;
+    tagline?: string;
+    breadcrumb?: { parentLabel?: string; parentHref?: string };
+    buttons?: { label: string; href: string; variant: string }[];
+    chips?: string[];
+    facts?: { label: string; value: string }[];
+  };
+}
+
+const { section } = Astro.props;
+const imgSrc = getImageSrc(section.backgroundImage);
+
+const btnClass = (variant?: string) => {
+  switch (variant) {
+    case 'outline-light': return 'btn btn--outline-light';
+    case 'outline-dark': return 'btn btn--outline-dark';
+    case 'dark': return 'btn btn--dark';
+    default: return 'btn btn--yellow';
+  }
+};
+
+const ruleClass = `eyebrow__rule eyebrow__rule--${section.eyebrowColor || 'yellow'}${section.eyebrowLarge ? ' eyebrow__rule--lg' : ''}`;
+const labelClass = `eyebrow__label eyebrow__label--${section.eyebrowColor || 'yellow'}${section.eyebrowLarge ? ' eyebrow__label--lg' : ''}`;
+---
+<section class="inner-hero">
+  <img src={imgSrc} alt="" class="inner-hero__img" style={`object-position:${section.backgroundPosition || '50% 50%'}`} />
+  <div class="scrim"></div>
+  <div class="container inner-hero__content">
+    {section.breadcrumb && section.breadcrumb.parentLabel && (
+      <div class="breadcrumb">
+        <a href={section.breadcrumb.parentHref || '/'}>{section.breadcrumb.parentLabel}</a><span>/</span><span>{section.headline}</span>
+      </div>
+    )}
+    <div class="eyebrow">
+      <span class={ruleClass}></span>
+      <span class={labelClass}>{section.eyebrow}</span>
+    </div>
+    <h1>{section.headline}</h1>
+    {section.lead && <p class="inner-hero__lead">{section.lead}</p>}
+    {section.tagline && <p class="inner-hero__tagline">{section.tagline}</p>}
+    {section.buttons && section.buttons.length > 0 && (
+      <div class="inner-hero__btns">
+        {section.buttons.map((btn) => (
+          <a href={btn.href} class={btnClass(btn.variant)}>{btn.label}</a>
+        ))}
+      </div>
+    )}
+    {section.chips && section.chips.length > 0 && (
+      <div class="inner-hero__chips">
+        {section.chips.map((chip) => <span class="chip-link">{chip}</span>)}
+      </div>
+    )}
+    {section.facts && section.facts.length > 0 && (
+      <div class="factstrip">
+        {section.facts.map((f) => (
+          <div class="factstrip__item">
+            <div class="factstrip__label">{f.label}</div>
+            <div class="factstrip__value">{f.value}</div>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .inner-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--c-dark);
+    min-height: 460px;
+    display: flex;
+    align-items: center;
+  }
+  .inner-hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .inner-hero__content { position: relative; padding: 92px var(--pad); }
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--f-head);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--on-dark-mute-4);
+    margin-bottom: 26px;
+  }
+  .breadcrumb a { color: var(--c-yellow); }
+  .breadcrumb a:hover { color: #fff; }
+  .inner-hero h1 {
+    margin: 0 0 24px;
+    font-size: clamp(28px, 4.7vw, 66px);
+    line-height: 0.94;
+    letter-spacing: -0.045em;
+    color: #fff;
+    max-width: 820px;
+  }
+  .inner-hero__lead {
+    font-size: clamp(17px, 1.35vw, 19.5px);
+    line-height: 1.58;
+    color: var(--on-dark-mute-3);
+    max-width: 600px;
+  }
+  .inner-hero__tagline {
+    margin: 30px 0 0;
+    font-family: var(--f-head);
+    font-size: 18px;
+    line-height: 1.4;
+    font-weight: 700;
+    color: var(--c-yellow);
+  }
+  .inner-hero__btns {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 34px;
+  }
+  .inner-hero__btns .btn { height: 58px; padding: 0 30px; font-size: 16px; }
+  .inner-hero__chips {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 36px;
+  }
+  .chip-link {
+    display: inline-flex;
+    align-items: center;
+    height: 50px;
+    padding: 0 22px;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    color: #fff;
+    font-family: var(--f-head);
+    font-size: 14.5px;
+    font-weight: 600;
+    transition: background .18s ease, border-color .18s ease, color .18s ease;
+  }
+  .chip-link:hover { background: var(--c-yellow); border-color: var(--c-yellow); color: var(--c-dark); }
+  .factstrip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 44px;
+    margin-top: 38px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .factstrip__label {
+    font-family: var(--f-head);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--on-dark-mute-4);
+    margin-bottom: 7px;
+  }
+  .factstrip__value {
+    font-family: var(--f-head);
+    font-size: 19px;
+    font-weight: 700;
+    color: #fff;
+  }
+</style>

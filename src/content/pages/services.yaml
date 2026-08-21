@@ -1,0 +1,53 @@
+title: Services — Mandrex VA Services
+description: Engage a single specialist or a blended team. Every engagement starts with a documented scope, agreed turnaround times, and one point of contact.
+slug: services
+sections:
+  - discriminant: innerHero
+    value:
+      sectionId: inner-hero
+      backgroundImage: photo-desk-laptops.jpg
+      backgroundPosition: 50% 45%
+      eyebrow: Services
+      headline: Support that fits how you work
+      lead: Engage a single specialist or a blended team. Every engagement starts with a documented scope, agreed turnaround times, and one point of contact.
+      chips: []
+      facts: []
+  - discriminant: serviceCards
+    value:
+      sectionId: service-cards
+      descriptionOverrides:
+        - service: bookkeeping
+          description: Accurate records and better visibility into performance — organized, compliant, and ready for informed decisions.
+        - service: admin
+          description: Reliable day-to-day support that clears your admin backlog and streamlines how the business runs.
+        - service: customer
+          description: Responsive, professional customer experiences across every channel your buyers use.
+        - service: executive
+          description: Senior-level support that protects your calendar and keeps the details from reaching your desk.
+  - discriminant: engagementSteps
+    value:
+      sectionId: engagement
+      title: How an engagement starts
+      steps:
+        - number: "01"
+          title: Discovery call
+          description: A 30-minute review of your current workload, tools, and pain points.
+        - number: "02"
+          title: Scope & proposal
+          description: A written scope with deliverables, hours, turnaround times, and pricing.
+        - number: "03"
+          title: Onboarding
+          description: Secure access, process documentation, and a two-week calibration period.
+        - number: "04"
+          title: Ongoing delivery
+          description: Weekly updates, monthly reporting, and scope reviews as you grow.
+  - discriminant: ctaBand
+    value:
+      sectionId: cta
+      variant: green
+      heading: Not sure which service you need? We'll map it with you.
+      paragraph: ""
+      button:
+        label: Book a discovery call
+        href: /contact
+        variant: yellow

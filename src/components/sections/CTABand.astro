@@ -1,0 +1,15 @@
+---
+import CTABand from '../CTABand.astro';
+
+export interface Props {
+  section: {
+    variant?: 'green' | 'dark';
+    heading: string;
+    paragraph?: string;
+    button: { label: string; href: string; variant?: string };
+  };
+}
+
+const { section } = Astro.props;
+---
+<CTABand variant={section.variant || 'green'} heading={section.heading} paragraph={section.paragraph} button={section.button.label} href={section.button.href} />

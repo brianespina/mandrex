@@ -1,0 +1,41 @@
+nav:
+  pages:
+    - label: Home
+      href: /
+    - label: Services
+      href: /services
+    - label: About
+      href: /about
+    - label: Testimonials
+      href: /testimonials
+  cta:
+    label: Let's talk
+    href: /contact
+footer:
+  brandText: Helping businesses stay organized, productive, and ready to grow — dependable virtual assistance, bookkeeping, and back-office support.
+  pages:
+    - label: Home
+      href: /
+    - label: Services
+      href: /services
+    - label: About Us
+      href: /about
+    - label: Testimonials
+      href: /testimonials
+    - label: Contact Us
+      href: /contact
+  copyright: © 2026 Mandrex VA Services, LLC. All rights reserved.
+  domain: mandrexvaservices.com
+contact:
+  email: welcome@mandrexvaservices.com
+  phone1: +1 307 364 0114
+  phone1Href: tel:+13073640114
+  phone2: +63 949 887 5201
+  phone2Href: tel:+639498875201
+socials:
+  - label: Facebook
+    href: https://www.facebook.com/share/195AmdwHV5/?mibextid=wwXIfr
+  - label: LinkedIn
+    href: https://www.linkedin.com/company/mandrex-va-services/
+  - label: Instagram
+    href: https://www.facebook.com/share/195AmdwHV5/?mibextid=wwXIfr

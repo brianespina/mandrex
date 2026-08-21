@@ -1,0 +1,107 @@
+---
+import Icon from '../Icon.astro';
+import { getAllServices } from '../../lib/keystatic.ts';
+
+export interface Props {
+  section: {
+    descriptionOverrides?: { service: string; description: string }[];
+  };
+}
+
+const { section } = Astro.props;
+const services = await getAllServices();
+
+const descFor = (key: string) => section.descriptionOverrides?.find((o) => o.service === key)?.description;
+---
+<section class="container section">
+  <div class="svc-grid">
+    {services.map((s) => (
+      <a href={`/services/${s.slug}`} class="svc-card">
+        <span class="svc-card__bar" style={`background:${s.entry.topBarColor}`}></span>
+        <span class="svc-card__icon"><Icon name={s.entry.key} size={28} /></span>
+        <h2 class="svc-card__title">{s.entry.name}</h2>
+        <p class="svc-card__desc">{descFor(s.slug) || s.entry.cardDesc}</p>
+        <div class="svc-card__tags">
+          {s.entry.chips.map((c) => <span class="svc-card__tag">{c}</span>)}
+        </div>
+        <span class="svc-card__link">
+          View full service
+          <Icon name="arrow" size={16} stroke="#306A42" />
+        </span>
+      </a>
+    ))}
+  </div>
+</section>
+
+<style>
+  .svc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 900px) {
+    .svc-grid { grid-template-columns: 1fr; }
+  }
+  .svc-card {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    background: #fff;
+    border: 1px solid var(--c-line);
+    padding: clamp(20px, 4.2vw, 44px);
+    color: var(--c-text);
+    transition: border-color .18s ease;
+  }
+  .svc-card:hover { border-color: var(--c-green); color: var(--c-text); }
+  .svc-card__bar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 120px;
+    height: 6px;
+  }
+  .svc-card__icon {
+    display: flex;
+    width: 64px;
+    height: 64px;
+    background: var(--c-dark);
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+  .svc-card__title {
+    margin: 0 0 14px;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--c-dark);
+  }
+  .svc-card__desc {
+    margin: 0 0 24px;
+    font-size: 16.5px;
+    line-height: 1.64;
+    color: var(--c-muted);
+  }
+  .svc-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 26px;
+  }
+  .svc-card__tag {
+    padding: 7px 13px;
+    background: var(--c-tint);
+    font-size: 13.5px;
+    color: var(--c-green);
+    font-weight: 600;
+  }
+  .svc-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--f-head);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-green);
+  }
+</style>

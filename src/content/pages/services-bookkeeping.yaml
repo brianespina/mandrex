@@ -1,0 +1,8 @@
+title: Bookkeeping — Mandrex VA Services
+description: Maintain accurate financial records and gain better visibility into business performance — reconciliations, payables and receivables, transaction recording, and reporting.
+slug: services-bookkeeping
+sections:
+  - discriminant: serviceDetail
+    value:
+      sectionId: detail
+      service: bookkeeping

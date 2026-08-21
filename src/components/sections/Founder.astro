@@ -1,0 +1,123 @@
+---
+import { getImageSrc } from '../../lib/keystatic.ts';
+
+export interface Props {
+  section: {
+    photo?: string | { src: string };
+    photoPosition?: string;
+    name: string;
+    role?: string;
+    eyebrow?: string;
+    title: string;
+    paragraphs?: string[];
+    missionStatement?: string;
+  };
+}
+
+const { section } = Astro.props;
+const imgSrc = getImageSrc(section.photo);
+---
+<section class="container section">
+  <div class="founder split">
+    <div>
+      <div class="founder__photo-wrap">
+        <div class="founder__deco"></div>
+        <img src={imgSrc} alt={section.name} class="founder__photo" style={`object-position:${section.photoPosition || 'center 20%'}`} />
+        <div class="founder__nameplate">
+          <div class="founder__name">{section.name}</div>
+          <div class="founder__role">{section.role}</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="eyebrow">
+        <span class="eyebrow__rule"></span>
+        <span class="eyebrow__label">{section.eyebrow}</span>
+      </div>
+      <h2 class="founder__title">{section.title}</h2>
+      {section.paragraphs?.map((p, i) => (
+        <p class={`founder__p${i === 0 ? ' founder__p--lead' : ''}${i === (section.paragraphs?.length || 0) - 1 ? ' founder__p--last' : ''}`}>{p}</p>
+      ))}
+      {section.missionStatement && (
+        <div class="founder__mission">
+          <p>{section.missionStatement}</p>
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .founder {
+    display: grid;
+    grid-template-columns: 0.78fr 1.22fr;
+    gap: 64px;
+    align-items: start;
+  }
+  .founder__photo-wrap { position: relative; }
+  .founder__deco {
+    position: absolute;
+    left: -18px;
+    top: -18px;
+    width: 110px;
+    height: 110px;
+    background-image: radial-gradient(#CBD3C6 1.3px, transparent 1.3px);
+    background-size: 20px 20px;
+  }
+  .founder__photo {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+  }
+  .founder__nameplate {
+    position: relative;
+    background: var(--c-dark);
+    padding: 26px 28px;
+  }
+  .founder__name {
+    font-family: var(--f-head);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+  .founder__role {
+    font-family: var(--f-head);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-yellow);
+    margin-top: 8px;
+  }
+  .founder__title {
+    margin: 0 0 26px;
+    font-size: clamp(24px, 3.2vw, 42px);
+    line-height: 1.02;
+    color: var(--c-dark);
+  }
+  .founder__p {
+    margin: 0 0 20px;
+    font-size: 17px;
+    line-height: 1.68;
+    color: var(--c-muted);
+  }
+  .founder__p--lead {
+    font-size: 17.5px;
+    color: var(--c-text);
+  }
+  .founder__p--last { margin-bottom: 30px; }
+  .founder__mission {
+    background: var(--c-yellow);
+    padding: 30px 34px;
+  }
+  .founder__mission p {
+    font-family: var(--f-head);
+    font-size: 21px;
+    line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--c-dark);
+  }
+</style>

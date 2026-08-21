@@ -1,0 +1,8 @@
+title: Executive Assistance — Mandrex VA Services
+description: Stay focused on high-value priorities while we manage the details — calendars, meeting coordination, travel, inbox organization, and reporting support.
+slug: services-executive-assistance
+sections:
+  - discriminant: serviceDetail
+    value:
+      sectionId: detail
+      service: executive

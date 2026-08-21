@@ -1,0 +1,54 @@
+key: customer
+name: Customer Support
+short: Email, live chat and phone coverage
+cardTitle: Customer support
+cardDesc: Email, live chat, and phone coverage with agreed response times.
+heroEyebrow: Customer Support
+heroImage: photo-meeting.jpg
+heroAlt: Customer support team
+heroObjectPosition: 50% 50%
+h1: Every customer, answered fast
+lead: Responsive, professional customer experiences across every interaction — email, live chat, and phone support with agreed response times.
+ctaHeading: Ready to shorten your response times?
+accent: red
+topBarColor: "#D24A3C"
+index: "03"
+chips:
+  - Email & tickets
+  - Live chat
+  - Phone
+facts:
+  - label: Channels
+    value: Email · chat · phone
+  - label: First response
+    value: Under 4 hours
+  - label: Coverage
+    value: US, UK & AU hours
+scope:
+  - title: Email & ticket handling
+    desc: Queues triaged, tagged, and answered against your tone and SLA.
+  - title: Live chat coverage
+    desc: Staffed chat during your peak hours with escalation rules agreed up front.
+  - title: Phone support
+    desc: Inbound and outbound calls handled with call notes logged to your CRM.
+  - title: Order & request processing
+    desc: Refunds, changes, and fulfilment requests processed accurately.
+  - title: Issue resolution
+    desc: Clear escalation paths so nothing sits unresolved or unowned.
+  - title: Records & follow-ups
+    desc: Customer history maintained and follow-ups closed on schedule.
+forWhom:
+  - E-commerce brands with seasonal or unpredictable volume
+  - Service businesses losing leads to slow replies
+  - Teams whose support queue is handled between other jobs
+  - Companies needing coverage outside their own working hours
+tools:
+  - Zendesk
+  - Freshdesk
+  - Intercom
+  - Gorgias
+  - Shopify
+  - HubSpot
+  - RingCentral
+pullQuote: Response times measured weekly, with the themes behind repeat contacts reported back to you.
+homeImage: photo-meeting.jpg

@@ -1,0 +1,51 @@
+---
+import { getImageSrc } from '../../lib/keystatic.ts';
+
+export interface Props {
+  section: {
+    image?: string | { src: string };
+    cardText: string;
+  };
+}
+
+const { section } = Astro.props;
+const imgSrc = getImageSrc(section.image);
+---
+<section class="container section-closing">
+  <div class="closing">
+    <img src={imgSrc} alt="" class="closing__img" />
+    <div class="closing__card">
+      <p>{section.cardText}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-closing { padding: 100px var(--pad) 110px; }
+  .closing { position: relative; }
+  .closing__img {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+  }
+  .closing__card {
+    position: absolute;
+    left: 44px;
+    bottom: 44px;
+    background: #fff;
+    padding: 28px 32px;
+    max-width: 460px;
+  }
+  .closing__card p {
+    font-family: var(--f-head);
+    font-size: 21px;
+    line-height: 1.34;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--c-dark);
+  }
+
+  @media (max-width: 640px) {
+    .closing__card { left: 20px; right: 20px; bottom: 20px; }
+  }
+</style>

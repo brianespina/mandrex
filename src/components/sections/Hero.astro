@@ -1,0 +1,163 @@
+---
+import Icon from '../Icon.astro';
+import { getImageSrc } from '../../lib/keystatic.ts';
+
+export interface Props {
+  section: {
+    backgroundImage?: string | { src: string };
+    backgroundPosition?: string;
+    eyebrow?: string;
+    headline: string;
+    lead?: string;
+    primaryButton?: { label: string; href: string; variant: string };
+    secondaryButton?: { label: string; href: string; variant: string };
+    stats?: { value: string; label: string; accent?: boolean }[];
+  };
+}
+
+const { section } = Astro.props;
+const imgSrc = getImageSrc(section.backgroundImage);
+
+const btnClass = (variant?: string) => {
+  switch (variant) {
+    case 'outline-light': return 'btn btn--outline-light btn-lg';
+    case 'outline-dark': return 'btn btn--outline-dark btn-lg';
+    case 'dark': return 'btn btn--dark btn-lg';
+    default: return 'btn btn--yellow btn-lg';
+  }
+};
+---
+<section class="hero">
+  <img src={imgSrc} alt="" class="hero__img" style={`object-position:${section.backgroundPosition || '50% 50%'}`} />
+  <div class="scrim"></div>
+  <div class="hero__content">
+    <div class="eyebrow">
+      <span class="eyebrow__rule eyebrow__rule--yellow eyebrow__rule--lg"></span>
+      <span class="eyebrow__label eyebrow__label--yellow eyebrow__label--lg">{section.eyebrow}</span>
+    </div>
+    <h1 class="hero__h1">{section.headline}</h1>
+    {section.lead && <p class="hero__lead">{section.lead}</p>}
+    <div class="hero__ctas">
+      {section.primaryButton && (
+        <a href={section.primaryButton.href} class={btnClass(section.primaryButton.variant)}>{section.primaryButton.label}</a>
+      )}
+      {section.secondaryButton && (
+        <a href={section.secondaryButton.href} class={btnClass(section.secondaryButton.variant)}>
+          {section.secondaryButton.label}
+          <Icon name="arrow" size={17} />
+        </a>
+      )}
+    </div>
+  </div>
+  {section.stats && section.stats.length > 0 && (
+    <div class="hero__statbar">
+      <div class="container">
+        <div class="hero__stats">
+          {section.stats.map((s) => (
+            <div class={`hero__stat${s.accent ? ' hero__stat--accent' : ''}`}>
+              <div class="hero__stat-value">{s.value}</div>
+              <div class="hero__stat-label">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )}
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--c-dark-2);
+  }
+  .hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero__content {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: var(--maxw);
+    width: 100%;
+    margin: 0 auto;
+    padding: 80px var(--pad) 190px;
+  }
+  .hero__h1 {
+    margin: 0 0 28px;
+    font-size: clamp(29px, 4.4vw, 62px);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    color: #fff;
+    text-transform: uppercase;
+    max-width: 900px;
+  }
+  .hero__lead {
+    margin: 0 0 40px;
+    font-size: clamp(17px, 1.45vw, 21px);
+    line-height: 1.56;
+    color: #C4CFC5;
+    max-width: 560px;
+  }
+  .hero__ctas {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .hero__statbar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+  }
+  .hero__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .hero__stat {
+    background: rgba(15, 26, 19, 0.74);
+    backdrop-filter: blur(6px);
+    padding: 28px 30px;
+  }
+  .hero__stat--accent { background: var(--c-yellow); }
+  .hero__stat-value {
+    font-family: var(--f-head);
+    font-size: clamp(26px, 2.4vw, 32px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #fff;
+    line-height: 1;
+  }
+  .hero__stat--accent .hero__stat-value { color: var(--c-dark); }
+  .hero__stat-label {
+    margin-top: 6px;
+    font-family: var(--f-head);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #A9B4AA;
+  }
+  .hero__stat--accent .hero__stat-label { color: var(--c-yellow-dark); }
+
+  @media (max-width: 880px) {
+    .hero { min-height: 0; }
+    .hero__content { padding: 56px var(--pad) 56px; }
+    .hero__statbar { position: static; }
+  }
+</style>

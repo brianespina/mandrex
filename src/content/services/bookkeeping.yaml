@@ -1,0 +1,53 @@
+key: bookkeeping
+name: Bookkeeping
+short: Reconciliations, AP/AR, monthly reports
+cardTitle: Bookkeeping
+cardDesc: Reconciliations, AP/AR, transaction recording, and monthly reporting.
+heroEyebrow: Bookkeeping
+heroImage: photo-charts-overhead.jpg
+heroAlt: Overhead view of financial charts and a laptop
+heroObjectPosition: 40% 50%
+h1: Books that stay audit-ready
+lead: Maintain accurate financial records and gain better visibility into business performance — reconciliations, payables and receivables, transaction recording, and reporting.
+ctaHeading: Ready to hand over the books?
+accent: green
+topBarColor: "#306A42"
+index: "01"
+chips:
+  - Reconciliations
+  - AP / AR
+  - Monthly reporting
+facts:
+  - label: Monthly close
+    value: 5 business days
+  - label: Reporting pack
+    value: P&L · BS · CF
+  - label: Start-up time
+    value: 1–2 weeks
+scope:
+  - title: Bank & card reconciliations
+    desc: Every account matched to statements monthly, with variances documented and cleared.
+  - title: Accounts payable
+    desc: Bill entry, approval routing, payment scheduling, and vendor record upkeep.
+  - title: Accounts receivable
+    desc: Invoicing, payment application, and a steady follow-up cadence on aging balances.
+  - title: Transaction recording
+    desc: Consistent categorization against your chart of accounts, with clean audit trails.
+  - title: Financial reporting
+    desc: Monthly P&L, balance sheet, and cash flow — plus the commentary behind the numbers.
+  - title: Clean-up & catch-up
+    desc: Behind on the books? We rebuild prior periods and get you current before going monthly.
+forWhom:
+  - Owners doing their own books at night and on weekends
+  - Businesses months behind and unsure where the numbers stand
+  - Accounting firms needing overflow capacity during peak season
+  - Teams preparing for lending, tax filing, or investor reporting
+tools:
+  - QuickBooks Online
+  - Xero
+  - Bill.com
+  - Expensify
+  - Gusto
+  - Excel / Sheets
+pullQuote: Backed by 13+ years of accounting, payables, and financial operations experience.
+homeImage: photo-financial.jpg

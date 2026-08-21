@@ -1,0 +1,73 @@
+---
+import Icon from '../Icon.astro';
+
+export interface Props {
+  section: {
+    cards: { icon: string; title: string; description: string; color?: string }[];
+  };
+}
+
+const { section } = Astro.props;
+---
+<section class="container section">
+  <div class="vm-grid">
+    {section.cards.map((card) => (
+      <div class="vm-card">
+        <div class={`vm-card__blob vm-card__blob--${card.color || 'green'}`}></div>
+        <div class="vm-card__inner">
+          <span class={`vm-card__icon vm-card__icon--${card.color || 'green'}`}><Icon name={card.icon} size={26} /></span>
+          <h3>{card.title}</h3>
+          <p>{card.description}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .vm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 16px;
+  }
+  .vm-card {
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--c-line);
+    padding: clamp(26px, 3.6vw, 48px);
+  }
+  .vm-card__blob {
+    position: absolute;
+    right: -50px;
+    top: -50px;
+    width: 180px;
+    height: 180px;
+    border-radius: 999px;
+  }
+  .vm-card__blob--green { background: #F3F7F0; }
+  .vm-card__blob--red { background: #FDF3E9; }
+  .vm-card__inner { position: relative; }
+  .vm-card__icon {
+    display: flex;
+    width: 56px;
+    height: 56px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 26px;
+  }
+  .vm-card__icon--green { background: var(--c-green); }
+  .vm-card__icon--red { background: var(--c-red); }
+  .vm-card h3 {
+    margin: 0 0 16px;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--c-dark);
+  }
+  .vm-card p {
+    font-size: 17px;
+    line-height: 1.66;
+    color: var(--c-muted);
+  }
+</style>

@@ -1,0 +1,124 @@
+---
+import { getImageSrc } from '../../lib/keystatic.ts';
+
+export interface Props {
+  section: {
+    mainImage?: string | { src: string };
+    insetImage?: string | { src: string };
+    eyebrow?: string;
+    title: string;
+    description?: string;
+    stats?: { value: string; label: string }[];
+  };
+}
+
+const { section } = Astro.props;
+const mainSrc = getImageSrc(section.mainImage);
+const insetSrc = getImageSrc(section.insetImage);
+---
+<section class="container section">
+  <div class="reach split">
+    <div class="reach__media">
+      <div class="reach__deco"></div>
+      <img src={mainSrc} alt="" class="reach__img" />
+      <img src={insetSrc} alt="" class="reach__inset" />
+    </div>
+    <div>
+      <div class="eyebrow">
+        <span class="eyebrow__rule eyebrow__rule--green"></span>
+        <span class="eyebrow__label eyebrow__label--green">{section.eyebrow}</span>
+      </div>
+      <h2 class="reach__title" set:html={section.title.replace(/\n/g, '<br />')}></h2>
+      {section.description && <p class="reach__p">{section.description}</p>}
+      {section.stats && section.stats.length > 0 && (
+        <div class="reach__stats">
+          {section.stats.map((s) => (
+            <div class="reach__stat">
+              <div class="reach__stat-value">{s.value}</div>
+              <div class="reach__stat-label">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .reach {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 72px;
+    align-items: center;
+  }
+  .reach__media {
+    position: relative;
+    padding: 0 0 52px 52px;
+  }
+  .reach__deco {
+    position: absolute;
+    left: 0;
+    top: 40px;
+    width: 250px;
+    height: 280px;
+    background-image: radial-gradient(#CBD3C6 1.3px, transparent 1.3px);
+    background-size: 22px 22px;
+  }
+  .reach__img {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+  }
+  .reach__inset {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 230px;
+    height: 180px;
+    object-fit: cover;
+    border: 10px solid var(--c-bg);
+  }
+  .reach__title {
+    margin: 0 0 22px;
+    font-size: clamp(25px, 3.4vw, 46px);
+    line-height: 1;
+    color: var(--c-dark);
+  }
+  .reach__p {
+    margin: 0 0 32px;
+    font-size: 17px;
+    line-height: 1.64;
+    color: var(--c-muted);
+  }
+  .reach__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--c-line);
+    border: 1px solid var(--c-line);
+  }
+  .reach__stat {
+    background: #fff;
+    padding: 22px 24px;
+  }
+  .reach__stat-value {
+    font-family: var(--f-head);
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--c-green);
+    line-height: 1;
+  }
+  .reach__stat-label {
+    margin-top: 8px;
+    font-size: 15px;
+    color: var(--c-muted-2);
+  }
+
+  @media (max-width: 880px) {
+    .reach__media { padding: 0; }
+    .reach__deco { display: none; }
+    .reach__inset { position: static; width: 60%; height: auto; aspect-ratio: 4 / 3; border-width: 8px; margin-top: -34px; }
+  }
+</style>

@@ -1,0 +1,54 @@
+key: admin
+name: Administrative Support
+short: Inbox, calendar, CRM, documents
+cardTitle: Admin support
+cardDesc: Inbox and calendar, CRM updates, data entry, documents, scheduling.
+heroEyebrow: Administrative Support
+heroImage: photo-conference-room.jpg
+heroAlt: Administrative team at work
+heroObjectPosition: 50% 50%
+h1: Your day-to-day, handled
+lead: Reduce your administrative workload with reliable day-to-day support — inbox and calendar, CRM updates, data entry, documents, research, and scheduling.
+ctaHeading: Ready to clear the admin backlog?
+accent: yellow
+topBarColor: "#F6D548"
+index: "02"
+chips:
+  - Inbox & calendar
+  - CRM & data
+  - Documents
+facts:
+  - label: Coverage
+    value: 4–40 hrs / week
+  - label: Turnaround
+    value: Same business day
+  - label: Start-up time
+    value: 1 week
+scope:
+  - title: Email management
+    desc: Inbox monitored, sorted, and answered from agreed templates and rules.
+  - title: Calendar & scheduling
+    desc: Meetings booked, confirmed, and rescheduled across time zones.
+  - title: CRM updates
+    desc: Records, stages, and notes kept current so your pipeline is trustworthy.
+  - title: Data entry & databases
+    desc: Accurate entry with validation checks and duplicate clean-up.
+  - title: Document preparation
+    desc: Proposals, contracts, decks, and reports formatted and filed.
+  - title: Research & reporting
+    desc: Vendor, market, and lead research summarized into decision-ready notes.
+forWhom:
+  - Founders whose inbox and calendar have become the bottleneck
+  - Teams with admin work spread across people who should be doing other things
+  - Businesses with a CRM nobody has time to maintain
+  - Firms needing consistent document and records discipline
+tools:
+  - Google Workspace
+  - Microsoft 365
+  - HubSpot
+  - Salesforce
+  - Asana
+  - Notion
+  - Slack
+pullQuote: One point of contact, documented processes, and a weekly summary of what moved.
+homeImage: photo-conference-room.jpg
