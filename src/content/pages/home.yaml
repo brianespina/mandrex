@@ -1,15 +1,18 @@
 title: Mandrex VA Services — Virtual Assistance, Bookkeeping & Back-Office Support
-description: Dependable virtual assistance, bookkeeping, administrative and customer support — back-office solutions so you can focus on growing your business.
-slug: home
+description: >-
+  Dependable virtual assistance, bookkeeping, administrative and customer
+  support — back-office solutions so you can focus on growing your business.
 sections:
   - discriminant: hero
     value:
       sectionId: hero
-      backgroundImage: /assets/home/photo-hero-boardroom.jpg
       backgroundPosition: 58% 55%
       eyebrow: Mandrex VA Services
       headline: Helping businesses stay organized, productive, and ready to grow
-      lead: Virtual assistance, bookkeeping, administrative and customer support — dependable back-office solutions so you can focus on growing your business.
+      lead: >-
+        Virtual assistance, bookkeeping, administrative and customer support —
+        dependable back-office solutions so you can focus on growing your
+        business.
       primaryButton:
         label: Book a discovery call
         href: /contact
@@ -21,13 +24,41 @@ sections:
       stats:
         - value: 69+
           label: Businesses served
-        - value: "13"
+          accent: false
+        - value: '13'
           label: Specialists
-        - value: "4"
+          accent: false
+        - value: '4'
           label: Countries
+          accent: false
         - value: 1 day
           label: Average reply time
           accent: true
+  - discriminant: whyChooseUs
+    value:
+      sectionId: why-us
+      eyebrow: Why choose us
+      title: Standards, not shortcuts
+      intro: >-
+        Outsourcing is about more than delegating tasks — it is trusting someone
+        with an important part of your business. Every engagement is built
+        around quality, accountability, and long-term partnership.
+      tiles:
+        - icon: shield
+          title: Reliable
+          description: >-
+            Consistent support you can count on — the same standard of work,
+            every week.
+        - icon: target
+          title: Accurate
+          description: >-
+            Detail-oriented work delivered with precision, reviewed before it
+            reaches you.
+        - icon: chart
+          title: Scalable
+          description: >-
+            Flexible part-time or full-time solutions that grow alongside your
+            business.
   - discriminant: serviceGrid
     value:
       sectionId: services
@@ -37,49 +68,39 @@ sections:
         label: All services
         href: /services
         variant: outline-dark
-  - discriminant: whyChooseUs
-    value:
-      sectionId: why-us
-      backgroundImage: /assets/home/photo-partners.jpg
-      eyebrow: Why choose us
-      title: Standards, not shortcuts
-      intro: Outsourcing is about more than delegating tasks — it is trusting someone with an important part of your business. Every engagement is built around quality, accountability, and long-term partnership.
-      tiles:
-        - icon: shield
-          title: Reliable
-          description: Consistent support you can count on — the same standard of work, every week.
-        - icon: target
-          title: Accurate
-          description: Detail-oriented work delivered with precision, reviewed before it reaches you.
-        - icon: chart
-          title: Scalable
-          description: Flexible part-time or full-time solutions that grow alongside your business.
   - discriminant: industriesGrid
     value:
       sectionId: industries
       eyebrow: Industries
       title: Sectors we know inside out
-      description: Startups to established companies — with workflows and tooling we adapt to yours.
+      description: >-
+        Startups to established companies — with workflows and tooling we adapt
+        to yours.
       ctaTitle: Not listed?
       ctaDescription: Tell us what your operations need →
       ctaHref: /contact
   - discriminant: globalReach
     value:
       sectionId: global-reach
-      mainImage: /assets/home/photo-statistics.jpg
-      insetImage: /assets/home/photo-meeting.jpg
       eyebrow: Global reach
       title: Four countries. One standard.
-      description: We support businesses in the United States, Australia, Canada, and the United Kingdom — including Arizona, California, Texas, New Jersey, New York, Massachusetts, Florida, Colorado, Connecticut, Maryland, Mississippi, Missouri, Oklahoma, Oregon, and South Carolina.
+      description: >-
+        We support businesses in the United States, Australia, Canada, and the
+        United Kingdom — including Arizona, California, Texas, New Jersey, New
+        York, Massachusetts, Florida, Colorado, Connecticut, Maryland,
+        Mississippi, Missouri, Oklahoma, Oregon, and South Carolina.
       stats:
         - value: 15+
           label: U.S. states served
-        - value: "3"
+        - value: '3'
           label: Time-zone coverage windows
   - discriminant: testimonialFeature
     value:
       sectionId: testimonial-feature
-      quote: Our books were three months behind. Within the first cycle Mandrex had everything reconciled — we now get a clean monthly report we actually use.
+      quote: >-
+        Our books were three months behind. Within the first cycle Mandrex had
+        everything reconciled — we now get a clean monthly report we actually
+        use.
       authorInitials: OD
       authorName: Operations Director
       authorRole: Real estate group, Texas · sample testimonial
@@ -97,7 +118,9 @@ sections:
       sectionId: closing-cta
       variant: dark
       heading: Let's build your back office
-      paragraph: Tell us where your operations are stretched. We'll reply within one business day with a recommended scope.
+      paragraph: >-
+        Tell us where your operations are stretched. We'll reply within one
+        business day with a recommended scope.
       button:
         label: Get started today
         href: /contact
