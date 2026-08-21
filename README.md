@@ -101,12 +101,15 @@ storage: { kind: 'local' }
 
 ## Deployment notes
 
-Keystatic's Astro integration adds server routes for the admin UI (`/keystatic` and `/api/keystatic`), so the project uses the `@astrojs/node` adapter. The public marketing pages are still prerendered to static HTML.
+Keystatic's Astro integration adds server routes for the admin UI (`/keystatic` and `/api/keystatic`), so the project uses the `@astrojs/cloudflare` adapter and deploys to **Cloudflare Pages**.
 
-To deploy:
+The public marketing pages are prerendered to static HTML. Only the Keystatic admin routes run on Cloudflare Workers.
 
-- **Node server**: run `node dist/server/entry.mjs`
-- **Cloudflare Pages / other static hosts**: swap `@astrojs/node` for the appropriate adapter (e.g. `@astrojs/cloudflare`) and configure it in `astro.config.mjs`.
+### Cloudflare Pages settings
+
+- **Build command**: `npm run build`
+- **Build output directory**: `dist`
+- **Node version**: 18 or higher
 
 ## Notes before launch
 
