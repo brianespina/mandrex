@@ -2,17 +2,19 @@ nav:
   pages:
     - label: Home
       href: /
-    - label: Services
-      href: /services
     - label: About
       href: /about
+    - label: Services
+      href: /services
     - label: Testimonials
       href: /testimonials
   cta:
     label: Let's talk
     href: /contact
 footer:
-  brandText: Helping businesses stay organized, productive, and ready to grow — dependable virtual assistance, bookkeeping, and back-office support.
+  brandText: >-
+    Helping businesses stay organized, productive, and ready to grow —
+    dependable virtual assistance, bookkeeping, and back-office support.
   pages:
     - label: Home
       href: /
