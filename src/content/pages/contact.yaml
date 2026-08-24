@@ -39,4 +39,4 @@ sections:
       callToAction:
         label: Prefer to talk?
         buttonLabel: Book a 30-minute call
-        href: /contact
+        href: "#book"

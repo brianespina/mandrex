@@ -1,0 +1,420 @@
+---
+import Icon from './Icon.astro';
+import { getSite } from '../lib/keystatic.ts';
+
+const site = await getSite();
+const accessKey = site.forms?.web3formsKey ?? '';
+const inbox = site.contact.email;
+
+// This is an enquiry form, not a scheduling system: it collects a preferred
+// window and Mandrex confirms by email. Nothing here books a slot.
+const DAY_OPTIONS = [
+  'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'No preference',
+];
+const TIME_OPTIONS = [
+  'Morning (9am – 12pm)',
+  'Afternoon (12pm – 5pm)',
+  'Evening (5pm – 8pm)',
+  'No preference',
+];
+const TOPIC_OPTIONS = [
+  'Bookkeeping',
+  'Administrative support',
+  'Customer support',
+  'Executive assistance',
+  'Not sure yet',
+];
+---
+<div class="bk" data-booking hidden>
+  <div class="bk__backdrop" data-booking-close></div>
+
+  <div class="bk__panel" role="dialog" aria-modal="true" aria-labelledby="bk-title">
+    <button type="button" class="bk__close" data-booking-close aria-label="Close">
+      <Icon name="close" size={18} stroke="#14231A" />
+    </button>
+
+    <form class="bk__form" data-booking-form novalidate>
+      <span class="bk__bar"></span>
+      <h2 class="bk__title" id="bk-title">Book a 30-minute call</h2>
+      <p class="bk__lead">
+        Tell us when suits and what you'd like to cover. We'll confirm a time by email
+        within one business day.
+      </p>
+
+      <div class="bk__row">
+        <label class="field">
+          <span class="field__label">Full name</span>
+          <input type="text" name="name" placeholder="Jane Doe" required />
+        </label>
+        <label class="field">
+          <span class="field__label">Work email</span>
+          <input type="email" name="email" placeholder="jane@company.com" required />
+        </label>
+      </div>
+
+      <div class="bk__row">
+        <label class="field">
+          <span class="field__label">Company</span>
+          <input type="text" name="company" placeholder="Company name" />
+        </label>
+        <label class="field">
+          <span class="field__label">Phone (optional)</span>
+          <input type="tel" name="phone" placeholder="+1 000 000 0000" />
+        </label>
+      </div>
+
+      <div class="bk__row">
+        <label class="field">
+          <span class="field__label">Preferred day</span>
+          <select name="preferred_day">
+            {DAY_OPTIONS.map((d) => <option value={d}>{d}</option>)}
+          </select>
+        </label>
+        <label class="field">
+          <span class="field__label">Preferred time</span>
+          <select name="preferred_time">
+            {TIME_OPTIONS.map((t) => <option value={t}>{t}</option>)}
+          </select>
+        </label>
+      </div>
+
+      <div class="bk__row">
+        <label class="field">
+          <span class="field__label">Your time zone</span>
+          <input type="text" name="timezone" data-booking-tz placeholder="e.g. GMT+8" />
+        </label>
+        <label class="field">
+          <span class="field__label">Topic</span>
+          <select name="topic">
+            {TOPIC_OPTIONS.map((t) => <option value={t}>{t}</option>)}
+          </select>
+        </label>
+      </div>
+
+      <label class="field">
+        <span class="field__label">Anything we should know? (optional)</span>
+        <textarea name="message" rows="3" placeholder="A sentence on what you'd like to cover."></textarea>
+      </label>
+
+      {/* honeypot — bots fill hidden fields, people do not */}
+      <input type="checkbox" name="botcheck" class="bk__botcheck" tabindex="-1" autocomplete="off" />
+
+      <p class="bk__error" data-booking-error hidden role="alert"></p>
+
+      <button type="submit" class="bk__submit" data-booking-submit>Request this call</button>
+      <p class="bk__note">
+        This sends a request — it doesn't book a slot. We'll reply to confirm the time.
+      </p>
+    </form>
+
+    <div class="bk__done" data-booking-done hidden>
+      <span class="bk__done-icon"><Icon name="successCheck" size={30} stroke="#306A42" /></span>
+      <div class="bk__done-title">Request received</div>
+      <p class="bk__done-text">
+        Thanks — we'll email you within one business day to confirm a time.
+      </p>
+      <button type="button" class="bk__done-close" data-booking-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ accessKey, inbox }}>
+  window.__mandrexBooking = { accessKey, inbox };
+</script>
+
+<script>
+  import { submitInquiry, mailtoFallback } from '../lib/inquiry.ts';
+
+  const modal = document.querySelector<HTMLElement>('[data-booking]');
+  if (modal) {
+    const cfg = (window as any).__mandrexBooking ?? { accessKey: '', inbox: '' };
+    const panel = modal.querySelector<HTMLElement>('.bk__panel')!;
+    const form = modal.querySelector<HTMLFormElement>('[data-booking-form]')!;
+    const done = modal.querySelector<HTMLElement>('[data-booking-done]')!;
+    const errorEl = modal.querySelector<HTMLElement>('[data-booking-error]')!;
+    const submitBtn = modal.querySelector<HTMLButtonElement>('[data-booking-submit]')!;
+    const tz = modal.querySelector<HTMLInputElement>('[data-booking-tz]');
+
+    let lastFocused: HTMLElement | null = null;
+
+    // a sensible default the visitor can correct
+    try {
+      if (tz && !tz.value) tz.value = Intl.DateTimeFormat().resolvedOptions().timeZone ?? '';
+    } catch { /* older browsers */ }
+
+    const focusable = () =>
+      Array.from(
+        panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((el) => el.offsetParent !== null);
+
+    const open = () => {
+      lastFocused = document.activeElement as HTMLElement;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      focusable()[0]?.focus();
+    };
+
+    const close = () => {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      lastFocused?.focus();
+    };
+
+    // any link pointing at #book opens the modal, so the CMS can turn any
+    // button into a booking trigger just by setting its link
+    document.querySelectorAll('a[href="#book"], [data-booking-open]').forEach((el) => {
+      el.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        open();
+      });
+    });
+
+    modal.querySelectorAll('[data-booking-close]').forEach((el) =>
+      el.addEventListener('click', () => close()),
+    );
+
+    document.addEventListener('keydown', (ev) => {
+      if (modal.hidden) return;
+      if (ev.key === 'Escape') { close(); return; }
+      if (ev.key !== 'Tab') return;
+      // keep focus inside the dialog while it is open
+      const items = focusable();
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+      else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+    });
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      errorEl.hidden = true;
+
+      if (!form.reportValidity()) return;
+
+      const data = new FormData(form);
+      if (data.get('botcheck')) return; // honeypot tripped
+
+      const fields: Record<string, string> = {
+        subject: `Call request — ${data.get('name') || 'website visitor'}`,
+        from_name: 'Mandrex website',
+        Name: String(data.get('name') ?? ''),
+        Email: String(data.get('email') ?? ''),
+        Company: String(data.get('company') ?? ''),
+        Phone: String(data.get('phone') ?? ''),
+        'Preferred day': String(data.get('preferred_day') ?? ''),
+        'Preferred time': String(data.get('preferred_time') ?? ''),
+        'Time zone': String(data.get('timezone') ?? ''),
+        Topic: String(data.get('topic') ?? ''),
+        Message: String(data.get('message') ?? ''),
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      const result = await submitInquiry(cfg.accessKey, fields);
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Request this call';
+
+      if (result.ok) {
+        form.hidden = true;
+        done.hidden = false;
+        return;
+      }
+
+      // never drop a submission: hand it to the visitor's mail client instead
+      if (result.error === 'not-configured') {
+        window.location.href = mailtoFallback(cfg.inbox, fields.subject, fields);
+        return;
+      }
+      errorEl.textContent =
+        result.error === 'network'
+          ? "That didn't send — check your connection, or email us directly."
+          : `That didn't send. Please email us directly.`;
+      errorEl.hidden = false;
+    });
+  }
+</script>
+
+<style>
+  .bk {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(12px, 4vw, 40px);
+  }
+  .bk[hidden] { display: none; }
+  .bk__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 26, 19, 0.72);
+  }
+  .bk__panel {
+    position: relative;
+    width: min(620px, 100%);
+    max-height: 100%;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid var(--c-line);
+  }
+  .bk__bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 6px;
+    background: var(--c-green);
+  }
+  .bk__close {
+    position: absolute;
+    right: 14px;
+    top: 16px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    background: none;
+    border: 1px solid var(--c-line);
+    cursor: pointer;
+  }
+  .bk__close:hover { border-color: var(--c-dark); }
+
+  .bk__form,
+  .bk__done { padding: clamp(26px, 4vw, 44px); }
+  .bk__title {
+    margin: 0 0 10px;
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--c-dark);
+  }
+  .bk__lead {
+    margin: 0 0 26px;
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--c-muted-2);
+  }
+  .bk__row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+  /* the honeypot must be reachable by bots but never by people */
+  .bk__botcheck {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+  .bk__error {
+    margin: 0 0 14px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--c-deep-red);
+  }
+  .bk__submit {
+    width: 100%;
+    height: 54px;
+    margin-top: 8px;
+    background: var(--c-dark);
+    border: 0;
+    color: #fff;
+    font-family: var(--f-head);
+    font-size: 15.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .18s ease;
+  }
+  .bk__submit:hover:not(:disabled) { background: var(--c-green); }
+  .bk__submit:disabled { opacity: .7; cursor: default; }
+  .bk__note {
+    margin: 14px 0 0;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: var(--c-muted-3);
+  }
+
+  .bk__done { text-align: center; }
+  .bk__done-icon {
+    display: inline-flex;
+    width: 64px;
+    height: 64px;
+    align-items: center;
+    justify-content: center;
+    background: var(--c-tint);
+    margin-bottom: 18px;
+  }
+  .bk__done-title {
+    font-family: var(--f-head);
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--c-dark);
+    margin-bottom: 8px;
+  }
+  .bk__done-text {
+    margin: 0 0 22px;
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: var(--c-muted-2);
+  }
+  .bk__done-close {
+    height: 48px;
+    padding: 0 26px;
+    background: none;
+    border: 1px solid var(--c-dark);
+    color: var(--c-dark);
+    font-family: var(--f-head);
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .bk__done-close:hover { background: var(--c-dark); color: #fff; }
+
+  /* shared field styling, matching the contact form */
+  .field { display: block; }
+  .field__label {
+    display: block;
+    font-family: var(--f-head);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-muted-2);
+    margin-bottom: 9px;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    height: 52px;
+    padding: 0 15px;
+    border: 1px solid var(--c-input);
+    font-family: var(--f-body);
+    font-size: 16px;
+    color: var(--c-dark);
+    background: var(--c-bg);
+    transition: border-color .18s ease, background .18s ease;
+  }
+  .field textarea {
+    height: auto;
+    padding: 15px;
+    line-height: 1.55;
+    resize: vertical;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--c-green);
+    outline: none;
+    background: #fff;
+  }
+</style>

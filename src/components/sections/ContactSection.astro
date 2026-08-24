@@ -16,6 +16,7 @@ export interface Props {
 const { section } = Astro.props;
 const site = await getSite();
 const { contact } = site;
+const accessKey = site.forms?.web3formsKey ?? '';
 
 const needOptions = [
   { key: 'bookkeeping', label: 'Bookkeeping' },
@@ -101,7 +102,10 @@ const needOptions = [
         <span class="field__label">How can we help?</span>
         <textarea name="message" rows="5" placeholder="Tell us about your current workload, tools, and the tasks you'd like to hand over." required></textarea>
       </label>
-      <button type="submit" class="form-card__submit">Send message</button>
+      {/* honeypot — bots fill hidden fields, people do not */}
+      <input type="checkbox" name="botcheck" class="form-card__botcheck" tabindex="-1" autocomplete="off" />
+      <p class="form-card__error" data-error hidden role="alert"></p>
+      <button type="submit" class="form-card__submit" data-submit>Send message</button>
       <p class="form-card__note">{section.formNote}</p>
     </form>
   </div>
@@ -276,6 +280,20 @@ const needOptions = [
     transition: background .18s ease;
   }
   .form-card__submit:hover { background: var(--c-green); }
+  .form-card__botcheck {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+  .form-card__error {
+    margin: 0 0 14px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--c-deep-red);
+  }
+  .form-card__submit:disabled { opacity: .7; cursor: default; }
   .form-card__note {
     margin: 18px 0 0;
     font-size: 14px;
@@ -325,7 +343,13 @@ const needOptions = [
   }
 </style>
 
+<script define:vars={{ accessKey, inbox: contact.email }}>
+  window.__mandrexContact = { accessKey, inbox };
+</script>
+
 <script>
+  import { submitInquiry, mailtoFallback } from '../../lib/inquiry.ts';
+
   const form = document.querySelector('[data-form]') as HTMLFormElement | null;
   const success = document.querySelector('[data-success]') as HTMLElement | null;
   const needWrap = document.querySelector('[data-need]') as HTMLElement | null;
@@ -341,11 +365,52 @@ const needOptions = [
     });
   });
 
-  form?.addEventListener('submit', (e) => {
+  const errorEl = document.querySelector('[data-error]') as HTMLElement | null;
+  const submitBtn = document.querySelector('[data-submit]') as HTMLButtonElement | null;
+
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    form.hidden = true;
-    success!.hidden = false;
-    success?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (errorEl) errorEl.hidden = true;
+    if (!form.reportValidity()) return;
+
+    const cfg = (window as any).__mandrexContact ?? { accessKey: '', inbox: '' };
+    const data = new FormData(form);
+    if (data.get('botcheck')) return; // honeypot tripped
+
+    const fields: Record<string, string> = {
+      subject: `Website enquiry — ${data.get('name') || 'website visitor'}`,
+      from_name: 'Mandrex website',
+      Name: String(data.get('name') ?? ''),
+      Email: String(data.get('email') ?? ''),
+      Company: String(data.get('company') ?? ''),
+      Phone: String(data.get('phone') ?? ''),
+      'Support needed': selectedNeed,
+      Message: String(data.get('message') ?? ''),
+    };
+
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+    const result = await submitInquiry(cfg.accessKey, fields);
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send message'; }
+
+    if (result.ok) {
+      form.hidden = true;
+      success!.hidden = false;
+      success?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // never drop a submission: hand it to the visitor's mail client instead
+    if (result.error === 'not-configured') {
+      window.location.href = mailtoFallback(cfg.inbox, fields.subject, fields);
+      return;
+    }
+    if (errorEl) {
+      errorEl.textContent =
+        result.error === 'network'
+          ? "That didn't send — check your connection, or email us directly."
+          : "That didn't send. Please email us directly.";
+      errorEl.hidden = false;
+    }
   });
 
   reset?.addEventListener('click', (e) => {

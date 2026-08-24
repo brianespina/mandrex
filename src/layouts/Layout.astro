@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import BookingModal from '../components/BookingModal.astro';
 
 export interface Props {
   title: string;
@@ -31,5 +32,6 @@ const { title, description } = Astro.props;
     <slot />
   </main>
   <Footer />
+  <BookingModal />
 </body>
 </html>

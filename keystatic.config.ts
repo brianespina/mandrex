@@ -733,6 +733,17 @@ export default config({
           copyright: fields.text({ label: "Copyright" }),
           domain: fields.text({ label: "Domain" }),
         }),
+        forms: fields.object(
+          {
+            web3formsKey: fields.text({
+              label: "Web3Forms access key",
+              description:
+                "From web3forms.com. Submissions from the contact form and the booking modal are emailed to the address this key is registered to. Without it, both forms fall back to opening the visitor's email client.",
+              defaultValue: "",
+            }),
+          },
+          { label: "Form delivery" },
+        ),
         contact: fields.object({
           email: fields.text({ label: "Email" }),
           phone1: fields.text({ label: "Phone 1" }),
