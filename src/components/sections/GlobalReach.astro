@@ -117,8 +117,11 @@ const insetSrc = getImageSrc(section.insetImage);
   }
 
   @media (max-width: 880px) {
-    .reach__media { padding: 0; }
+    /* keep the inset overlapping the main image's bottom-left corner — its
+       background-coloured border reads as a cut-out only while it overlaps */
+    .reach__media { padding: 0 0 34px 34px; }
     .reach__deco { display: none; }
-    .reach__inset { position: static; width: 60%; height: auto; aspect-ratio: 4 / 3; border-width: 8px; margin-top: -34px; }
+    .reach__img { height: 300px; }
+    .reach__inset { width: 48%; height: auto; aspect-ratio: 4 / 3; border-width: 8px; }
   }
 </style>
