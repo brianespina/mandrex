@@ -1,20 +1,29 @@
 title: Testimonials — Mandrex VA Services
-description: What working with Mandrex looks like — client outcomes across bookkeeping, administrative, customer support, and executive assistance.
-slug: testimonials
+description: >-
+  What working with Mandrex looks like — client outcomes across bookkeeping,
+  administrative, customer support, and executive assistance.
 sections:
   - discriminant: innerHero
     value:
       sectionId: inner-hero
-      backgroundImage: /assets/testimonials/photo-partners.jpg
+      backgroundImage: /assets/testimonials/sections/0/value/backgroundImage.jpg
       backgroundPosition: 50% 50%
       eyebrow: Testimonials
       headline: What working with Mandrex looks like
-      lead: The quotes on this page are samples written as placeholders — to be replaced with approved client feedback before launch.
+      lead: >-
+        The quotes on this page are samples written as placeholders — to be
+        replaced with approved client feedback before launch.
+      breadcrumb: {}
+      buttons: []
+      chips: []
       facts: []
   - discriminant: featuredTestimonial
     value:
       sectionId: featured
-      quote: Our books were three months behind. Within the first cycle Mandrex had everything reconciled, and we now get a clean monthly report we actually use in decisions.
+      quote: >-
+        Our books were three months behind. Within the first cycle Mandrex had
+        everything reconciled, and we now get a clean monthly report we actually
+        use in decisions.
       authorInitials: OD
       authorName: Operations Director
       authorRole: Real estate group, Texas · sample testimonial
@@ -27,7 +36,9 @@ sections:
     value:
       sectionId: grid
       ctaTitle: Your story next
-      ctaDescription: Start with a discovery call and see what a documented, accountable back office feels like.
+      ctaDescription: >-
+        Start with a discovery call and see what a documented, accountable back
+        office feels like.
       ctaButton:
         label: Book a call
         href: /contact
@@ -35,5 +46,5 @@ sections:
   - discriminant: closingBand
     value:
       sectionId: closing
-      image: /assets/testimonials/photo-team.jpg
+      image: /assets/testimonials/sections/3/value/image.jpg
       cardText: Every engagement is built on accuracy, responsiveness, and trust.
