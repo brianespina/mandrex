@@ -18,7 +18,7 @@ const descFor = (key: string) => section.descriptionOverrides?.find((o) => o.ser
     {services.map((s) => (
       <a href={getServiceUrl(s.slug)} class="svc-card">
         <span class="svc-card__bar" style={`background:${s.entry.topBarColor}`}></span>
-        <span class="svc-card__icon"><Icon name={s.entry.key} size={28} /></span>
+        <span class="svc-card__icon"><Icon name={s.slug} size={28} /></span>
         <h2 class="svc-card__title">{s.entry.name}</h2>
         <p class="svc-card__desc">{descFor(s.slug) || s.entry.cardDesc}</p>
         <div class="svc-card__tags">
