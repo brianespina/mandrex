@@ -43,11 +43,12 @@ const imgSrc = getImageSrc(section.backgroundImage);
 
 <style>
   .whyus {
+    --whyus-pad: clamp(28px, 5vw, 70px);
     position: relative;
     overflow: hidden;
     background: var(--c-dark);
-    padding-block: clamp(28px, 5vw, 70px) 0;
-    padding-left: clamp(28px, 5vw, 70px);
+    padding-block: var(--whyus-pad);
+    padding-left: var(--whyus-pad);
   }
   .whyus__bg { position: absolute; inset: 0; }
   .whyus__img {
@@ -83,14 +84,12 @@ const imgSrc = getImageSrc(section.backgroundImage);
     gap: 1px;
     background: rgba(255, 255, 255, 0.16);
   }
-  /* .split (global) stacks the grid at 1024px; desktop bleeds the tiles toward
-     the image on the right, so stacked layouts need even padding instead */
+  /* .split (global) stacks the grid at 1024px. Once stacked, the intro keeps
+     even padding while the tiles run full bleed to the box edges. */
   @media (max-width: 1024px) {
-    .whyus {
-      padding-right: clamp(28px, 5vw, 70px);
-      padding-bottom: clamp(28px, 5vw, 70px);
-    }
+    .whyus { padding-right: var(--whyus-pad); }
     .whyus__img { width: 100%; }
+    .whyus__tiles { margin-inline: calc(var(--whyus-pad) * -1); }
   }
   @media (max-width: 900px) {
     .whyus__tiles { grid-template-columns: 1fr; }

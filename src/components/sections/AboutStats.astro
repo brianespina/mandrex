@@ -27,6 +27,10 @@ const { section } = Astro.props;
   @media (max-width: 1024px) {
     .about-stats { grid-template-columns: repeat(2, 1fr); }
   }
+  @media (max-width: 880px) {
+    /* run the stat boxes edge to edge on mobile (overrides .container's pad) */
+    .about-stats-wrap { padding-inline: 0; }
+  }
   @media (max-width: 560px) {
     .about-stats { grid-template-columns: 1fr; }
   }
