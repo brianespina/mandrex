@@ -211,6 +211,9 @@ const needOptions = [
     display: block;
   }
   .field + .field { margin-top: 22px; }
+  /* fields in a row sit side by side and are already spaced by its gap — the
+     stacking margin above would otherwise push the second column down */
+  .form-row .field + .field { margin-top: 0; }
   .form-row + .field { margin-top: 0; }
   .field__label {
     display: block;

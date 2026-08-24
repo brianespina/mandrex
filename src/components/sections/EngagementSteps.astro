@@ -44,6 +44,9 @@ const { section } = Astro.props;
   .engage__inner { position: relative; }
   .engage__inner h2 {
     margin: 0 0 46px;
+    /* the steps grid bleeds to the box edges, so match the steps' inner
+       padding here to keep the heading aligned with the step text */
+    padding-inline: 30px;
     font-size: clamp(24px, 3vw, 40px);
     line-height: 1.02;
     letter-spacing: -0.035em;
