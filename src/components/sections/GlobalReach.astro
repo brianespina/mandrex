@@ -133,6 +133,10 @@ const { section } = Astro.props;
     .reach__split {
       grid-template-columns: minmax(0, 1fr);
       gap: 40px;
+      /* stacked, the map has the full card width to work with — let it run to
+         the card edges, which is worth ~2x28px of map on a phone. Matches the
+         card's own padding, so it lands exactly on the edge. */
+      --gmap-bleed: clamp(28px, 4.4vw, 60px);
     }
   }
 </style>

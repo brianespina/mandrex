@@ -115,7 +115,12 @@ const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`
   .gmap { position: relative; width: 100%; }
   /* pins are positioned in percentages, so their containing block has to be
      exactly the map — .gmap also holds the chips and would skew every pin */
-  .gmap__frame { position: relative; }
+  .gmap__frame {
+    position: relative;
+    /* the section opts in to running the map out to the card edges, where the
+       chips and copy still want the padding; 0 unless it sets the variable */
+    margin-inline: calc(var(--gmap-bleed, 0px) * -1);
+  }
   .gmap__svg { display: block; width: 100%; height: auto; overflow: visible; }
 
   .gmap__land {
@@ -348,8 +353,10 @@ const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`
       chips.forEach((c) => c.classList.toggle('is-on', c.dataset.key === key));
       if (!showTip) return;
 
-      const wrapW = map.clientWidth;
-      if (wrapW < TIP_MIN_WIDTH) {
+      const frame = map.querySelector<HTMLElement>('.gmap__frame')!;
+      const wrapW = map.clientWidth;   // for clamping inside the padded box
+      const frameW = frame.clientWidth; // the map itself, which may bleed wider
+      if (frameW < TIP_MIN_WIDTH) {
         tip.classList.remove('is-show');
         fill(detail, 'detail', pin.dataset);
         detail.classList.add('is-show');
@@ -359,10 +366,11 @@ const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`
       detail.classList.remove('is-show');
       fill(tip, 'tip', pin.dataset);
 
-      // pins are positioned in percentages, so convert against measured width
-      const px = (Number(pin.dataset.xPct) / 100) * wrapW;
-      const mapH = wrapW * MAP_RATIO;
-      const py = (Number(pin.dataset.yPct) / 100) * mapH;
+      // percentages resolve against the frame, and the frame may be offset
+      // from .gmap when it bleeds, so add its position back
+      const px = (Number(pin.dataset.xPct) / 100) * frameW + frame.offsetLeft;
+      const mapH = frameW * MAP_RATIO;
+      const py = (Number(pin.dataset.yPct) / 100) * mapH + frame.offsetTop;
       // measured while still transparent — it is laid out either way, and
       // positioning before showing avoids a flash at the previous location
       const tw = tip.offsetWidth || 250;
