@@ -33,7 +33,7 @@ const isHome = path === '/';
 {services.map((s) => (
               <a href={getServiceUrl(s.slug)} class="services-dropdown__item">
                 <span class="services-dropdown__icon">
-                  <Icon name={s.slug} size={21} />
+                  <Icon name={s.entry.icon} size={21} />
                 </span>
                 <span>
                   <span class="services-dropdown__title">{s.entry.name}</span>

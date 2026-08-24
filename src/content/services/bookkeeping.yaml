@@ -3,6 +3,7 @@ name: Bookkeeping
 short: Reconciliations, AP/AR, monthly reports
 cardTitle: Bookkeeping
 cardDesc: Reconciliations, AP/AR, transaction recording, and monthly reporting.
+icon: bookkeeping
 heroEyebrow: Bookkeeping
 heroImage: /assets/bookkeeping/photo-charts-overhead.jpg
 heroAlt: Overhead view of financial charts and a laptop

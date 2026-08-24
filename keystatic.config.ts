@@ -7,6 +7,49 @@ const imageField = (label: string) =>
     publicPath: "/assets/",
   });
 
+// Every value here must exist in the `paths` dictionary in
+// src/components/Icon.astro — that file is the icon library. Add the drawing
+// there first, then add it here to make it selectable in the CMS.
+const ICON_OPTIONS = [
+  { label: "Bar chart", value: "chart" },
+  { label: "Briefcase", value: "briefcase" },
+  { label: "Briefcase (alt)", value: "proBriefcase" },
+  { label: "Calculator", value: "calculator" },
+  { label: "Clock", value: "clock" },
+  { label: "Construction", value: "construction" },
+  { label: "Crosshair", value: "crosshair" },
+  { label: "Desk (executive assistance)", value: "executive" },
+  { label: "Document list (administrative)", value: "admin" },
+  { label: "Dollar", value: "dollar" },
+  { label: "Envelope", value: "envelope" },
+  { label: "Headset (customer support)", value: "customer" },
+  { label: "Heart", value: "heart" },
+  { label: "House", value: "realestate" },
+  { label: "Ledger (bookkeeping)", value: "bookkeeping" },
+  { label: "Lightbulb", value: "bulb" },
+  { label: "Megaphone", value: "megaphone" },
+  { label: "Partnership", value: "partnership" },
+  { label: "Person", value: "person" },
+  { label: "Phone", value: "phone" },
+  { label: "Pulse", value: "pulse" },
+  { label: "Rocket", value: "rocket" },
+  { label: "Scales", value: "scales" },
+  { label: "Shield", value: "shield" },
+  { label: "Shopping cart", value: "cart" },
+  { label: "Target", value: "target" },
+  { label: "Tooth", value: "tooth" },
+  { label: "Truck", value: "truck" },
+] as const;
+
+type IconName = (typeof ICON_OPTIONS)[number]["value"];
+
+const iconField = (label: string, defaultValue: IconName = "shield") =>
+  fields.select({
+    label,
+    options: ICON_OPTIONS,
+    defaultValue,
+  });
+
 const eyebrowFields = {
   eyebrow: fields.text({ label: "Eyebrow label" }),
   eyebrowColor: fields.select({
@@ -178,7 +221,7 @@ const createSectionConditional = (includeReusable: boolean) =>
       intro: fields.text({ label: "Intro paragraph" }),
       tiles: fields.array(
         fields.object({
-          icon: fields.text({ label: "Icon name" }),
+          icon: iconField("Icon"),
           title: fields.text({ label: "Title" }),
           description: fields.text({ label: "Description" }),
         }),
@@ -285,7 +328,7 @@ const createSectionConditional = (includeReusable: boolean) =>
       ...sectionBase,
       cards: fields.array(
         fields.object({
-          icon: fields.text({ label: "Icon name" }),
+          icon: iconField("Icon"),
           title: fields.text({ label: "Title" }),
           description: fields.text({ label: "Description" }),
           color: fields.select({
@@ -319,7 +362,7 @@ const createSectionConditional = (includeReusable: boolean) =>
       title: fields.text({ label: "Title" }),
       items: fields.array(
         fields.object({
-          icon: fields.text({ label: "Icon name" }),
+          icon: iconField("Icon"),
           title: fields.text({ label: "Title" }),
           description: fields.text({ label: "Description" }),
         }),
@@ -521,6 +564,7 @@ export default config({
         short: fields.text({ label: "Short description" }),
         cardTitle: fields.text({ label: "Card title" }),
         cardDesc: fields.text({ label: "Card description" }),
+        icon: iconField("Icon", "briefcase"),
         heroEyebrow: fields.text({ label: "Hero eyebrow" }),
         heroImage: imageField("Hero image"),
         heroAlt: fields.text({ label: "Hero image alt" }),
@@ -608,10 +652,7 @@ export default config({
           label: "Description",
           validation: { isRequired: true },
         }),
-        icon: fields.text({
-          label: "Icon name",
-          validation: { isRequired: true },
-        }),
+        icon: iconField("Icon"),
       },
     }),
   },

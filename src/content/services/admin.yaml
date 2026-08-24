@@ -3,6 +3,7 @@ name: Administrative Support
 short: Inbox, calendar, CRM, documents
 cardTitle: Admin support
 cardDesc: Inbox and calendar, CRM updates, data entry, documents, scheduling.
+icon: admin
 heroEyebrow: Administrative Support
 heroImage: /assets/admin/photo-conference-room.jpg
 heroAlt: Administrative team at work
