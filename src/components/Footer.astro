@@ -38,7 +38,10 @@ const services = await getAllServices();
     </div>
     <div class="site-footer__bottom">
       <span>{site.footer.copyright}</span>
-      <span>{site.footer.domain}</span>
+      <span class="site-footer__meta">
+        <span>{site.footer.domain}</span>
+        <a href="https://www.brianespina.com/" target="_blank" rel="noopener">Website by Brian Espina</a>
+      </span>
     </div>
   </div>
 </footer>
@@ -75,6 +78,10 @@ const services = await getAllServices();
     gap: 56px;
   }
   .site-footer__brand img {
+    /* the global border-box reset lets the plate's padding eat into the
+       height, which left the logo itself rendering at 16px; size the
+       content box so the logo lands at its intended 36px */
+    box-sizing: content-box;
     height: 36px;
     width: auto;
     background: #fff;
@@ -129,6 +136,18 @@ const services = await getAllServices();
     font-size: 14px;
     color: #8B948C;
   }
+  .site-footer__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+  }
+  .site-footer__meta a {
+    font-size: 14px;
+    color: #8B948C;
+    transition: color .18s ease;
+  }
+  .site-footer__meta a:hover { color: var(--c-yellow); }
 
   @media (max-width: 1024px) {
     .site-footer__grid {

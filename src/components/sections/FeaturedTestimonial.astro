@@ -43,11 +43,17 @@ const { section } = Astro.props;
 <style>
   .section-featured { padding-top: 100px; }
   .featured {
+    --featured-pad: clamp(30px, 4.6vw, 64px);
     position: relative;
     overflow: hidden;
     background: var(--c-dark);
-    padding: clamp(30px, 4.6vw, 64px) 0;
-    padding-left: clamp(30px, 4.6vw, 64px);
+    padding-block: var(--featured-pad);
+    padding-left: var(--featured-pad);
+  }
+  /* the stats column bleeds right only while it sits beside the quote; once
+     .split (global) stacks them at 1024px the content needs even padding */
+  @media (max-width: 1024px) {
+    .featured { padding-right: var(--featured-pad); }
   }
   .featured__bg { position: absolute; inset: 0; }
   .featured__grid {
