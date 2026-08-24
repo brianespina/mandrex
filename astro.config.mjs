@@ -3,6 +3,7 @@ import keystatic from '@keystatic/astro';
 import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
+import optimizeImages from './src/integrations/optimize-images.mjs';
 
 export default defineConfig({
   site: 'https://mandrexvaservices.com',
@@ -17,6 +18,8 @@ export default defineConfig({
       filter: (page) =>
         !page.includes('/keystatic') && !page.includes('/api/') && !page.endsWith('/404'),
     }),
+    // caps and converts anything uploaded through the CMS; see the file
+    optimizeImages(),
   ],
   build: {
     // The whole site's CSS is ~12KB, small enough that inlining it removes two
