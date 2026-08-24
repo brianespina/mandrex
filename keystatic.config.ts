@@ -301,7 +301,11 @@ const createSectionConditional = (includeReusable: boolean) =>
     testimonialFeature: fields.object({
       ...sectionBase,
       quote: fields.text({ label: "Quote" }),
-      authorInitials: fields.text({ label: "Author initials" }),
+      authorPhoto: imageField("Author photo"),
+      authorInitials: fields.text({
+        label: "Author initials",
+        description: "Shown when no photo is uploaded.",
+      }),
       authorName: fields.text({ label: "Author name" }),
       authorRole: fields.text({ label: "Author role" }),
       heading: fields.text({ label: "Right column heading" }),
@@ -431,7 +435,11 @@ const createSectionConditional = (includeReusable: boolean) =>
     featuredTestimonial: fields.object({
       ...sectionBase,
       quote: fields.text({ label: "Quote" }),
-      authorInitials: fields.text({ label: "Author initials" }),
+      authorPhoto: imageField("Author photo"),
+      authorInitials: fields.text({
+        label: "Author initials",
+        description: "Shown when no photo is uploaded.",
+      }),
       authorName: fields.text({ label: "Author name" }),
       authorRole: fields.text({ label: "Author role" }),
       stats: fields.array(

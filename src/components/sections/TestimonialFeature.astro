@@ -1,9 +1,11 @@
 ---
+import { getImageSrc } from '../../lib/keystatic.ts';
 import Icon from '../Icon.astro';
 
 export interface Props {
   section: {
     quote: string;
+    authorPhoto?: string | { src: string };
     authorInitials?: string;
     authorName: string;
     authorRole?: string;
@@ -14,6 +16,7 @@ export interface Props {
 }
 
 const { section } = Astro.props;
+const photoSrc = getImageSrc(section.authorPhoto);
 ---
 <section class="container section">
   <div class="tfeature split">
@@ -22,7 +25,9 @@ const { section } = Astro.props;
       <div class="tfeature__mark">"</div>
       <blockquote class="tfeature__quote">{section.quote}</blockquote>
       <div class="tfeature__author">
-        <div class="tfeature__avatar">{section.authorInitials}</div>
+        {photoSrc
+          ? <img src={photoSrc} alt="" class="tfeature__avatar tfeature__avatar--photo" width="48" height="48" loading="lazy" />
+          : <div class="tfeature__avatar">{section.authorInitials}</div>}
         <div>
           <div class="tfeature__name">{section.authorName}</div>
           <div class="tfeature__role">{section.authorRole}</div>
@@ -101,6 +106,11 @@ const { section } = Astro.props;
     font-size: 15px;
     font-weight: 700;
     color: var(--c-yellow);
+  }
+  .tfeature__avatar--photo {
+    background: none;
+    object-fit: cover;
+    flex: none;
   }
   .tfeature__name {
     font-family: var(--f-head);
