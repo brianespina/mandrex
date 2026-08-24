@@ -83,6 +83,8 @@ sections:
   - discriminant: globalReach
     value:
       sectionId: global-reach
+      mainImage: /assets/home/sections/4/value/mainImage.jpg
+      insetImage: /assets/home/sections/4/value/insetImage.jpg
       eyebrow: Global reach
       title: Four countries. One standard.
       description: >-
