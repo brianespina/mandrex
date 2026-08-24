@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# The CMS and its API are not public pages.
+Disallow: /keystatic
+Disallow: /api/
+
+Sitemap: https://mandrexvaservices.com/sitemap-index.xml
