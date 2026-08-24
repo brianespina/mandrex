@@ -1,16 +1,24 @@
 title: About Us — Mandrex VA Services
-description: Mandrex VA Services partners with businesses to simplify day-to-day operations through reliable virtual assistance, bookkeeping, customer support, and administrative solutions.
-slug: about
+description: >-
+  Mandrex VA Services partners with businesses to simplify day-to-day operations
+  through reliable virtual assistance, bookkeeping, customer support, and
+  administrative solutions.
 sections:
   - discriminant: innerHero
     value:
       sectionId: inner-hero
-      backgroundImage: /assets/about/photo-desk-review.jpg
+      backgroundImage: /assets/about/sections/0/value/backgroundImage.jpg
       backgroundPosition: 52% 45%
       eyebrow: About Mandrex
       headline: Experience meets dependable support
-      lead: Mandrex VA Services partners with businesses to simplify day-to-day operations through reliable virtual assistance, bookkeeping, customer support, and administrative solutions.
+      lead: >-
+        Mandrex VA Services partners with businesses to simplify day-to-day
+        operations through reliable virtual assistance, bookkeeping, customer
+        support, and administrative solutions.
       tagline: Turning challenges into opportunities, one solution at a time.
+      breadcrumb: {}
+      buttons: []
+      chips: []
       facts: []
   - discriminant: aboutStats
     value:
@@ -20,54 +28,84 @@ sections:
           label: Years of accounting & operations experience
         - value: 69+
           label: Businesses served since launch
-        - value: "13"
+        - value: '13'
           label: Specialists across four service lines
-        - value: "4"
+        - value: '4'
           label: Countries supported worldwide
   - discriminant: founder
     value:
       sectionId: founder
-      photo: /assets/about/founder-nikka.jpg
+      photo: /assets/about/sections/2/value/photo.jpg
       photoPosition: center 20%
       name: Nikka Nava
       role: Founder & CEO
       eyebrow: Founder's note
       title: Built from 13 years in the numbers
       paragraphs:
-        - "With over 13 years of experience in accounting, bookkeeping, accounts payable, expense management, and financial operations, I've built my career around helping businesses stay organized, efficient, and financially on track."
-        - "Over the years I've worked beyond traditional bookkeeping — managing processes, solving operational challenges, improving workflows, and supporting the day-to-day tasks that keep things moving. These experiences shaped the way I work today: with attention to detail, accountability, and a focus on making operations more efficient."
-        - "Mandrex VA Services was created to provide businesses with reliable, skilled, and professional virtual support — backed by real-world experience. My vision is a VA agency businesses can genuinely rely on, whether they need bookkeeping and accounting support, administrative assistance, or help managing everyday operations."
-        - "Outsourcing is about more than delegating tasks. It's about finding someone you can trust with an important part of your business. That's why Mandrex is built around quality, reliability, professionalism, and long-term partnerships."
-      missionStatement: To help businesses work smarter, stay organized, and have the right support to grow.
+        - >-
+          With over 13 years of experience in accounting, bookkeeping, accounts
+          payable, expense management, and financial operations, I've built my
+          career around helping businesses stay organized, efficient, and
+          financially on track.
+        - >-
+          Over the years I've worked beyond traditional bookkeeping — managing
+          processes, solving operational challenges, improving workflows, and
+          supporting the day-to-day tasks that keep things moving. These
+          experiences shaped the way I work today: with attention to detail,
+          accountability, and a focus on making operations more efficient.
+        - >-
+          Mandrex VA Services was created to provide businesses with reliable,
+          skilled, and professional virtual support — backed by real-world
+          experience. My vision is a VA agency businesses can genuinely rely on,
+          whether they need bookkeeping and accounting support, administrative
+          assistance, or help managing everyday operations.
+        - >-
+          Outsourcing is about more than delegating tasks. It's about finding
+          someone you can trust with an important part of your business. That's
+          why Mandrex is built around quality, reliability, professionalism, and
+          long-term partnerships.
+      missionStatement: >-
+        To help businesses work smarter, stay organized, and have the right
+        support to grow.
   - discriminant: visionMission
     value:
       sectionId: vision-mission
       cards:
         - icon: target
           title: Our vision
-          description: To be the leading provider of innovative and customized business solutions, driving growth and success for companies of all sizes — delivering exceptional value through a culture of excellence, innovation, and client success.
+          description: >-
+            To be the leading provider of innovative and customized business
+            solutions, driving growth and success for companies of all sizes —
+            delivering exceptional value through a culture of excellence,
+            innovation, and client success.
           color: green
         - icon: crosshair
           title: Our mission
-          description: To simplify business operations and drive growth for our clients through customized, cost-effective solutions that streamline processes and boost efficiency — becoming a trusted partner for businesses of all sizes.
+          description: >-
+            To simplify business operations and drive growth for our clients
+            through customized, cost-effective solutions that streamline
+            processes and boost efficiency — becoming a trusted partner for
+            businesses of all sizes.
           color: red
   - discriminant: team
     value:
       sectionId: team
-      backgroundImage: /assets/about/photo-team.jpg
+      backgroundImage: /assets/about/sections/4/value/backgroundImage.jpg
       title: The team behind your account
-      description: Thirteen specialists across bookkeeping, virtual assistance, SEO, and IT — every engagement led by a named point of contact.
+      description: >-
+        Thirteen specialists across bookkeeping, virtual assistance, SEO, and IT
+        — every engagement led by a named point of contact.
       members:
-        - value: "7"
+        - value: '7'
           title: Bookkeepers
           description: Reconciliations, payables, receivables, and monthly reporting.
-        - value: "4"
+        - value: '4'
           title: Virtual assistants
           description: Admin, executive support, scheduling, and customer care.
-        - value: "1"
+        - value: '1'
           title: SEO specialist
           description: Content, on-page optimization, and reporting support.
-        - value: "1"
+        - value: '1'
           title: IT & systems
           description: Secure access, tooling, and maintenance behind the scenes.
   - discriminant: howWeWork
@@ -92,7 +130,6 @@ sections:
       sectionId: cta
       variant: green
       heading: Welcome to Mandrex. Let's talk about your operations.
-      paragraph: ""
       button:
         label: Contact us
         href: /contact
