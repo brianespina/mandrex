@@ -1,4 +1,5 @@
 name: Recruitment Agencies
 slug: recruitment-agencies
+order: 14
 desc: Candidate sourcing admin, scheduling, and pipeline upkeep.
 icon: person

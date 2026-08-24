@@ -558,6 +558,9 @@ export default config({
       label: "Services",
       path: "src/content/services/*",
       slugField: "key",
+      // this list is always sorted by slug; "index" is what actually controls
+      // the sequence on the site, so surface it here
+      columns: ["name", "index"],
       schema: {
         key: fields.text({ label: "Key", validation: { isRequired: true } }),
         name: fields.text({ label: "Name", validation: { isRequired: true } }),
@@ -589,7 +592,11 @@ export default config({
           label: "Top bar color",
           defaultValue: "#306A42",
         }),
-        index: fields.text({ label: "Index number" }),
+        index: fields.text({
+          label: "Index number",
+          description:
+            "Shown on the service card and used to order services on the site.",
+        }),
         chips: fields.array(fields.text({ label: "Chip" }), {
           label: "Chips",
           itemLabel: (props) => props.value,
@@ -645,9 +652,17 @@ export default config({
       label: "Industries",
       path: "src/content/industries/*",
       slugField: "slug",
+      // this list is always sorted by slug; "order" is what actually controls
+      // the sequence on the site, so surface it here
+      columns: ["name", "order"],
       schema: {
         name: fields.text({ label: "Name", validation: { isRequired: true } }),
         slug: fields.text({ label: "Slug", validation: { isRequired: true } }),
+        order: fields.integer({
+          label: "Display order",
+          description: "Lowest first. Controls the order on the site.",
+          defaultValue: 99,
+        }),
         desc: fields.text({
           label: "Description",
           validation: { isRequired: true },

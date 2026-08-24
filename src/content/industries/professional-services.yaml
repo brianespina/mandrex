@@ -1,4 +1,5 @@
 name: Professional Services
 slug: professional-services
+order: 4
 desc: Operational support tailored to client-facing firms.
 icon: briefcase

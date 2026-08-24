@@ -1,4 +1,5 @@
 name: Startups & SMBs
 slug: startups-smbs
+order: 10
 desc: Cost-effective help that scales with early growth.
 icon: rocket

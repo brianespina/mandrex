@@ -49,8 +49,14 @@ export async function getService(key: string) {
   return reader.collections.services.read(key);
 }
 
+// `.all()` returns entries in slug order, which is not the order they should
+// appear on the site. Sort centrally so every consumer agrees.
+const byNumber = (a: string | number | null, b: string | number | null) =>
+  (Number(a ?? Infinity) || Infinity) - (Number(b ?? Infinity) || Infinity);
+
 export async function getAllServices() {
-  return reader.collections.services.all();
+  const services = await reader.collections.services.all();
+  return services.sort((a, b) => byNumber(a.entry.index, b.entry.index));
 }
 
 export async function getAllTestimonials() {
@@ -58,7 +64,8 @@ export async function getAllTestimonials() {
 }
 
 export async function getAllIndustries() {
-  return reader.collections.industries.all();
+  const industries = await reader.collections.industries.all();
+  return industries.sort((a, b) => byNumber(a.entry.order, b.entry.order));
 }
 
 export async function getAllReusableSections() {

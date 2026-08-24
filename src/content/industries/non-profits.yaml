@@ -1,4 +1,5 @@
 name: Non-Profits
 slug: non-profits
+order: 15
 desc: Donor records, grant admin, and bookkeeping for lean teams.
 icon: heart

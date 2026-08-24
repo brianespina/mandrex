@@ -1,4 +1,5 @@
 name: Healthcare
 slug: healthcare
+order: 3
 desc: Admin and patient-facing support that protects clinical time.
 icon: pulse

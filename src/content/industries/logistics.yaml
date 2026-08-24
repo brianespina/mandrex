@@ -1,4 +1,5 @@
 name: Logistics
 slug: logistics
+order: 6
 desc: Coordination and back-office work that keeps freight flowing.
 icon: truck

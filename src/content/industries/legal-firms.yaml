@@ -1,4 +1,5 @@
 name: Legal Firms
 slug: legal-firms
+order: 12
 desc: Case administration, billing support, and document control.
 icon: scales

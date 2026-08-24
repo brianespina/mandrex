@@ -1,4 +1,5 @@
 name: Lending & Finance
 slug: lending-finance
+order: 11
 desc: Document handling, reconciliations, and reporting support.
 icon: dollar

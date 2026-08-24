@@ -1,4 +1,5 @@
 name: E-commerce
 slug: e-commerce
+order: 2
 desc: Back-office, bookkeeping, and customer service for daily volume.
 icon: cart
