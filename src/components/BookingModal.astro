@@ -138,10 +138,20 @@ const TOPIC_OPTIONS = [
 
     let lastFocused: HTMLElement | null = null;
 
-    // a sensible default the visitor can correct
+    // Prefilled so the visitor does not have to work it out — a call request
+    // is not actionable without it. Written as an offset first, matching the
+    // field's placeholder, since a bare IANA name reads like a glitch.
     try {
-      if (tz && !tz.value) tz.value = Intl.DateTimeFormat().resolvedOptions().timeZone ?? '';
-    } catch { /* older browsers */ }
+      if (tz && !tz.value) {
+        const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const mins = -new Date().getTimezoneOffset();
+        const sign = mins < 0 ? '-' : '+';
+        const hh = Math.floor(Math.abs(mins) / 60);
+        const mm = Math.abs(mins) % 60;
+        const gmt = `GMT${sign}${hh}${mm ? ':' + String(mm).padStart(2, '0') : ''}`;
+        tz.value = zone ? `${gmt} · ${zone}` : gmt;
+      }
+    } catch { /* older browsers — leave it empty for the visitor to fill in */ }
 
     const focusable = () =>
       Array.from(
