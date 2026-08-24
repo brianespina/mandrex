@@ -18,6 +18,12 @@ export default defineConfig({
         !page.includes('/keystatic') && !page.includes('/api/') && !page.endsWith('/404'),
     }),
   ],
+  build: {
+    // The whole site's CSS is ~12KB, small enough that inlining it removes two
+    // render-blocking requests from the critical path for less than it costs in
+    // per-page duplication.
+    inlineStylesheets: 'always',
+  },
   vite: {
     ssr: {
       external: ['node:path', 'node:fs/promises'],

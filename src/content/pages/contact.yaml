@@ -6,7 +6,7 @@ sections:
   - discriminant: innerHero
     value:
       sectionId: inner-hero
-      backgroundImage: /assets/contact/sections/0/value/backgroundImage.jpg
+      backgroundImage: /assets/contact/sections/0/value/backgroundImage.webp
       backgroundPosition: 62% 9%
       eyebrow: Contact us
       headline: Tell us what your operations need

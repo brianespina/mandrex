@@ -5,7 +5,7 @@ cardTitle: Bookkeeping
 cardDesc: Reconciliations, AP/AR, transaction recording, and monthly reporting.
 icon: bookkeeping
 heroEyebrow: Bookkeeping
-heroImage: /assets/bookkeeping/photo-charts-overhead.jpg
+heroImage: /assets/bookkeeping/photo-charts-overhead.webp
 heroAlt: Overhead view of financial charts and a laptop
 heroObjectPosition: 40% 50%
 h1: Books that stay audit-ready
@@ -51,4 +51,4 @@ tools:
   - Gusto
   - Excel / Sheets
 pullQuote: Backed by 13+ years of accounting, payables, and financial operations experience.
-homeImage: /assets/bookkeeping/photo-financial.jpg
+homeImage: /assets/bookkeeping/photo-financial.webp

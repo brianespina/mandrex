@@ -5,7 +5,7 @@ cardTitle: Admin support
 cardDesc: Inbox and calendar, CRM updates, data entry, documents, scheduling.
 icon: admin
 heroEyebrow: Administrative Support
-heroImage: /assets/admin/photo-conference-room.jpg
+heroImage: /assets/admin/photo-conference-room.webp
 heroAlt: Administrative team at work
 heroObjectPosition: 50% 50%
 h1: Your day-to-day, handled
@@ -52,4 +52,4 @@ tools:
   - Notion
   - Slack
 pullQuote: One point of contact, documented processes, and a weekly summary of what moved.
-homeImage: /assets/admin/photo-conference-room.jpg
+homeImage: /assets/admin/photo-conference-room.webp

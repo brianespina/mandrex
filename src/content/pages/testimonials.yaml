@@ -6,7 +6,7 @@ sections:
   - discriminant: innerHero
     value:
       sectionId: inner-hero
-      backgroundImage: /assets/testimonials/sections/0/value/backgroundImage.jpg
+      backgroundImage: /assets/testimonials/sections/0/value/backgroundImage.webp
       backgroundPosition: 50% 50%
       eyebrow: Testimonials
       headline: What working with Mandrex looks like
@@ -49,5 +49,5 @@ sections:
   - discriminant: closingBand
     value:
       sectionId: closing
-      image: /assets/testimonials/sections/3/value/image.jpg
+      image: /assets/testimonials/sections/3/value/image.webp
       cardText: Every engagement is built on accuracy, responsiveness, and trust.

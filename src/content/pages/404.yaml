@@ -5,7 +5,7 @@ sections:
   - discriminant: notFound
     value:
       sectionId: not-found
-      backgroundImage: /assets/404/photo-hero-boardroom.jpg
+      backgroundImage: /assets/404/photo-hero-boardroom.webp
       backgroundPosition: 58% 55%
       eyebrow: Error 404
       title: This page has moved on

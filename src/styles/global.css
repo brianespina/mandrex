@@ -1,3 +1,22 @@
+/* Self-hosted so the browser makes no request to Google's servers: it removes
+   a render-blocking third-party stylesheet from the critical path, and with it
+   the transfer of every visitor's IP address to Google. Both families are
+   variable fonts, so one file covers the whole weight range. */
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/archivo-latin-var.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Karla';
+  src: url('/fonts/karla-latin-var.woff2') format('woff2-variations');
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ==========================================================================
    Mandrex VA Services — global styles & design tokens
    ========================================================================== */

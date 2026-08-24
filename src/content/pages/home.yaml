@@ -6,7 +6,7 @@ sections:
   - discriminant: hero
     value:
       sectionId: hero
-      backgroundImage: /assets/home/sections/0/value/backgroundImage.jpg
+      backgroundImage: /assets/home/sections/0/value/backgroundImage.webp
       backgroundPosition: 58% 55%
       eyebrow: Mandrex VA Services
       headline: Helping businesses stay organized, productive, and ready to grow

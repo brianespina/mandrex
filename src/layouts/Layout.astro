@@ -24,9 +24,8 @@ const ogImage = new URL(image, Astro.site);
   <link rel="icon" type="image/png" href="/assets/mandrex-logo.png" />
   <title>{title}</title>
   <meta name="description" content={description} />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Karla:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="preload" href="/fonts/archivo-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/karla-latin-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="canonical" href={canonical} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
