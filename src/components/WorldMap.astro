@@ -1,101 +1,350 @@
 ---
-import { COUNTRIES, MAP_WIDTH, MAP_HEIGHT } from '../lib/world-map-data.ts';
+import { LANDS, ARCS, PINS, MAP_WIDTH, MAP_HEIGHT } from '../lib/world-map-data.ts';
 
 export interface Props {
-  locations: { country: string; label?: string }[];
+  locations: { key: string; label?: string; detail?: string; window?: string }[];
 }
 
 const { locations } = Astro.props;
 
-// Match each CMS location to its country geometry. An unmatched name would
-// silently render a map with no pin, so surface it at build time.
+// Copy comes from the CMS; geometry and label offsets come from the generated
+// data. A key with no matching pin would render nothing, so say so at build time.
 const pins = locations
   .map((loc) => {
-    const geo = COUNTRIES.find((c) => c.name === loc.country);
+    const geo = PINS.find((p) => p.key === loc.key);
     if (!geo) {
       console.warn(
-        `[WorldMap] no country named "${loc.country}" in the map data — ` +
-          `check the spelling against src/lib/world-map-data.ts`,
+        `[WorldMap] no pin for country key "${loc.key}" — the available keys are ` +
+          PINS.map((p) => p.key).join(', ') +
+          '. Adding one means updating scripts/generate-global-reach-map.mjs.',
       );
       return null;
     }
-    return {
-      label: loc.label || loc.country,
-      name: geo.name,
-      xPct: (geo.x / MAP_WIDTH) * 100,
-      yPct: (geo.y / MAP_HEIGHT) * 100,
-    };
+    return { ...geo, label: loc.label || loc.key, detail: loc.detail ?? '', window: loc.window ?? '' };
   })
   .filter((p): p is NonNullable<typeof p> => p !== null);
 
-const served = new Set(pins.map((p) => p.name));
+// Highlighting follows the CMS list rather than the flag baked into the data.
+const servedIds = new Set(pins.map((p) => p.id));
+const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`;
 ---
-<div class="wmap">
-  <svg
-    class="wmap__svg"
-    viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
-    role="img"
-    aria-label={`World map highlighting ${pins.map((p) => p.label).join(', ')}`}
-  >
-    {COUNTRIES.map((c) => (
-      <path d={c.d} class={served.has(c.name) ? 'wmap__land wmap__land--served' : 'wmap__land'} />
-    ))}
+<div class="gmap" data-gmap>
+  <svg class="gmap__svg" viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`} role="img" aria-label={mapLabel}>
+    <g>
+      {LANDS.map((l) => (
+        <path
+          d={l.d}
+          data-id={l.id}
+          class={servedIds.has(l.id) ? 'gmap__land gmap__land--served' : 'gmap__land'}
+        />
+      ))}
+    </g>
+    <g>{ARCS.map((d) => <path class="gmap__arc" d={d} />)}</g>
+    <g>
+      {pins.map((p) => (
+        <g
+          class="gmap__pin"
+          data-key={p.key}
+          data-country-id={p.id}
+          data-x={p.x}
+          data-y={p.y}
+          data-name={p.label}
+          data-detail={p.detail}
+          data-window={p.window}
+          transform={`translate(${p.x},${p.y})`}
+          tabindex="0"
+          role="button"
+          aria-label={p.window ? `${p.label} — ${p.window}` : p.label}
+        >
+          <circle class="gmap__ring" r="5" />
+          <circle class="gmap__ring gmap__ring--b" r="5" />
+          <circle class="gmap__dot" r="5.5" />
+          <text class="gmap__plabel" x={p.labelDx} y={p.labelDy} text-anchor={p.anchor}>{p.label}</text>
+          {/* a generous invisible hit target — the dot itself is only 5.5px */}
+          <circle class="gmap__hit" r="20" />
+        </g>
+      ))}
+    </g>
   </svg>
 
-  {pins.map((p) => (
-    <span class="wmap__pin" style={`left:${p.xPct}%;top:${p.yPct}%`} aria-hidden="true">
-      <span class="wmap__pin-dot"></span>
-      <span class="wmap__pin-name">{p.label}</span>
-    </span>
-  ))}
+  <div class="gmap__tip" data-tip>
+    <h4 data-tip-name></h4>
+    <p data-tip-detail></p>
+    <span class="gmap__win" data-tip-window></span>
+  </div>
+
+  <div class="gmap__detail" data-detail>
+    <h4 data-detail-name></h4>
+    <p data-detail-detail></p>
+    <span class="gmap__win" data-detail-window></span>
+  </div>
+
+  <div class="gmap__chips">
+    {pins.map((p) => (
+      <button
+        type="button"
+        class="gmap__chip"
+        data-key={p.key}
+        data-name={p.label}
+        data-detail={p.detail}
+        data-window={p.window}
+      >
+        <i></i>{p.label}
+      </button>
+    ))}
+  </div>
 </div>
 
 <style>
-  .wmap { position: relative; }
-  .wmap__svg { display: block; width: 100%; height: auto; }
-  .wmap__land {
-    fill: var(--c-line-2);
-    stroke: var(--c-bg);
-    stroke-width: 0.6;
-  }
-  .wmap__land--served { fill: var(--c-green); }
+  .gmap { position: relative; width: 100%; }
+  .gmap__svg { display: block; width: 100%; height: auto; overflow: visible; }
 
-  /* sized to the dot alone, so translate(-50%, -50%) centres the dot exactly
-     on the country's label point — the name hangs below without shifting it */
-  .wmap__pin {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
+  .gmap__land {
+    fill: #1C2E22;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 0.5px;
+    transition: fill .25s ease, opacity .25s ease;
   }
-  .wmap__pin-dot {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: var(--c-yellow);
-    border: 2px solid var(--c-dark);
-    box-sizing: border-box;
+  .gmap__land--served { fill: #2E5C3C; }
+  /* while one country is focused the rest recede */
+  .gmap.is-focused .gmap__land { opacity: .45; }
+  .gmap.is-focused .gmap__land.is-active { opacity: 1; fill: #40824F; }
+
+  .gmap__arc {
+    fill: none;
+    stroke: var(--c-yellow);
+    stroke-width: 1.1px;
+    stroke-opacity: .38;
+    stroke-dasharray: 5 7;
+    animation: gmap-dash 5.5s linear infinite;
   }
-  .wmap__pin-name {
-    position: absolute;
-    top: calc(100% + 5px);
-    left: 50%;
-    transform: translateX(-50%);
+  @keyframes gmap-dash { to { stroke-dashoffset: -120; } }
+
+  .gmap__pin { cursor: pointer; }
+  .gmap__hit { fill: transparent; }
+  .gmap__ring {
+    fill: none;
+    stroke: var(--c-yellow);
+    stroke-width: 1.4px;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: gmap-pulse 2.8s cubic-bezier(.2, .6, .3, 1) infinite;
+  }
+  .gmap__ring--b { animation-delay: 1.4s; }
+  @keyframes gmap-pulse {
+    0%   { r: 5; stroke-opacity: .85; }
+    70%  { r: 19; stroke-opacity: 0; }
+    100% { r: 19; stroke-opacity: 0; }
+  }
+  .gmap__dot {
+    fill: var(--c-yellow);
+    stroke: var(--c-dark);
+    stroke-width: 1.6px;
+    transition: r .2s ease;
+  }
+  .gmap__pin.is-on .gmap__dot { r: 7.5; }
+  .gmap__plabel {
     font-family: var(--f-head);
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.04em;
+    letter-spacing: .07em;
     text-transform: uppercase;
-    color: var(--c-dark);
-    background: var(--c-bg);
-    padding: 2px 6px;
-    white-space: nowrap;
+    fill: #E6EDE6;
+    pointer-events: none;
+    /* halo, so labels stay legible where they cross land */
+    paint-order: stroke;
+    stroke: var(--c-dark);
+    stroke-width: 3px;
+    stroke-linejoin: round;
+    transition: fill .2s ease;
   }
+  .gmap__pin.is-on .gmap__plabel { fill: var(--c-yellow); }
+  .gmap__pin:focus-visible { outline: 2px solid var(--c-yellow); outline-offset: 2px; }
 
-  @media (max-width: 560px) {
-    /* the labels collide at small widths — the pins still read as markers */
-    .wmap__pin-name { display: none; }
+  .gmap__tip {
+    position: absolute;
+    width: min(250px, calc(100% - 8px));
+    background: var(--c-bg);
+    border-top: 3px solid var(--c-yellow);
+    padding: 16px 18px;
+    box-shadow: 0 22px 44px -18px rgba(0, 0, 0, .6);
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, 10px);
+    transition: opacity .18s ease, transform .18s ease;
+    z-index: 5;
+  }
+  .gmap__tip.is-show { opacity: 1; transform: translate(-50%, 0); }
+
+  /* below ~430px a 250px floating box cannot sit inside the map without
+     overflowing, so the same content renders as a static card instead */
+  .gmap__detail {
+    display: none;
+    width: 100%;
+    margin-top: 16px;
+    background: var(--c-bg);
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-top: 3px solid var(--c-yellow);
+    padding: 16px 18px;
+  }
+  .gmap__detail.is-show { display: block; }
+
+  .gmap__tip h4,
+  .gmap__detail h4 {
+    margin: 0 0 7px;
+    font-family: var(--f-head);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-dark);
+  }
+  .gmap__tip p,
+  .gmap__detail p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--c-muted);
+  }
+  .gmap__win {
+    display: block;
+    margin-top: 9px;
+    font-family: var(--f-head);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--c-green);
+  }
+  .gmap__win:empty { display: none; }
+
+  .gmap__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .gmap__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    height: 42px;
+    padding: 0 16px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, .24);
+    color: #E6EDE6;
+    cursor: pointer;
+    font-family: var(--f-head);
+    font-size: 13.5px;
+    font-weight: 600;
+    transition: background .18s ease, border-color .18s ease, color .18s ease;
+  }
+  .gmap__chip i { width: 7px; height: 7px; background: var(--c-yellow); display: block; }
+  .gmap__chip:hover,
+  .gmap__chip.is-on { background: var(--c-yellow); border-color: var(--c-yellow); color: var(--c-dark); }
+  .gmap__chip:hover i,
+  .gmap__chip.is-on i { background: var(--c-dark); }
+  .gmap__chip:focus-visible { outline: 2px solid var(--c-yellow); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gmap__arc { animation: none; }
+    .gmap__ring { display: none; }
+    .gmap__land,
+    .gmap__dot,
+    .gmap__plabel,
+    .gmap__tip { transition: none; }
   }
 </style>
+
+<script>
+  const MAP_W = 1000;
+  const MAP_RATIO = 0.54;
+  // below this measured map width the floating tooltip is replaced by a static
+  // card — a 250px box cannot be positioned inside a ~300px map
+  const TIP_MIN_WIDTH = 430;
+
+  document.querySelectorAll<HTMLElement>('[data-gmap]').forEach((map) => {
+    const svg = map.querySelector('svg')!;
+    const pins = map.querySelectorAll<SVGGElement>('.gmap__pin');
+    const chips = map.querySelectorAll<HTMLButtonElement>('.gmap__chip');
+    const lands = map.querySelectorAll<SVGPathElement>('[data-id]');
+    const tip = map.querySelector<HTMLElement>('[data-tip]')!;
+    const detail = map.querySelector<HTMLElement>('[data-detail]')!;
+
+    let locked: string | null = null;
+
+    const fill = (root: HTMLElement, prefix: string, src: DOMStringMap) => {
+      root.querySelector<HTMLElement>(`[data-${prefix}-name]`)!.textContent = src.name ?? '';
+      root.querySelector<HTMLElement>(`[data-${prefix}-detail]`)!.textContent = src.detail ?? '';
+      root.querySelector<HTMLElement>(`[data-${prefix}-window]`)!.textContent = src.window ?? '';
+    };
+
+    const clear = () => {
+      map.classList.remove('is-focused');
+      tip.classList.remove('is-show');
+      detail.classList.remove('is-show');
+      lands.forEach((l) => l.classList.remove('is-active'));
+      pins.forEach((p) => p.classList.remove('is-on'));
+      chips.forEach((c) => c.classList.remove('is-on'));
+    };
+
+    const focus = (key: string, showTip: boolean) => {
+      const pin = map.querySelector<SVGGElement>(`.gmap__pin[data-key="${key}"]`);
+      if (!pin) return;
+      const id = pin.dataset.countryId ?? '';
+
+      map.classList.add('is-focused');
+      lands.forEach((l) => l.classList.toggle('is-active', l.dataset.id === id));
+      pins.forEach((p) => p.classList.toggle('is-on', p.dataset.key === key));
+      chips.forEach((c) => c.classList.toggle('is-on', c.dataset.key === key));
+      if (!showTip) return;
+
+      const wrapW = map.clientWidth;
+      if (wrapW < TIP_MIN_WIDTH) {
+        tip.classList.remove('is-show');
+        fill(detail, 'detail', pin.dataset);
+        detail.classList.add('is-show');
+        return;
+      }
+
+      detail.classList.remove('is-show');
+      fill(tip, 'tip', pin.dataset);
+
+      // the SVG scales with CSS, so convert viewBox units to rendered pixels
+      const scale = wrapW / MAP_W;
+      const px = Number(pin.dataset.x) * scale;
+      const py = Number(pin.dataset.y) * scale;
+      const mapH = MAP_W * MAP_RATIO * scale;
+      // measured while still transparent — it is laid out either way, and
+      // positioning before showing avoids a flash at the previous location
+      const tw = tip.offsetWidth || 250;
+      const th = tip.offsetHeight || 150;
+      const half = tw / 2;
+      // clamp against the measured width so it can never cross the card edge,
+      // and flip above the pin low on the map so it clears the chips row
+      tip.style.left = `${Math.min(wrapW - half - 4, Math.max(half + 4, px))}px`;
+      tip.style.top = `${py > mapH * 0.55 ? Math.max(4, py - th - 22) : py + 18}px`;
+      tip.classList.add('is-show');
+    };
+
+    const toggle = (key: string) => {
+      if (locked === key) { locked = null; clear(); }
+      else { locked = key; focus(key, true); }
+    };
+
+    const wire = (el: Element, key: string, showTip: boolean) => {
+      el.addEventListener('pointerenter', () => { if (!locked) focus(key, showTip); });
+      el.addEventListener('pointerleave', () => { if (!locked) clear(); });
+      el.addEventListener('focus', () => { if (!locked) focus(key, showTip); });
+      el.addEventListener('click', (ev) => { ev.stopPropagation(); toggle(key); });
+      el.addEventListener('keydown', (ev) => {
+        const e = ev as KeyboardEvent;
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(key); }
+      });
+    };
+
+    pins.forEach((pin) => wire(pin, pin.dataset.key!, true));
+    chips.forEach((chip) => wire(chip, chip.dataset.key!, false));
+
+    // clicking the map background releases a locked selection
+    svg.addEventListener('click', () => { locked = null; clear(); });
+  });
+</script>

@@ -3,7 +3,7 @@ import WorldMap from '../WorldMap.astro';
 
 export interface Props {
   section: {
-    locations?: { country: string; label?: string }[];
+    locations?: { key: string; label?: string; detail?: string; window?: string }[];
     eyebrow?: string;
     title: string;
     description?: string;
@@ -14,87 +14,121 @@ export interface Props {
 const { section } = Astro.props;
 ---
 <section class="container section">
-  <div class="reach split">
-    <div class="reach__media">
-      <div class="reach__deco"></div>
-      <WorldMap locations={section.locations ?? []} />
-    </div>
-    <div>
-      <div class="eyebrow">
-        <span class="eyebrow__rule eyebrow__rule--green"></span>
-        <span class="eyebrow__label eyebrow__label--green">{section.eyebrow}</span>
-      </div>
-      <h2 class="reach__title" set:html={section.title.replace(/\n/g, '<br />')}></h2>
-      {section.description && <p class="reach__p">{section.description}</p>}
-      {section.stats && section.stats.length > 0 && (
-        <div class="reach__stats">
-          {section.stats.map((s) => (
-            <div class="reach__stat">
-              <div class="reach__stat-value">{s.value}</div>
-              <div class="reach__stat-label">{s.label}</div>
-            </div>
-          ))}
+  <div class="reach">
+    <div class="reach__texture"></div>
+    <div class="reach__split">
+      <div>
+        <div class="reach__eyebrow">
+          <span class="reach__eyebrow-rule"></span>
+          <span class="reach__eyebrow-label">{section.eyebrow}</span>
         </div>
-      )}
+        <h2 class="reach__title" set:html={section.title.replace(/\n/g, '<br />')}></h2>
+        {section.description && <p class="reach__p">{section.description}</p>}
+        {section.stats && section.stats.length > 0 && (
+          <div class="reach__stats">
+            {section.stats.map((s) => (
+              <div class="reach__stat">
+                <div class="reach__stat-value">{s.value}</div>
+                <div class="reach__stat-label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <WorldMap locations={section.locations ?? []} />
     </div>
   </div>
 </section>
 
 <style>
   .reach {
+    position: relative;
+    overflow: hidden;
+    background: var(--c-dark);
+    padding: clamp(28px, 4.4vw, 60px);
+  }
+  .reach__texture {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1.3px, transparent 1.3px);
+    background-size: 26px 26px;
+  }
+  .reach__split {
+    position: relative;
     display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: 72px;
+    /* the map takes the wider track */
+    grid-template-columns: 0.82fr 1.18fr;
+    gap: clamp(32px, 4vw, 60px);
     align-items: center;
   }
-  .reach__media { position: relative; }
-  .reach__deco {
-    position: absolute;
-    left: -26px;
-    top: -26px;
-    width: 190px;
-    height: 190px;
-    background-image: radial-gradient(#CBD3C6 1.3px, transparent 1.3px);
-    background-size: 22px 22px;
+
+  .reach__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .reach__eyebrow-rule {
+    display: block;
+    width: 40px;
+    height: 3px;
+    background: var(--c-yellow);
+  }
+  .reach__eyebrow-label {
+    font-family: var(--f-head);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-yellow);
   }
   .reach__title {
     margin: 0 0 22px;
     font-size: clamp(25px, 3.4vw, 46px);
     line-height: 1;
-    color: var(--c-dark);
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    color: #fff;
+    text-transform: uppercase;
   }
   .reach__p {
-    margin: 0 0 32px;
+    margin: 0 0 30px;
     font-size: 17px;
     line-height: 1.64;
-    color: var(--c-muted);
+    color: var(--on-dark-mute-2);
   }
+
   .reach__stats {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+    /* hairlines drawn by the gap showing the background through */
     gap: 1px;
-    background: var(--c-line);
-    border: 1px solid var(--c-line);
+    background: rgba(255, 255, 255, 0.16);
   }
   .reach__stat {
-    background: #fff;
-    padding: 22px 24px;
+    background: var(--c-dark);
+    padding: 20px 22px 20px 0;
   }
+  .reach__stat + .reach__stat { padding: 20px 0 20px 22px; }
   .reach__stat-value {
     font-family: var(--f-head);
     font-size: 30px;
     font-weight: 800;
     letter-spacing: -0.03em;
-    color: var(--c-green);
+    color: var(--c-yellow);
     line-height: 1;
   }
   .reach__stat-label {
     margin-top: 8px;
-    font-size: 15px;
-    color: var(--c-muted-2);
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: #9EAB9F;
   }
 
-  @media (max-width: 880px) {
-    .reach__deco { display: none; }
+  @media (max-width: 1024px) {
+    .reach__split {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 40px;
+    }
   }
 </style>

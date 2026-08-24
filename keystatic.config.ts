@@ -251,24 +251,37 @@ const createSectionConditional = (includeReusable: boolean) =>
     }),
     globalReach: fields.object({
       ...sectionBase,
-      // Pins on the world map. The country name must match Natural Earth's
-      // spelling (e.g. "United States of America"); the label is what shows.
+      // Pins on the world map. The geometry and label offsets live in
+      // src/lib/world-map-data.ts; only the copy is editable here. Adding a
+      // country means regenerating that file — see the script it names.
       locations: fields.array(
         fields.object({
-          country: fields.text({
+          key: fields.select({
             label: "Country",
-            description:
-              'Must match the map data, e.g. "United States of America".',
+            options: [
+              { label: "United States", value: "us" },
+              { label: "Canada", value: "ca" },
+              { label: "United Kingdom", value: "uk" },
+              { label: "Australia", value: "au" },
+            ],
+            defaultValue: "us",
           }),
           label: fields.text({
-            label: "Pin label",
-            description: "Shown on the map. Defaults to the country name.",
+            label: "Map label",
+            description: "Shown on the pin and its chip.",
+          }),
+          detail: fields.text({
+            label: "Detail",
+            description: "Shown when the country is hovered or selected.",
+          }),
+          window: fields.text({
+            label: "Coverage window",
+            description: 'e.g. "Mon-Fri · EST to PST".',
           }),
         }),
         {
-          label: "Map pins",
-          itemLabel: (props) =>
-            props.fields.label.value || props.fields.country.value || "Pin",
+          label: "Map countries",
+          itemLabel: (props) => props.fields.label.value || props.fields.key.value,
         },
       ),
       eyebrow: fields.text({

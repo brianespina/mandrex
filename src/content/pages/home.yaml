@@ -84,21 +84,37 @@ sections:
     value:
       sectionId: global-reach
       locations:
-        - country: United States of America
+        - key: us
           label: United States
-        - country: Canada
+          detail: >-
+            15+ states served — Arizona, California, Texas, New York, New Jersey,
+            Massachusetts, Florida, Colorado, Connecticut, Maryland, Mississippi,
+            Missouri, Oklahoma, Oregon and South Carolina.
+          window: Mon–Fri · EST to PST
+        - key: ca
           label: Canada
-        - country: United Kingdom
+          detail: >-
+            Bookkeeping, administrative and customer support for Canadian
+            businesses, aligned to North American working hours.
+          window: Mon–Fri · EST to PST
+        - key: uk
           label: United Kingdom
-        - country: Australia
+          detail: >-
+            Back-office and executive support for UK firms, with reporting
+            delivered to their own month-end calendar.
+          window: Mon–Fri · GMT/BST
+        - key: au
           label: Australia
+          detail: >-
+            Australian clients supported inside their own business day, with
+            overnight turnaround on queued work.
+          window: Mon–Fri · AEST
       eyebrow: Global reach
       title: Four countries. One standard.
       description: >-
-        We support businesses in the United States, Australia, Canada, and the
-        United Kingdom — including Arizona, California, Texas, New Jersey, New
-        York, Massachusetts, Florida, Colorado, Connecticut, Maryland,
-        Mississippi, Missouri, Oklahoma, Oregon, and South Carolina.
+        We support businesses across the United States, Australia, Canada, and
+        the United Kingdom — working inside each client's own hours and
+        month-end calendar.
       stats:
         - value: 15+
           label: U.S. states served
