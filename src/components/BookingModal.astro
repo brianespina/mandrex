@@ -201,6 +201,8 @@ const TOPIC_OPTIONS = [
       const fields: Record<string, string> = {
         subject: `Call request — ${data.get('name') || 'website visitor'}`,
         from_name: 'Mandrex website',
+        // so replying to the notification writes to the visitor, not to Web3Forms
+        replyto: String(data.get('email') ?? ''),
         Name: String(data.get('name') ?? ''),
         Email: String(data.get('email') ?? ''),
         Company: String(data.get('company') ?? ''),
