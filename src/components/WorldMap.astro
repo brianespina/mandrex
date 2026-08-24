@@ -20,7 +20,23 @@ const pins = locations
       );
       return null;
     }
-    return { ...geo, label: loc.label || loc.key, detail: loc.detail ?? '', window: loc.window ?? '' };
+    // percentages, so the pin markup can live outside the SVG's scaling
+    // coordinate space and keep real-pixel sizing at any width
+    const anchorTx =
+      geo.anchor === 'end'
+        ? `calc(-100% + ${geo.labelDx}px)`
+        : geo.anchor === 'start'
+          ? `${geo.labelDx}px`
+          : `calc(-50% + ${geo.labelDx}px)`;
+    return {
+      ...geo,
+      label: loc.label || loc.key,
+      detail: loc.detail ?? '',
+      window: loc.window ?? '',
+      xPct: (geo.x / MAP_WIDTH) * 100,
+      yPct: (geo.y / MAP_HEIGHT) * 100,
+      anchorTx,
+    };
   })
   .filter((p): p is NonNullable<typeof p> => p !== null);
 
@@ -40,32 +56,30 @@ const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`
       ))}
     </g>
     <g>{ARCS.map((d) => <path class="gmap__arc" d={d} />)}</g>
-    <g>
-      {pins.map((p) => (
-        <g
-          class="gmap__pin"
-          data-key={p.key}
-          data-country-id={p.id}
-          data-x={p.x}
-          data-y={p.y}
-          data-name={p.label}
-          data-detail={p.detail}
-          data-window={p.window}
-          transform={`translate(${p.x},${p.y})`}
-          tabindex="0"
-          role="button"
-          aria-label={p.window ? `${p.label} — ${p.window}` : p.label}
-        >
-          <circle class="gmap__ring" r="5" />
-          <circle class="gmap__ring gmap__ring--b" r="5" />
-          <circle class="gmap__dot" r="5.5" />
-          <text class="gmap__plabel" x={p.labelDx} y={p.labelDy} text-anchor={p.anchor}>{p.label}</text>
-          {/* a generous invisible hit target — the dot itself is only 5.5px */}
-          <circle class="gmap__hit" r="20" />
-        </g>
-      ))}
-    </g>
   </svg>
+
+  {/* Pins sit outside the SVG on purpose. Inside it they would inherit the
+      viewBox scaling, which shrinks text and dots to a few pixels on a phone. */}
+  {pins.map((p) => (
+    <button
+      type="button"
+      class="gmap__pin"
+      style={`left:${p.xPct}%;top:${p.yPct}%`}
+      data-key={p.key}
+      data-country-id={p.id}
+      data-x-pct={p.xPct}
+      data-y-pct={p.yPct}
+      data-name={p.label}
+      data-detail={p.detail}
+      data-window={p.window}
+      aria-label={p.window ? `${p.label} — ${p.window}` : p.label}
+    >
+      <span class="gmap__ring"></span>
+      <span class="gmap__ring gmap__ring--b"></span>
+      <span class="gmap__dot"></span>
+      <span class="gmap__plabel" style={`--tx:${p.anchorTx};--dy:${p.labelDy}px`}>{p.label}</span>
+    </button>
+  ))}
 
   <div class="gmap__tip" data-tip>
     <h4 data-tip-name></h4>
@@ -103,6 +117,8 @@ const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`
     fill: #1C2E22;
     stroke: rgba(255, 255, 255, 0.1);
     stroke-width: 0.5px;
+    /* keep hairlines at 0.5px instead of scaling to nothing on a phone */
+    vector-effect: non-scaling-stroke;
     transition: fill .25s ease, opacity .25s ease;
   }
   .gmap__land--served { fill: #2E5C3C; }
@@ -115,51 +131,81 @@ const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`
     stroke: var(--c-yellow);
     stroke-width: 1.1px;
     stroke-opacity: .38;
+    vector-effect: non-scaling-stroke;
     stroke-dasharray: 5 7;
     animation: gmap-dash 5.5s linear infinite;
   }
   @keyframes gmap-dash { to { stroke-dashoffset: -120; } }
 
-  .gmap__pin { cursor: pointer; }
-  .gmap__hit { fill: transparent; }
+  /* real-pixel sizing: these are HTML, so the SVG's viewBox scaling — which
+     would shrink them to a few pixels on a phone — does not reach them */
+  .gmap__pin {
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    padding: 0;
+    border: 0;
+    background: none;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+  }
+  /* a generous hit target; the dot itself is only 13px */
+  .gmap__pin::before {
+    content: '';
+    position: absolute;
+    inset: -14px;
+  }
+  .gmap__dot {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--c-yellow);
+    border: 2px solid var(--c-dark);
+    box-sizing: border-box;
+    transition: transform .2s ease;
+  }
+  .gmap__pin.is-on .gmap__dot { transform: scale(1.36); }
   .gmap__ring {
-    fill: none;
-    stroke: var(--c-yellow);
-    stroke-width: 1.4px;
-    transform-box: fill-box;
-    transform-origin: center;
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1.4px solid var(--c-yellow);
     animation: gmap-pulse 2.8s cubic-bezier(.2, .6, .3, 1) infinite;
   }
   .gmap__ring--b { animation-delay: 1.4s; }
   @keyframes gmap-pulse {
-    0%   { r: 5; stroke-opacity: .85; }
-    70%  { r: 19; stroke-opacity: 0; }
-    100% { r: 19; stroke-opacity: 0; }
+    0%   { transform: scale(.8); opacity: .85; }
+    70%  { transform: scale(3.1); opacity: 0; }
+    100% { transform: scale(3.1); opacity: 0; }
   }
-  .gmap__dot {
-    fill: var(--c-yellow);
-    stroke: var(--c-dark);
-    stroke-width: 1.6px;
-    transition: r .2s ease;
-  }
-  .gmap__pin.is-on .gmap__dot { r: 7.5; }
   .gmap__plabel {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    /* --tx encodes the handoff's text-anchor and labelDx together */
+    transform: translate(var(--tx), calc(-50% + var(--dy)));
     font-family: var(--f-head);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: .07em;
     text-transform: uppercase;
-    fill: #E6EDE6;
+    color: #E6EDE6;
+    white-space: nowrap;
     pointer-events: none;
-    /* halo, so labels stay legible where they cross land */
-    paint-order: stroke;
-    stroke: var(--c-dark);
-    stroke-width: 3px;
-    stroke-linejoin: round;
-    transition: fill .2s ease;
+    /* stands in for the SVG halo, keeping labels legible over land */
+    text-shadow:
+      0 0 3px var(--c-dark), 0 0 3px var(--c-dark),
+      0 0 3px var(--c-dark), 0 0 3px var(--c-dark);
+    transition: color .2s ease;
   }
-  .gmap__pin.is-on .gmap__plabel { fill: var(--c-yellow); }
-  .gmap__pin:focus-visible { outline: 2px solid var(--c-yellow); outline-offset: 2px; }
+  .gmap__pin.is-on .gmap__plabel { color: var(--c-yellow); }
+  .gmap__pin:focus-visible { outline: 2px solid var(--c-yellow); outline-offset: 4px; }
+
+  /* too little room for four labels once the map is phone-width — the chips
+     below name every country anyway */
+  @media (max-width: 600px) {
+    .gmap__plabel { display: none; }
+  }
 
   .gmap__tip {
     position: absolute;
@@ -251,11 +297,11 @@ const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`
     .gmap__dot,
     .gmap__plabel,
     .gmap__tip { transition: none; }
+    .gmap__pin.is-on .gmap__dot { transform: none; }
   }
 </style>
 
 <script>
-  const MAP_W = 1000;
   const MAP_RATIO = 0.54;
   // below this measured map width the floating tooltip is replaced by a static
   // card — a 250px box cannot be positioned inside a ~300px map
@@ -263,7 +309,7 @@ const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`
 
   document.querySelectorAll<HTMLElement>('[data-gmap]').forEach((map) => {
     const svg = map.querySelector('svg')!;
-    const pins = map.querySelectorAll<SVGGElement>('.gmap__pin');
+    const pins = map.querySelectorAll<HTMLButtonElement>('.gmap__pin');
     const chips = map.querySelectorAll<HTMLButtonElement>('.gmap__chip');
     const lands = map.querySelectorAll<SVGPathElement>('[data-id]');
     const tip = map.querySelector<HTMLElement>('[data-tip]')!;
@@ -287,7 +333,7 @@ const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`
     };
 
     const focus = (key: string, showTip: boolean) => {
-      const pin = map.querySelector<SVGGElement>(`.gmap__pin[data-key="${key}"]`);
+      const pin = map.querySelector<HTMLButtonElement>(`.gmap__pin[data-key="${key}"]`);
       if (!pin) return;
       const id = pin.dataset.countryId ?? '';
 
@@ -308,11 +354,10 @@ const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`
       detail.classList.remove('is-show');
       fill(tip, 'tip', pin.dataset);
 
-      // the SVG scales with CSS, so convert viewBox units to rendered pixels
-      const scale = wrapW / MAP_W;
-      const px = Number(pin.dataset.x) * scale;
-      const py = Number(pin.dataset.y) * scale;
-      const mapH = MAP_W * MAP_RATIO * scale;
+      // pins are positioned in percentages, so convert against measured width
+      const px = (Number(pin.dataset.xPct) / 100) * wrapW;
+      const mapH = wrapW * MAP_RATIO;
+      const py = (Number(pin.dataset.yPct) / 100) * mapH;
       // measured while still transparent — it is laid out either way, and
       // positioning before showing avoids a flash at the previous location
       const tw = tip.offsetWidth || 250;
