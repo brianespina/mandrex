@@ -98,18 +98,22 @@ const { section } = Astro.props;
     color: var(--on-dark-mute-2);
   }
 
+  /* Each stat pads its content away from the hairline, and the grid is pulled
+     out by the same amount so the first column still lines up with the heading.
+     Symmetric padding means this holds when the stats stack, where a
+     first/second-child rule would leave the lower one indented. */
   .reach__stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
     /* hairlines drawn by the gap showing the background through */
     gap: 1px;
     background: rgba(255, 255, 255, 0.16);
+    margin-inline: -22px;
   }
   .reach__stat {
     background: var(--c-dark);
-    padding: 20px 22px 20px 0;
+    padding: 20px 22px;
   }
-  .reach__stat + .reach__stat { padding: 20px 0 20px 22px; }
   .reach__stat-value {
     font-family: var(--f-head);
     font-size: 30px;
