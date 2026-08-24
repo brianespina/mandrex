@@ -45,6 +45,7 @@ const servedIds = new Set(pins.map((p) => p.id));
 const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`;
 ---
 <div class="gmap" data-gmap>
+  <div class="gmap__frame">
   <svg class="gmap__svg" viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`} role="img" aria-label={mapLabel}>
     <g>
       {LANDS.map((l) => (
@@ -80,6 +81,7 @@ const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`
       <span class="gmap__plabel" style={`--tx:${p.anchorTx};--dy:${p.labelDy}px`}>{p.label}</span>
     </button>
   ))}
+  </div>
 
   <div class="gmap__tip" data-tip>
     <h4 data-tip-name></h4>
@@ -111,6 +113,9 @@ const mapLabel = `World map highlighting ${pins.map((p) => p.label).join(', ')}`
 
 <style>
   .gmap { position: relative; width: 100%; }
+  /* pins are positioned in percentages, so their containing block has to be
+     exactly the map — .gmap also holds the chips and would skew every pin */
+  .gmap__frame { position: relative; }
   .gmap__svg { display: block; width: 100%; height: auto; overflow: visible; }
 
   .gmap__land {
