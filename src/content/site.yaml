@@ -41,3 +41,19 @@ socials:
     href: https://www.linkedin.com/company/mandrex-va-services/
   - label: Instagram
     href: https://www.facebook.com/share/195AmdwHV5/?mibextid=wwXIfr
+sectorOrder:
+  - real-estate
+  - e-commerce
+  - healthcare
+  - professional-services
+  - accounting-firms
+  - logistics
+  - construction
+  - marketing-agencies
+  - coaches-consultants
+  - startups-smbs
+  - lending-finance
+  - legal-firms
+  - dental-clinics
+  - recruitment-agencies
+  - non-profits

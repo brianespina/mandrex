@@ -63,9 +63,22 @@ export async function getAllTestimonials() {
   return reader.collections.testimonials.all();
 }
 
+// Order comes from the drag-reorderable "Sector order" list in Site Settings,
+// since a collection cannot be reordered in the CMS. Anything missing from
+// that list still renders, alphabetically, after everything that is listed.
 export async function getAllIndustries() {
-  const industries = await reader.collections.industries.all();
-  return industries.sort((a, b) => byNumber(a.entry.order, b.entry.order));
+  const [industries, site] = await Promise.all([
+    reader.collections.industries.all(),
+    reader.singletons.site.read(),
+  ]);
+  const rank = new Map(
+    (site?.sectorOrder ?? []).filter(Boolean).map((slug, i) => [slug, i]),
+  );
+  return industries.sort((a, b) => {
+    const ra = rank.get(a.slug) ?? Infinity;
+    const rb = rank.get(b.slug) ?? Infinity;
+    return ra - rb || a.entry.name.localeCompare(b.entry.name);
+  });
 }
 
 export async function getAllReusableSections() {

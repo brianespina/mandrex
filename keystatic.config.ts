@@ -652,17 +652,9 @@ export default config({
       label: "Industries",
       path: "src/content/industries/*",
       slugField: "slug",
-      // this list is always sorted by slug; "order" is what actually controls
-      // the sequence on the site, so surface it here
-      columns: ["name", "order"],
       schema: {
         name: fields.text({ label: "Name", validation: { isRequired: true } }),
         slug: fields.text({ label: "Slug", validation: { isRequired: true } }),
-        order: fields.integer({
-          label: "Display order",
-          description: "Lowest first. Controls the order on the site.",
-          defaultValue: 99,
-        }),
         desc: fields.text({
           label: "Description",
           validation: { isRequired: true },
@@ -725,6 +717,18 @@ export default config({
           {
             label: "Social links",
             itemLabel: (props) => props.fields.label.value,
+          },
+        ),
+        // The Industries list is a collection, so it is always shown sorted by
+        // slug and cannot be dragged. This array is what actually sets the
+        // order on the site — arrays are drag-reorderable.
+        sectorOrder: fields.array(
+          fields.relationship({ label: "Sector", collection: "industries" }),
+          {
+            label: "Sector order",
+            description:
+              "Drag to reorder the sectors on the home page. Any sector missing from this list appears at the end.",
+            itemLabel: (props) => props.value || "Sector",
           },
         ),
       },
