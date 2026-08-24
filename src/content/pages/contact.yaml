@@ -1,15 +1,22 @@
 title: Contact Us — Mandrex VA Services
-description: Tell us what your operations need. We'll reply within one business day with next steps.
-slug: contact
+description: >-
+  Tell us what your operations need. We'll reply within one business day with
+  next steps.
 sections:
   - discriminant: innerHero
     value:
       sectionId: inner-hero
-      backgroundImage: /assets/contact/photo-hero-team.jpg
+      backgroundImage: /assets/contact/sections/0/value/backgroundImage.jpg
       backgroundPosition: 62% 46%
       eyebrow: Contact us
       headline: Tell us what your operations need
-      lead: We'd love to learn more about your business and discuss how our team can support your operations. Send us a message and we'll get back to you as soon as possible.
+      lead: >-
+        We'd love to learn more about your business and discuss how our team can
+        support your operations. Send us a message and we'll get back to you as
+        soon as possible.
+      breadcrumb: {}
+      buttons: []
+      chips: []
       facts:
         - label: Reply time
           value: Within 1 business day
@@ -23,8 +30,12 @@ sections:
       title: Contact details
       formTitle: Send us a message
       formSuccessTitle: Message received
-      formSuccessText: We'll review your inquiry and reply within one business day with next steps.
-      formNote: By sending this message you agree to be contacted about your inquiry. We never share your details.
+      formSuccessText: >-
+        We'll review your inquiry and reply within one business day with next
+        steps.
+      formNote: >-
+        By sending this message you agree to be contacted about your inquiry. We
+        never share your details.
       callToAction:
         label: Prefer to talk?
         buttonLabel: Book a 30-minute call
