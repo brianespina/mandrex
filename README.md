@@ -23,8 +23,8 @@ A marketing site for Mandrex VA Services built with [Astro](https://astro.build/
 - **Keystatic** — visual CMS / page builder
 - **React** — required by Keystatic's admin UI
 - **TypeScript** — typed data/config
-- **Google Fonts** — Archivo (headings) + Karla (body)
-- **Vanilla JS** — mobile nav, services dropdown, contact form chips/success state
+- **Self-hosted fonts** — Archivo (headings) + Karla (body), variable woff2 in `public/fonts/`
+- **Vanilla JS** — mobile nav, services dropdown, forms, booking modal, world map interactions
 
 ## Project structure
 
@@ -113,7 +113,18 @@ The public marketing pages are prerendered to static HTML. Only the Keystatic ad
 
 ## Notes before launch
 
-- **Contact form**: the success state is client-side only. Wire the form to a real endpoint (email service, Worker, or CRM) before launch.
-- **Images**: all photography is stock. Replace with real team/office/client photos.
-- **Testimonials**: quotes are samples/placeholders awaiting approved client feedback.
-- **Service details**: turnaround times and tool lists are inferences — confirm with the client.
+See **[HANDOFF.md](./HANDOFF.md)** for the current state, the non-obvious
+decisions, and the outstanding checklist.
+
+Resolved since this list was written: the contact form now actually sends (it
+previously discarded every submission), testimonials are real client reviews,
+and images are optimised and converted at build time.
+
+Still open:
+
+- **Web3Forms**: restrict both forms to `mandrexvaservices.com` in the dashboard.
+  The access keys are public by design, so this is what prevents abuse.
+- **Analytics**: nothing is installed.
+- **Service details**: turnaround times and tool lists are inferences — confirm
+  with the client. They currently read as published commitments.
+- **Images**: photography is still stock apart from the testimonials closing band.
