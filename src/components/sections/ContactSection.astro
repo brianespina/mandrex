@@ -16,7 +16,7 @@ export interface Props {
 const { section } = Astro.props;
 const site = await getSite();
 const { contact } = site;
-const accessKey = site.forms?.web3formsKey ?? '';
+const accessKey = site.forms?.contactKey ?? '';
 
 const needOptions = [
   { key: 'bookkeeping', label: 'Bookkeeping' },

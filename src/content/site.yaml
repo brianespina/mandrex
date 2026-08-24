@@ -29,7 +29,8 @@ footer:
   copyright: © 2026 Mandrex VA Services, LLC. All rights reserved.
   domain: mandrexvaservices.com
 forms:
-  web3formsKey: ""
+  contactKey: 969f1152-407f-451b-9ac0-e091df1a5d7f
+  bookingKey: ""
 contact:
   email: welcome@mandrexvaservices.com
   phone1: +1 307 364 0114

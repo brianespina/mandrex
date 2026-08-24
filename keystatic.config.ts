@@ -735,10 +735,16 @@ export default config({
         }),
         forms: fields.object(
           {
-            web3formsKey: fields.text({
-              label: "Web3Forms access key",
+            contactKey: fields.text({
+              label: "Web3Forms key — contact form",
               description:
-                "From web3forms.com. Submissions from the contact form and the booking modal are emailed to the address this key is registered to. Without it, both forms fall back to opening the visitor's email client.",
+                "From web3forms.com. Submissions are emailed to the address this key is registered to. Without it the form falls back to opening the visitor's email client.",
+              defaultValue: "",
+            }),
+            bookingKey: fields.text({
+              label: "Web3Forms key — booking modal",
+              description:
+                "Optional. Use a separate form here to route call requests independently; leave empty to send them through the contact key.",
               defaultValue: "",
             }),
           },

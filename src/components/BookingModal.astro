@@ -3,7 +3,8 @@ import Icon from './Icon.astro';
 import { getSite } from '../lib/keystatic.ts';
 
 const site = await getSite();
-const accessKey = site.forms?.web3formsKey ?? '';
+// a dedicated booking form if one is configured, otherwise share the contact form
+const accessKey = site.forms?.bookingKey || site.forms?.contactKey || '';
 const inbox = site.contact.email;
 
 // This is an enquiry form, not a scheduling system: it collects a preferred
