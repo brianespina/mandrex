@@ -677,6 +677,7 @@ export default config({
         }),
         role: fields.text({ label: "Role" }),
         detail: fields.text({ label: "Detail" }),
+        avatar: imageField("Photo"),
       },
     }),
     industries: collection({

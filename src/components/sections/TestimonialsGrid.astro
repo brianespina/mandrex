@@ -1,6 +1,6 @@
 ---
 import Icon from '../Icon.astro';
-import { getAllTestimonials } from '../../lib/keystatic.ts';
+import { getAllTestimonials, getImageSrc } from '../../lib/keystatic.ts';
 
 export interface Props {
   section: {
@@ -12,6 +12,15 @@ export interface Props {
 
 const { section } = Astro.props;
 const testimonials = await getAllTestimonials();
+
+// initials stand in until a photo is uploaded in the CMS
+const initials = (name?: string) =>
+  (name ?? '')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? '')
+    .join('');
 ---
 <section class="container section-grid">
   <div class="t-grid">
@@ -22,8 +31,15 @@ const testimonials = await getAllTestimonials();
           <span>{t.entry.service}</span>
         </div>
         <p class="t-card__quote">{t.entry.quote}</p>
-        <div class="t-card__role">{t.entry.role}</div>
-        <div class="t-card__detail">{t.entry.detail}</div>
+        <div class="t-card__author">
+          {getImageSrc(t.entry.avatar)
+            ? <img src={getImageSrc(t.entry.avatar)} alt="" class="t-card__avatar" width="44" height="44" loading="lazy" />
+            : <span class="t-card__avatar t-card__avatar--initials">{initials(t.entry.role)}</span>}
+          <span>
+            <span class="t-card__role">{t.entry.role}</span>
+            <span class="t-card__detail">{t.entry.detail}</span>
+          </span>
+        </div>
       </div>
     ))}
     <div class="t-card t-card--cta">
@@ -85,13 +101,38 @@ const testimonials = await getAllTestimonials();
     line-height: 1.62;
     color: var(--c-text);
   }
+  .t-card__author {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+  }
+  .t-card__avatar {
+    width: 44px;
+    height: 44px;
+    flex: none;
+    object-fit: cover;
+  }
+  /* shown until a photo is uploaded for the entry */
+  .t-card__avatar--initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--c-tint);
+    font-family: var(--f-head);
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: var(--c-green);
+  }
   .t-card__role {
+    display: block;
     font-family: var(--f-head);
     font-size: 14.5px;
     font-weight: 700;
     color: var(--c-dark);
   }
   .t-card__detail {
+    display: block;
     font-size: 14px;
     color: var(--c-muted-3);
     margin-top: 3px;
