@@ -13,7 +13,7 @@ const isHome = path === '/';
 <header class={`site-header${isHome ? ' site-header--home' : ''}`}>
   <div class="site-header__inner">
     <a href="/" class="site-header__logo" aria-label="Mandrex Virtual Assistance Services">
-      <img src="/assets/mandrex-logo-white.png" alt="Mandrex Virtual Assistance Services" width="170" height="40" />
+      <img src="/assets/mandrex-logo-white.png" alt="Mandrex Virtual Assistance Services" width="170" height="40" loading="eager" fetchpriority="high" decoding="async" />
     </a>
 
     <button type="button" class="burger" aria-label="Menu" aria-expanded="false" data-burger>

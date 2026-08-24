@@ -21,7 +21,7 @@ if (!s) {
 
 ---
 <section class="inner-hero">
-  <img src={getImageSrc(s.heroImage)} alt={s.heroAlt} class="inner-hero__img" style={`object-position:${s.heroObjectPosition}`} />
+  <img src={getImageSrc(s.heroImage)} alt={s.heroAlt} class="inner-hero__img" style={`object-position:${s.heroObjectPosition}`} loading="lazy" decoding="async" />
   <div class="scrim"></div>
   <div class="container inner-hero__content">
     <div class="breadcrumb">

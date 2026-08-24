@@ -22,7 +22,7 @@ const imgSrc = getImageSrc(section.photo);
     <div>
       <div class="founder__photo-wrap">
         <div class="founder__deco"></div>
-        <img src={imgSrc} alt={section.name} class="founder__photo" style={`object-position:${section.photoPosition || 'center 20%'}`} />
+        <img src={imgSrc} alt={section.name} class="founder__photo" style={`object-position:${section.photoPosition || 'center 20%'}`} loading="lazy" decoding="async" />
         <div class="founder__nameplate">
           <div class="founder__name">{section.name}</div>
           <div class="founder__role">{section.role}</div>

@@ -32,7 +32,7 @@ const services = await getAllServices();
   <div class="service-cards">
     {services.map((s) => (
       <a href={getServiceUrl(s.slug)} class="service-card">
-        <img src={getImageSrc(s.entry.homeImage)} alt={s.entry.cardTitle} class="service-card__img" />
+        <img src={getImageSrc(s.entry.homeImage)} alt={s.entry.cardTitle} class="service-card__img" loading="lazy" decoding="async" />
         <span class="service-card__scrim"></span>
         <span class="service-card__index">{s.entry.index}</span>
         <span class="service-card__body">

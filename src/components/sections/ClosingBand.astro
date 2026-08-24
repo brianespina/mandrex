@@ -13,7 +13,7 @@ const imgSrc = getImageSrc(section.image);
 ---
 <section class="container section-closing">
   <div class="closing">
-    <img src={imgSrc} alt="" class="closing__img" />
+    <img src={imgSrc} alt="" class="closing__img" loading="lazy" decoding="async" />
     <div class="closing__card">
       <p>{section.cardText}</p>
     </div>

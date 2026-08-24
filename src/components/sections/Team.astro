@@ -16,7 +16,7 @@ const imgSrc = getImageSrc(section.backgroundImage);
 <section class="container section">
   <div class="team">
     <div class="stripes team__bg"></div>
-    <img src={imgSrc} alt="" class="team__img" />
+    <img src={imgSrc} alt="" class="team__img" loading="lazy" decoding="async" />
     <div class="team__inner">
       <div class="team__head">
         <h2>{section.title}</h2>
