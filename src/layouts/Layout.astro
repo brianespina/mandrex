@@ -7,8 +7,14 @@ import BookingModal from '../components/BookingModal.astro';
 export interface Props {
   title: string;
   description: string;
+  /** Per-page social preview. Defaults to the site-wide card. */
+  image?: string;
 }
-const { title, description } = Astro.props;
+const { title, description, image = '/assets/mandrex-og.jpg' } = Astro.props;
+
+// Social scrapers require absolute URLs, and canonical tags must be absolute.
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
 ---
 <!doctype html>
 <html lang="en">
@@ -21,10 +27,21 @@ const { title, description } = Astro.props;
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Karla:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="canonical" href={canonical} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:site_name" content="Mandrex VA Services" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Mandrex VA Services — helping businesses stay organized, productive, and ready to grow" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
 </head>
 <body>
   <Header />
