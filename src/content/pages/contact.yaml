@@ -7,7 +7,7 @@ sections:
     value:
       sectionId: inner-hero
       backgroundImage: /assets/contact/sections/0/value/backgroundImage.jpg
-      backgroundPosition: 62% 56%
+      backgroundPosition: 62% 9%
       eyebrow: Contact us
       headline: Tell us what your operations need
       lead: >-
