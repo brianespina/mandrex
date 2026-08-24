@@ -160,5 +160,7 @@ const btnClass = (variant?: string) => {
     /* header is absolute over the hero on home; clear its 74px height */
     .hero__content { padding: 104px var(--pad) 56px; }
     .hero__statbar { position: static; }
+    /* run the stat tiles edge to edge on small screens */
+    .hero__statbar .container { padding-inline: 0; }
   }
 </style>
