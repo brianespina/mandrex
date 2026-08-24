@@ -32,7 +32,11 @@ const industries = await getAllIndustries();
       <div class="industry">
         <span class="industry__icon"><Icon name={ind.entry.icon} size={24} stroke="#306A42" /></span>
         <h3>{ind.entry.name}</h3>
-        <p>{ind.entry.desc}</p>
+        {/* the overlay covers the resting content, so the icon is shown twice */}
+        <p class="industry__overlay">
+          <span class="industry__overlay-icon"><Icon name={ind.entry.icon} size={24} /></span>
+          <span class="industry__overlay-text">{ind.entry.desc}</span>
+        </p>
       </div>
     ))}
     <a href={section.ctaHref || '/contact'} class="industry industry--cta">
@@ -70,35 +74,74 @@ const industries = await getAllIndustries();
   }
   .industries {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--c-line);
-    border: 1px solid var(--c-line);
+    /* min() is load-bearing: a bare minmax(250px, 1fr) overflows below
+       250px + padding, which would reintroduce horizontal scroll at 320px */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: 20px;
   }
   .industry {
+    position: relative;
+    overflow: hidden; /* clips the overlay's slide-up */
     background: #fff;
-    padding: 30px;
-    transition: background .18s ease;
+    border: 1px solid var(--c-line);
+    /* fixed height keeps the overlay from ever reflowing the row */
+    height: 168px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 26px;
+    transition: border-color .18s ease;
   }
-  .industry:hover { background: var(--c-tint-2); }
-  .industry__icon { display: block; margin-bottom: 18px; }
+  .industry:hover,
+  .industry:focus-within { border-color: var(--c-dark); }
+  .industry__icon { display: block; }
   .industry h3 {
-    margin: 0 0 8px;
+    margin: 0;
     font-size: 18px;
     font-weight: 700;
     color: var(--c-dark);
   }
-  .industry p {
-    font-size: 14.5px;
-    line-height: 1.6;
-    color: var(--c-muted-2);
+  .industry__overlay {
+    position: absolute; /* out of flow, so it cannot affect card height */
+    inset: 0;
+    background: var(--c-dark);
+    padding: 26px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    opacity: 0;
+    transform: translateY(10px);
+    /* only opacity/transform — never anything that affects layout */
+    transition: opacity .2s ease, transform .22s ease;
+  }
+  .industry:hover .industry__overlay,
+  .industry:focus-within .industry__overlay {
+    opacity: 1;
+    transform: none;
+  }
+  .industry__overlay-icon {
+    position: absolute;
+    top: 26px;
+    left: 26px;
+    display: block;
+  }
+  /* the icon library bakes its colours into the path attributes, so restate
+     them here — CSS wins over SVG presentation attributes */
+  .industry__overlay-icon :global(svg *) { stroke: var(--c-yellow); }
+  .industry__overlay-text {
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: #DCE4DD;
   }
   .industry--cta {
     background: var(--c-yellow);
+    border-color: transparent;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     color: var(--c-dark);
+    transition: background .18s ease, color .18s ease;
   }
   .industry--cta:hover { background: var(--c-dark); color: var(--c-yellow); }
   .industry--cta .industry__icon { color: var(--c-dark); }
@@ -115,10 +158,22 @@ const industries = await getAllIndustries();
     line-height: 1.6;
   }
 
-  @media (max-width: 900px) {
-    .industries { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 480px) {
-    .industries { grid-template-columns: 1fr; }
+  /* no hover to reveal on touch, so show the description inline instead */
+  @media (hover: none) {
+    .industry {
+      height: auto;
+      min-height: 168px;
+    }
+    .industry__overlay {
+      position: static;
+      opacity: 1;
+      transform: none;
+      background: transparent;
+      padding: 0;
+      margin-top: 10px;
+      justify-content: flex-start;
+    }
+    .industry__overlay-icon { display: none; }
+    .industry__overlay-text { color: var(--c-muted-2); }
   }
 </style>
