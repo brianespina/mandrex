@@ -706,8 +706,6 @@ export default config({
           email: fields.text({ label: "Email" }),
           phone1: fields.text({ label: "Phone 1" }),
           phone1Href: fields.text({ label: "Phone 1 href" }),
-          phone2: fields.text({ label: "Phone 2" }),
-          phone2Href: fields.text({ label: "Phone 2 href" }),
         }),
         socials: fields.array(
           fields.object({
