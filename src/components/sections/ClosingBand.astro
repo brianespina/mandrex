@@ -27,6 +27,8 @@ const imgSrc = getImageSrc(section.image);
     width: 100%;
     height: 360px;
     object-fit: cover;
+    /* bias the crop upward so faces are not cut off by the fixed height */
+    object-position: 50% 20%;
   }
   .closing__card {
     position: absolute;
