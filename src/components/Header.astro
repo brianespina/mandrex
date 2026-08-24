@@ -262,7 +262,9 @@ const isHome = path === '/';
   });
 
   // close mobile nav when a link inside is clicked
+  // (skip the Services toggle — on mobile it opens the dropdown instead of navigating)
   nav?.querySelectorAll('a').forEach((a) => {
+    if (a.classList.contains('site-nav__link--with-chev')) return;
     a.addEventListener('click', () => {
       if (!isMobile()) return;
       nav.setAttribute('data-open', 'false');

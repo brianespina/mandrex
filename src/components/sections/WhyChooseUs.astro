@@ -19,7 +19,7 @@ const imgSrc = getImageSrc(section.backgroundImage);
   <div class="whyus">
     <div class="stripes whyus__bg"></div>
     <img src={imgSrc} alt="" class="whyus__img" />
-    <div class="whyus__grid">
+    <div class="whyus__grid split">
       <div class="whyus__intro">
         <div class="eyebrow">
           <span class="eyebrow__rule eyebrow__rule--yellow"></span>
@@ -82,6 +82,15 @@ const imgSrc = getImageSrc(section.backgroundImage);
     grid-template-columns: repeat(3, 1fr);
     gap: 1px;
     background: rgba(255, 255, 255, 0.16);
+  }
+  /* .split (global) stacks the grid at 1024px; desktop bleeds the tiles toward
+     the image on the right, so stacked layouts need even padding instead */
+  @media (max-width: 1024px) {
+    .whyus {
+      padding-right: clamp(28px, 5vw, 70px);
+      padding-bottom: clamp(28px, 5vw, 70px);
+    }
+    .whyus__img { width: 100%; }
   }
   @media (max-width: 900px) {
     .whyus__tiles { grid-template-columns: 1fr; }

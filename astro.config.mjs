@@ -12,5 +12,8 @@ export default defineConfig({
     ssr: {
       external: ['node:path', 'node:fs/promises'],
     },
+    optimizeDeps: {
+      exclude: ['@keystatic/astro', '@keystatic/core'],
+    },
   },
 });
