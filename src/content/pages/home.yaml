@@ -6,7 +6,7 @@ sections:
   - discriminant: hero
     value:
       sectionId: hero
-      backgroundImage: /assets/home/photo-hero-boardroom.jpg
+      backgroundImage: /assets/home/sections/0/value/backgroundImage.jpg
       backgroundPosition: 58% 55%
       eyebrow: Mandrex VA Services
       headline: Helping businesses stay organized, productive, and ready to grow
@@ -47,7 +47,6 @@ sections:
   - discriminant: whyChooseUs
     value:
       sectionId: why-us
-      backgroundImage: /assets/home/photo-partners.jpg
       eyebrow: Why choose us
       title: Standards, not shortcuts
       intro: >-
@@ -84,8 +83,6 @@ sections:
   - discriminant: globalReach
     value:
       sectionId: global-reach
-      mainImage: /assets/home/photo-statistics.jpg
-      insetImage: /assets/home/photo-meeting.jpg
       eyebrow: Global reach
       title: Four countries. One standard.
       description: >-
