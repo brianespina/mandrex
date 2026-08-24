@@ -83,8 +83,15 @@ sections:
   - discriminant: globalReach
     value:
       sectionId: global-reach
-      mainImage: /assets/home/sections/4/value/mainImage.jpg
-      insetImage: /assets/home/sections/4/value/insetImage.jpg
+      locations:
+        - country: United States of America
+          label: United States
+        - country: Canada
+          label: Canada
+        - country: United Kingdom
+          label: United Kingdom
+        - country: Australia
+          label: Australia
       eyebrow: Global reach
       title: Four countries. One standard.
       description: >-

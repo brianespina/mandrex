@@ -1,0 +1,101 @@
+---
+import { COUNTRIES, MAP_WIDTH, MAP_HEIGHT } from '../lib/world-map-data.ts';
+
+export interface Props {
+  locations: { country: string; label?: string }[];
+}
+
+const { locations } = Astro.props;
+
+// Match each CMS location to its country geometry. An unmatched name would
+// silently render a map with no pin, so surface it at build time.
+const pins = locations
+  .map((loc) => {
+    const geo = COUNTRIES.find((c) => c.name === loc.country);
+    if (!geo) {
+      console.warn(
+        `[WorldMap] no country named "${loc.country}" in the map data — ` +
+          `check the spelling against src/lib/world-map-data.ts`,
+      );
+      return null;
+    }
+    return {
+      label: loc.label || loc.country,
+      name: geo.name,
+      xPct: (geo.x / MAP_WIDTH) * 100,
+      yPct: (geo.y / MAP_HEIGHT) * 100,
+    };
+  })
+  .filter((p): p is NonNullable<typeof p> => p !== null);
+
+const served = new Set(pins.map((p) => p.name));
+---
+<div class="wmap">
+  <svg
+    class="wmap__svg"
+    viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
+    role="img"
+    aria-label={`World map highlighting ${pins.map((p) => p.label).join(', ')}`}
+  >
+    {COUNTRIES.map((c) => (
+      <path d={c.d} class={served.has(c.name) ? 'wmap__land wmap__land--served' : 'wmap__land'} />
+    ))}
+  </svg>
+
+  {pins.map((p) => (
+    <span class="wmap__pin" style={`left:${p.xPct}%;top:${p.yPct}%`} aria-hidden="true">
+      <span class="wmap__pin-dot"></span>
+      <span class="wmap__pin-name">{p.label}</span>
+    </span>
+  ))}
+</div>
+
+<style>
+  .wmap { position: relative; }
+  .wmap__svg { display: block; width: 100%; height: auto; }
+  .wmap__land {
+    fill: var(--c-line-2);
+    stroke: var(--c-bg);
+    stroke-width: 0.6;
+  }
+  .wmap__land--served { fill: var(--c-green); }
+
+  /* sized to the dot alone, so translate(-50%, -50%) centres the dot exactly
+     on the country's label point — the name hangs below without shifting it */
+  .wmap__pin {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .wmap__pin-dot {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--c-yellow);
+    border: 2px solid var(--c-dark);
+    box-sizing: border-box;
+  }
+  .wmap__pin-name {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--f-head);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--c-dark);
+    background: var(--c-bg);
+    padding: 2px 6px;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 560px) {
+    /* the labels collide at small widths — the pins still read as markers */
+    .wmap__pin-name { display: none; }
+  }
+</style>

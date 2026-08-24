@@ -251,8 +251,26 @@ const createSectionConditional = (includeReusable: boolean) =>
     }),
     globalReach: fields.object({
       ...sectionBase,
-      mainImage: imageField("Main image"),
-      insetImage: imageField("Inset image"),
+      // Pins on the world map. The country name must match Natural Earth's
+      // spelling (e.g. "United States of America"); the label is what shows.
+      locations: fields.array(
+        fields.object({
+          country: fields.text({
+            label: "Country",
+            description:
+              'Must match the map data, e.g. "United States of America".',
+          }),
+          label: fields.text({
+            label: "Pin label",
+            description: "Shown on the map. Defaults to the country name.",
+          }),
+        }),
+        {
+          label: "Map pins",
+          itemLabel: (props) =>
+            props.fields.label.value || props.fields.country.value || "Pin",
+        },
+      ),
       eyebrow: fields.text({
         label: "Eyebrow label",
         defaultValue: "Global reach",

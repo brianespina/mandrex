@@ -1,10 +1,9 @@
 ---
-import { getImageSrc } from '../../lib/keystatic.ts';
+import WorldMap from '../WorldMap.astro';
 
 export interface Props {
   section: {
-    mainImage?: string | { src: string };
-    insetImage?: string | { src: string };
+    locations?: { country: string; label?: string }[];
     eyebrow?: string;
     title: string;
     description?: string;
@@ -13,15 +12,12 @@ export interface Props {
 }
 
 const { section } = Astro.props;
-const mainSrc = getImageSrc(section.mainImage);
-const insetSrc = getImageSrc(section.insetImage);
 ---
 <section class="container section">
   <div class="reach split">
     <div class="reach__media">
       <div class="reach__deco"></div>
-      <img src={mainSrc} alt="" class="reach__img" />
-      <img src={insetSrc} alt="" class="reach__inset" />
+      <WorldMap locations={section.locations ?? []} />
     </div>
     <div>
       <div class="eyebrow">
@@ -51,33 +47,15 @@ const insetSrc = getImageSrc(section.insetImage);
     gap: 72px;
     align-items: center;
   }
-  .reach__media {
-    position: relative;
-    padding: 0 0 52px 52px;
-  }
+  .reach__media { position: relative; }
   .reach__deco {
     position: absolute;
-    left: 0;
-    top: 40px;
-    width: 250px;
-    height: 280px;
+    left: -26px;
+    top: -26px;
+    width: 190px;
+    height: 190px;
     background-image: radial-gradient(#CBD3C6 1.3px, transparent 1.3px);
     background-size: 22px 22px;
-  }
-  .reach__img {
-    position: relative;
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-  }
-  .reach__inset {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 230px;
-    height: 180px;
-    object-fit: cover;
-    border: 10px solid var(--c-bg);
   }
   .reach__title {
     margin: 0 0 22px;
@@ -117,11 +95,6 @@ const insetSrc = getImageSrc(section.insetImage);
   }
 
   @media (max-width: 880px) {
-    /* keep the inset overlapping the main image's bottom-left corner — its
-       background-coloured border reads as a cut-out only while it overlaps */
-    .reach__media { padding: 0 0 34px 34px; }
     .reach__deco { display: none; }
-    .reach__img { height: 300px; }
-    .reach__inset { width: 48%; height: auto; aspect-ratio: 4 / 3; border-width: 8px; }
   }
 </style>
