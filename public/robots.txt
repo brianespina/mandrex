@@ -5,4 +5,4 @@ Allow: /
 Disallow: /keystatic
 Disallow: /api/
 
-Sitemap: https://mandrexvaservices.com/sitemap-index.xml
+Sitemap: https://www.mandrexvaservices.com/sitemap-index.xml

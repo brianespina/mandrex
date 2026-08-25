@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 import optimizeImages from './src/integrations/optimize-images.mjs';
 
 export default defineConfig({
-  site: 'https://mandrexvaservices.com',
+  site: 'https://www.mandrexvaservices.com',
   output: 'server',
   adapter: cloudflare(),
   integrations: [
