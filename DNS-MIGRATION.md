@@ -1,19 +1,31 @@
-# Domain & DNS — current state and migration plan
+# Domain & DNS — migration record
 
-Captured 24 August 2026 and revised 25 August 2026, before any DNS change. Everything below was read from
-live DNS and the public registry, not from a control panel.
+**Status: completed 25 August 2026.** DNS moved from Namecheap to Cloudflare and
+the site went live on the Worker. Mail was carried across unchanged and verified
+in both directions.
+
+Originally captured 24 August 2026 as a forward-looking plan and rewritten on the
+25th, after the cutover, as a record of it. Everything below was read from live
+DNS and the public registry, not from a control panel. The pre-migration sections
+are kept deliberately — they are the audit the migration was built on, and the
+only description of a zone that can no longer be reached.
 
 ---
 
 ## Who controls what
 
-Three roles, three different providers. This is the thing to keep straight.
+Two roles now, where there were three. This is still the thing to keep straight.
 
 | Role | Provider | Controls |
 |---|---|---|
-| **Registrar** | Squarespace Domains II LLC | Renewal, transfer, WHOIS, and **which nameservers the domain delegates to** |
-| **DNS host** | Namecheap — `dns1.namecheaphosting.com`, `dns2.namecheaphosting.com` | The actual records |
-| **Web host** | Namecheap shared hosting — `66.29.153.213` | Whatever the domain serves today |
+| **Registrar** | Squarespace Domains II LLC — *unchanged* | Renewal, transfer, WHOIS, and **which nameservers the domain delegates to** |
+| **DNS host** | **Cloudflare** — `ganz.ns.cloudflare.com`, `sandra.ns.cloudflare.com` | The actual records |
+| **Web host** | **The `mandrex` Cloudflare Worker** | What the domain serves |
+
+Before 25 August 2026 the last two were Namecheap: `dns1`/`dns2.namecheaphosting.com`
+for DNS, and shared hosting at `66.29.153.213` for the site. Both are now out of
+the path entirely, which was the point — that account belongs to a developer
+nobody can reach.
 
 Registered 2023-07-05 · expires **2027-07-05** · last changed 2026-06-21.
 
@@ -23,15 +35,18 @@ Registered 2023-07-05 · expires **2027-07-05** · last changed 2026-06-21.
 > `alt3`/`alt4` MX records and a simple SPF that are not the real ones, and a
 > DKIM record that is not published at all. **Do not copy records from it.**
 
-The new site currently lives on `mandrex.espinabrian.workers.dev`. The custom
-domain does not point at it yet, and `https://mandrexvaservices.com` does not
-respond.
+The site is live at **`https://www.mandrexvaservices.com`**. The apex 301s to
+`www`, preserving the path, and `www` is the canonical hostname — see
+[Canonical hostname](#canonical-hostname-www) below, because anything scoped to a
+hostname must name `www`, not the apex.
 
 ---
 
-## What is live right now
+## What was live before the migration
 
-Read via DNS-over-HTTPS on 24 August 2026.
+Read via DNS-over-HTTPS on 24 August 2026, while Namecheap still served the
+zone. Kept as the baseline every later check was made against. The mail records
+here are still live and unchanged; the `66.29.153.213` web records are not.
 
 **Apex and www**
 
@@ -164,28 +179,30 @@ nothing unexplained:
 That is 11 + 1 + 6 + 5 + 6 = 29. Still absent, as before: no DMARC, no CAA, no
 `google._domainkey`.
 
-### Export the zone from Cloudflare now
+### Export the zone from Cloudflare — done
 
 Cloudflare's DNS page has an **Export** button, which produces the BIND zone
-file that Namecheap access was wanted for in the first place. Export it and
-commit it to this repo **before changing anything**, while the records are still
-a faithful mirror of the Namecheap zone. That converts a rollback that currently
-depends on someone else's hosting account staying alive into a plain text file
-that cannot be taken away.
+file that Namecheap access was wanted for in the first place. This was exported
+and committed to this repo as `dns-snapshot-namecheap-2026-08-25.zone` **before
+anything changed**, while the records were still a faithful mirror of the
+Namecheap zone. That converted a rollback which depended on someone else's
+hosting account staying alive into a plain text file that cannot be taken away.
 
-The residual risk is unchanged but now small — a record at a name neither the
-sweep nor Cloudflare's wordlist would guess, most likely a domain-verification
-`TXT`. Still worth asking Nikka which outside services were ever connected to
-the domain (Search Console, Meta Business, a mailing tool, a booking product);
-Google Workspace Admin → Domains will also show its verification method.
+The residual risk is small but did not go away with the cutover — a record at a
+name neither the sweep nor Cloudflare's wordlist would guess, most likely a
+domain-verification `TXT`. If some third-party service quietly stops working,
+this is the first thing to suspect. Still worth asking Nikka which outside
+services were ever connected to the domain (Search Console, Meta Business, a
+mailing tool, a booking product); Google Workspace Admin → Domains will also
+show its verification method.
 
 ---
 
-## Before activating: fix the proxy status
+## Before activating: fix the proxy status — done
 
 Cloudflare's importer orange-clouded **every** `A` record and the `www` `CNAME`.
-That is wrong for the cPanel service names and must be corrected before the
-nameservers move.
+That is wrong for the cPanel service names, and was corrected before the
+nameservers moved; all ten were confirmed answering unproxied afterwards.
 
 The proxy only handles HTTP/HTTPS on a fixed port list. These services do not
 qualify, and proxying them breaks them outright:
@@ -229,83 +246,150 @@ ten records aimed at a stranger's server.
 
 ---
 
-## Migration plan
+## What was done
 
-The principle still holds — **do not put email in the blast radius** — but the
-web half no longer needs staging. The old site is already broken, so pointing it
-at the Worker cannot make it worse. Mail is the only thing to preserve exactly.
+The principle held throughout — **do not put email in the blast radius.** The web
+half needed no staging: the old site was already broken, so pointing the domain
+at the Worker could not make it worse. Mail was the only thing to preserve
+exactly, and it was preserved by mirroring the zone first so that the nameserver
+change was a no-op for every mail record.
 
-**Done as of 25 August 2026:** domain added to Cloudflare; zone scanned and
+**Staged first, 25 August 2026:** domain added to Cloudflare; zone scanned and
 verified at 29/29 records against authoritative DNS with no drift; the ten cPanel
-`A` records set to `DNS only` with the apex and `www` left proxied; SSL/TLS mode
-pinned to `Full` (not Automatic, so Cloudflare cannot re-evaluate and downgrade
-to Flexible against the expired origin certificate); zone file exported;
-Squarespace registrar access confirmed; Web3Forms submissions tested working on
-`mandrex.espinabrian.workers.dev`.
+`A` records set to `DNS only`; SSL/TLS mode pinned to `Full` (not Automatic, so
+Cloudflare could not re-evaluate and downgrade to Flexible against the expired
+origin certificate); zone file exported and committed as
+`dns-snapshot-namecheap-2026-08-25.zone`; Squarespace registrar access confirmed;
+Web3Forms submissions tested working on `mandrex.espinabrian.workers.dev`.
 
-**Resume here:**
+**Then, in order:**
 
-1. **Change the nameservers at Squarespace** to Cloudflare's assigned pair —
-   Domains → `mandrexvaservices.com` → DNS → Nameservers → custom. Mail is
-   unaffected: the six MX records are imported, correct, and `DNS only`.
-2. **Verify mail both ways immediately** — send to *and* from a
-   `@mandrexvaservices.com` address. This is the step that matters.
-3. **Check the Web3Forms "Restrict to Domain" setting** if enabled. It
-   whitelists the domain allowed to submit the form, so a value scoped to
-   `mandrex.espinabrian.workers.dev` will start rejecting real submissions the
-   moment the custom domain goes live — silently, from the visitor's side. Add
-   `mandrexvaservices.com` before cutover, not after.
+1. **Nameservers changed at Squarespace** to `ganz`/`sandra.ns.cloudflare.com`.
+   Delegation was visible at both `1.1.1.1` and `8.8.8.8` within minutes — far
+   faster than the 2-day NS TTL allowed for.
+2. **Zone verified against Cloudflare's own nameservers**, not a public resolver:
+   all six Google MX at the right priorities, SPF byte-identical, `default`
+   DKIM present, five SRV records intact, and all ten cPanel `A` records
+   answering unproxied. No drift.
+3. **Mail verified.** An SMTP probe to `aspmx.l.google.com` — reached via the new
+   MX records — accepted `RCPT TO: welcome@mandrexvaservices.com` with `250`,
+   confirming inbound routing without sending anything. Then real messages both
+   ways, from **Gmail and Protonmail**. The Proton leg is the one that carries
+   weight: it validates SPF on receipt and sits outside Google's infrastructure,
+   so it proves outbound authentication passes against the migrated SPF record.
+   A Gmail-only test would have proved little, since Google can deliver
+   internally between its own tenants without consulting public MX records.
+4. **Worker custom domains added** for the apex and `www`.
+5. **Canonical hostname set to `www`** and the site redeployed — see below.
+6. **Always Use HTTPS** enabled, so plain HTTP now `301`s instead of serving.
 
-   Form notifications themselves are unaffected by this migration: Web3Forms
-   sends from `notify@web3forms.com`, so SPF is evaluated against *their* domain,
-   not ours.
-4. **Add the Worker custom domain** for the apex and `www`. This can only happen
-   once the zone is active on Cloudflare, which is why it comes last rather than
-   before the nameserver change. Cloudflare replaces the two `66.29.153.213`
-   records itself and issues a valid edge certificate — resolving the
-   expired-certificate outage as a side effect.
+> **Gotcha, if this is ever repeated.** Workers custom domains will **not**
+> overwrite an existing DNS record the way Pages does. With the apex `A` and
+> `www` `CNAME` still present, the dialog refuses outright: *"Hostname already
+> has externally managed DNS records. Delete them first."* Delete exactly those
+> two records, then add the custom domains — Cloudflare recreates them itself.
+> Everything else in the zone must be left alone, and the ten cPanel `A` records
+> share the `66.29.153.213` value, so filter by **name**, not by address.
 
-Expect `.com`'s 2-day NS delegation TTL to leave some resolvers on Namecheap for
-a while afterwards. Harmless: both zones serve identical records, which is the
-entire reason for mirroring before flipping.
+**Side effect worth noting:** adding the custom domains issued a valid edge
+certificate and ended an outage that had been running since the origin's Sectigo
+certificate expired on 3 May 2025 — over a year of the site being unreachable.
 
-Rollback at any point is the nameservers at Squarespace, back to
-`dns1.namecheaphosting.com` / `dns2.namecheaphosting.com`.
+**Rollback**, should it ever be needed, is still the nameservers at Squarespace,
+back to `dns1.namecheaphosting.com` / `dns2.namecheaphosting.com`, with
+`dns-snapshot-namecheap-2026-08-25.zone` as the record of what that zone held.
+Note that this only protects mail: there is no working old site to fall back to.
 
-### Afterwards, in a separate pass
+---
 
-- **DKIM** — generate in Google Workspace Admin (Apps → Google Workspace → Gmail
-  → Authenticate email) and publish the TXT record. Google's mail is unsigned
-  today; the `default` cPanel selector does not cover it.
-- **DMARC** — start at `v=DMARC1; p=none; rua=mailto:…` to monitor before
-  enforcing.
-- **Tidy the SPF.** Once the apex points at the Worker, `+a` authorises
-  Cloudflare addresses and `+ip4:66.29.153.213` is stale. Do not touch it during
-  the move — changing SPF and nameservers together makes a mail failure
-  ambiguous.
-- **Prune the cPanel records** once nothing is found to depend on them.
+## Canonical hostname: www
+
+**The site is canonically `https://www.mandrexvaservices.com`.** The apex
+redirects to it with a path-preserving `301`, so no real request is ever served
+from the bare apex.
+
+Astro's `site` in `astro.config.mjs` is set to the `www` origin, which drives the
+canonical tags, `og:url`, and both sitemap files; `public/robots.txt` advertises
+the `www` sitemap.
+
+**Anything scoped to a hostname must therefore name `www`, not the apex.** This
+has already caught: the Web3Forms *Restrict to Domain* setting (an apex-only
+value rejects every submission, and it fails *closed* — the visitor still sees
+"Message received"), and the Keystatic Cloud Project URL, which gates the CMS
+OAuth redirect. For Google Search Console, register a **Domain** property rather
+than a URL-prefix one, or a property for the apex will only cover a hostname
+that redirects.
+
+---
+
+## Outstanding
+
+**Ours:**
+
+- **Tidy the SPF.** Now that the apex is on the Worker, `+a` authorises
+  Cloudflare addresses and `+ip4:66.29.153.213` is stale. Deliberately not
+  touched during the move — changing SPF and nameservers together would have
+  made any mail failure ambiguous. Safe to do now, on its own.
+- **Prune the cPanel records** once nothing is found to depend on them, per the
+  two tiers above. The reason not to leave them indefinitely: `66.29.153.213` is
+  a shared-hosting address that will be reassigned if that account lapses,
+  leaving ten records aimed at a stranger's server.
+- **Submit the sitemap** in Google Search Console, as a *Domain* property.
+- **Analytics** — nothing is installed, so launch-week traffic is not
+  recoverable after the fact.
+
+**Theirs — Google Workspace is the client's, and predates this engagement:**
+
+- **DKIM.** Google Workspace mail is unsigned. The only key published is
+  cPanel's `default` selector, which does not cover Google. Generating it needs
+  Workspace admin (Apps → Google Workspace → Gmail → Authenticate email), then
+  the TXT record published in Cloudflare.
+- **DMARC.** None exists. Would start at `v=DMARC1; p=none; rua=mailto:…` to
+  monitor before enforcing, and is only meaningful once DKIM is in place.
+
+Both are noted because they affect deliverability for a domain that is now
+actively sending, and because publishing the records is a Cloudflare job once
+the client decides. Neither is blocking, and neither is being chased.
 
 ---
 
 ## Salvage before it disappears
 
 The old WordPress site sits on an account that could vanish without notice.
-While it still answers, anything wanted from it should be pulled now — it serves
-fine over HTTPS if certificate verification is skipped (`curl -k`), and the
-WordPress REST API at `/wp-json/wp/v2/` is open. Worth checking for any
-contact-form submissions never forwarded anywhere.
+While it still answers, anything wanted from it should be pulled now — the
+WordPress REST API at `/wp-json/wp/v2/` is open, and it serves fine over HTTPS if
+certificate verification is skipped.
+
+The domain no longer resolves there, so reach it by address and supply the
+hostname yourself:
+
+```bash
+curl -k --resolve mandrexvaservices.com:443:66.29.153.213 \
+  https://mandrexvaservices.com/wp-json/wp/v2/pages
+```
+
+Worth checking for any contact-form submissions never forwarded anywhere.
 
 ---
 
 ## Do not
 
 - Do not switch to Squarespace nameservers to "activate" the records shown
-  there — they are wrong, and doing so would break email.
-- Do not change nameservers before the full record set exists in Cloudflare.
+  there — they are wrong, and doing so would break email. The domain now
+  delegates to Cloudflare; Squarespace's DNS table remains inert and remains
+  incorrect.
 - Do not let the domain lapse: renewal lives with **Squarespace**, not
-  Namecheap.
-- Do not wait on Namecheap support to recover the account. It is registered to
-  the previous developer's email, and the domain is not registered there either,
-  so there is no ownership lever to pull. One ask to the developer, a deadline,
-  then proceed without him.
-- Do not treat the old site as a fallback. Its certificate has already expired.
+  Cloudflare and not Namecheap. Expires **2027-07-05**.
+- Do not scope anything to the bare apex. It redirects; `www` is canonical.
+- Do not treat the old site as a fallback. It is out of the DNS path entirely,
+  and its certificate expired in May 2025.
+- Do not trust a browser error over the authoritative record. This machine's
+  `nsswitch.conf` routes lookups through systemd-resolved *before*
+  `/etc/resolv.conf`, so `dig` reports fresh records while curl and the browser
+  serve a stale cache — which produced two convincing false alarms during this
+  migration, including an "expired certificate" warning against a domain whose
+  certificate was valid. Verify with `dig @<authoritative-ns>` and
+  `curl --resolve`, and flush with `sudo resolvectl flush-caches`.
+- Do not chase the Namecheap account. It is registered to the previous
+  developer's email, the domain was never registered there, and there is no
+  ownership lever to pull. It is now out of the path and no longer matters.
