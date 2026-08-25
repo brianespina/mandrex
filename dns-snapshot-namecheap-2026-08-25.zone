@@ -1,0 +1,53 @@
+; Zone snapshot for mandrexvaservices.com
+; Captured 2026-08-25 directly from the authoritative nameserver (dns1.namecheaphosting.com),
+; before any nameserver change. This is the pre-migration rollback reference.
+; The Namecheap account that serves this zone is not accessible to us, so
+; this file and the Cloudflare export are the only copies that exist.
+;
+; SOA serial 1710036683 = 2024-03-10 — the zone was last edited then.
+
+; --- SOA / NS ---
+mandrexvaservices.com.	1800000	IN	SOA	dns1.namecheaphosting.com. cpanel.tech.namecheap.com. 1710036683 86400 7200 3600000 86400
+mandrexvaservices.com.	1800000	IN	NS	dns1.namecheaphosting.com.
+mandrexvaservices.com.	1800000	IN	NS	dns2.namecheaphosting.com.
+
+; --- apex + www ---
+mandrexvaservices.com.	14400	IN	A	66.29.153.213
+www.mandrexvaservices.com. 14400 IN	CNAME	mandrexvaservices.com.
+
+; --- cPanel service hosts (all 66.29.153.213) ---
+autoconfig.mandrexvaservices.com. 14400	IN A	66.29.153.213
+autodiscover.mandrexvaservices.com. 14400 IN A	66.29.153.213
+cpanel.mandrexvaservices.com. 14400 IN	A	66.29.153.213
+cpcalendars.mandrexvaservices.com. 14400 IN A	66.29.153.213
+cpcontacts.mandrexvaservices.com. 14400	IN A	66.29.153.213
+ftp.mandrexvaservices.com. 14400 IN	A	66.29.153.213
+mail.mandrexvaservices.com. 14400 IN	A	66.29.153.213
+webdisk.mandrexvaservices.com. 14400 IN	A	66.29.153.213
+webmail.mandrexvaservices.com. 14400 IN	A	66.29.153.213
+whm.mandrexvaservices.com. 14400 IN	A	66.29.153.213
+
+; --- mail: Google Workspace ---
+mandrexvaservices.com.	14400	IN	MX	1 smtp.google.com.
+mandrexvaservices.com.	14400	IN	MX	1 aspmx.l.google.com.
+mandrexvaservices.com.	14400	IN	MX	5 alt1.aspmx.l.google.com.
+mandrexvaservices.com.	14400	IN	MX	5 alt2.aspmx.l.google.com.
+mandrexvaservices.com.	14400	IN	MX	10 aspmx2.googlemail.com.
+mandrexvaservices.com.	14400	IN	MX	10 aspmx3.googlemail.com.
+
+; --- SRV ---
+_autodiscover._tcp.mandrexvaservices.com. 14400	IN SRV 0 0 443 cpanelemaildiscovery.cpanel.net.
+_caldav._tcp.mandrexvaservices.com. 14400 IN SRV 0 0 2079 server347.web-hosting.com.
+_caldavs._tcp.mandrexvaservices.com. 14400 IN SRV 0 0 2080 server347.web-hosting.com.
+_carddav._tcp.mandrexvaservices.com. 14400 IN SRV 0 0 2079 server347.web-hosting.com.
+_carddavs._tcp.mandrexvaservices.com. 14400 IN SRV 0 0 2080 server347.web-hosting.com.
+
+; --- TXT ---
+mandrexvaservices.com.	14400	IN	TXT	"v=spf1 +a +mx +ip4:66.29.153.176 include:spf.web-hosting.com +ip4:66.29.153.213 +include:_spf.google.com ~all"
+default._domainkey.mandrexvaservices.com. 14400	IN TXT "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl+dSFShA1aFFLK3ehjpZ1rGX7Zbb4x+RlDQgi9jCiBCyiEU4Dx2BF+GFNG/k02h6oGYZvnjprj9LOQTvPh4dIfcZW9YTpMcG9N6qLxyMCMjxCzO+wORvdDA4JiEZ5Il9dg8YgXCO7WviXq5HyBiSUBZzrctahoNzTPw/Er5ycckvGkaoQ64O838x3mS+ZP41n" "/FmSwQSiJfPP9FR6PoKDHgrp0i/N1Wt7D5SLB7v5bOn740VrQdIV/35yTCxQcESySvt2NUEEvJexcZO90aywrnHg2ZcMZNnYtYMkwXpoStVzaNoK+MJWARgFkEL2dw+FgG7JGkNjwl21VUUTWxwTwIDAQAB;"
+_caldav._tcp.mandrexvaservices.com. 14400 IN TXT "path=/"
+_caldavs._tcp.mandrexvaservices.com. 14400 IN TXT "path=/"
+_carddav._tcp.mandrexvaservices.com. 14400 IN TXT "path=/"
+_carddavs._tcp.mandrexvaservices.com. 14400 IN TXT "path=/"
+
+; --- confirmed absent: DMARC, CAA, google._domainkey ---
