@@ -115,7 +115,7 @@ sections:
       items:
         - icon: shield
           title: Quality
-          description: Work reviewed against a checklist before it reaches your desk
+          description: Work reviewed against a checklist before it reaches your desk.
         - icon: clock
           title: Reliability
           description: Agreed turnaround times, met without reminders.
