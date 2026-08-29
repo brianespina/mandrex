@@ -1,12 +1,25 @@
-# Mandrex VA Services — Marketing Website
+# Mandrex VA Services — marketing website
 
-A marketing site for Mandrex VA Services built with [Astro](https://astro.build/) and [Keystatic](https://keystatic.com/). All page content is editable through Keystatic's visual CMS, with reusable sections that can be assembled on any page like a page builder.
+A marketing site for Mandrex VA Services built with [Astro](https://astro.build/)
+and [Keystatic](https://keystatic.com/). All page content is editable through
+Keystatic's visual CMS, with reusable sections that can be assembled on any page
+like a page builder.
+
+Live at **<https://www.mandrexvaservices.com>**.
+
+## Documentation
+
+| Document | For | Contents |
+|---|---|---|
+| [`docs/site-guide.md`](docs/site-guide.md) | Site owner | Editing content, where enquiries go, which accounts the site depends on |
+| [`docs/architecture.md`](docs/architecture.md) | Developers | Design decisions, the CMS data model, and the traps that have already cost time |
+| [`docs/dns.md`](docs/dns.md) | Developers | The zone, the Namecheap → Cloudflare cutover, and the rules that follow from it |
 
 ## Pages
 
 | Route | Description |
 |-------|-------------|
-| `/` | Home — hero, services grid, industries, testimonials feature, CTA |
+| `/` | Home — hero, services, why choose us, sectors, global reach map, testimonial, CTA |
 | `/services` | Services overview + engagement process |
 | `/services/bookkeeping` | Bookkeeping service detail |
 | `/services/administrative-support` | Administrative Support service detail |
@@ -15,16 +28,17 @@ A marketing site for Mandrex VA Services built with [Astro](https://astro.build/
 | `/about` | About us, founder note, vision/mission, team |
 | `/testimonials` | Client testimonials |
 | `/contact` | Contact form + contact details |
-| `/404` | 404 page |
+| `/privacy` | Privacy policy |
+| `/404` | Not found |
 
 ## Tech stack
 
-- **Astro** — static site generator
-- **Keystatic** — visual CMS / page builder
-- **React** — required by Keystatic's admin UI
+- **Astro 5** — `output: 'server'`, but every marketing page is prerendered
+- **Keystatic** — visual CMS / page builder, storage kind `cloud`
+- **React** — required by Keystatic's admin UI only; no React ships to visitors
 - **TypeScript** — typed data/config
 - **Self-hosted fonts** — Archivo (headings) + Karla (body), variable woff2 in `public/fonts/`
-- **Vanilla JS** — mobile nav, services dropdown, forms, booking modal, world map interactions
+- **Vanilla JS** — mobile nav, services dropdown, forms, booking modal, world map
 
 ## Project structure
 
@@ -32,19 +46,29 @@ A marketing site for Mandrex VA Services built with [Astro](https://astro.build/
 src/
   components/            # Header, Footer, CTABand, Icon, SectionRenderer, etc.
   components/sections/   # Page-builder section components (Hero, CTA, etc.)
-  content/               # Keystatic content collections
+  content/               # Keystatic content collections (YAML)
     pages/               # Page entries with section arrays
     reusable-sections/   # Reusable section blocks
     services/            # Service detail data
     testimonials/        # Testimonial entries
-    industries/          # Industry entries
-    site.yaml            # Site settings (nav, footer, contact, socials)
+    industries/          # Sector entries
+    site.yaml            # Site settings (nav, footer, contact, socials, form keys)
+  integrations/
+    optimize-images.mjs  # Build-time image cap + WebP conversion (dist/ only)
   layouts/Layout.astro
-  lib/keystatic.ts       # Keystatic reader helpers
+  lib/
+    keystatic.ts         # Keystatic reader helpers
+    inquiry.ts           # Shared form submission logic
+    world-map-data.ts    # GENERATED — see docs/architecture.md
   pages/                 # One .astro file per route
   styles/global.css      # Design tokens + shared utilities
-public/assets/           # Logos + photography
+public/
+  assets/                # Logos + photography
+  fonts/                 # Self-hosted variable woff2
+scripts/
+  generate-global-reach-map.mjs   # Regenerates src/lib/world-map-data.ts
 keystatic.config.ts      # Keystatic schema & collections
+wrangler.jsonc           # Cloudflare Worker config
 ```
 
 ## Commands
@@ -56,75 +80,36 @@ npm run build     # build to dist/
 npm run preview   # preview the built site
 ```
 
-## Accessing Keystatic (local)
+## The CMS
+
+Run `npm run dev` and open <http://localhost:4321/keystatic>. In production it is
+at <https://www.mandrexvaservices.com/keystatic>.
+
+The admin UI edits **Pages** (add, remove, reorder and edit page sections),
+**Reusable Sections**, **Services**, **Testimonials**, **Industries** (sectors)
+and **Site Settings** (navigation, footer, contact info, social links, form
+delivery keys).
+
+Storage is **Keystatic Cloud** (`storage: { kind: 'cloud' }` in
+`keystatic.config.ts`), which commits directly to `main` on save. Read
+[`docs/architecture.md`](docs/architecture.md) before working locally — that
+behaviour has consequences.
+
+To work without the cloud, switch to `storage: { kind: 'local' }`.
+
+## Deployment
+
+The site deploys to **Cloudflare Workers** (not Pages) as the Worker named
+`mandrex`, configured in `wrangler.jsonc`. The `@astrojs/cloudflare` adapter is
+required because Keystatic's Astro integration adds server routes for the admin
+UI (`/keystatic` and `/api/keystatic`); everything else is prerendered static
+HTML served from the `ASSETS` binding.
+
+Custom domains are attached for both the apex and `www`. **`www` is the
+canonical hostname** — the apex issues a path-preserving `301` to it, and
+anything scoped to a hostname must name `www`. See
+[`docs/dns.md`](docs/dns.md#canonical-hostname-www).
 
 ```bash
-npm run dev
+npx wrangler deploy      # after npm run build
 ```
-
-Open:
-
-```
-http://localhost:4321/keystatic
-```
-
-The admin UI lets you edit:
-
-- **Pages** — add, remove, reorder and edit page sections
-- **Reusable Sections** — build sections once and reuse them across pages
-- **Services** — edit service detail pages
-- **Testimonials** — client quotes
-- **Industries** — industry grid items
-- **Site Settings** — navigation, footer, contact info, social links
-
-## Keystatic Cloud setup
-
-This project is configured to use **Keystatic Cloud**:
-
-```ts
-// keystatic.config.ts
-storage: { kind: 'cloud' }
-```
-
-To connect it:
-
-1. Go to [https://keystatic.cloud](https://keystatic.cloud) and create a project.
-2. Connect the GitHub repo that holds this site.
-3. Keystatic Cloud will provide environment variables (usually `KEYSTATIC_URL` and `KEYSTATIC_SECRET`). Add them to your deployment environment.
-4. For local development, Keystatic will prompt you to authenticate with Keystatic Cloud when you open `/keystatic`.
-
-If you prefer to store content locally (no cloud), change `keystatic.config.ts` to:
-
-```ts
-storage: { kind: 'local' }
-```
-
-## Deployment notes
-
-Keystatic's Astro integration adds server routes for the admin UI (`/keystatic` and `/api/keystatic`), so the project uses the `@astrojs/cloudflare` adapter and deploys to **Cloudflare Pages**.
-
-The public marketing pages are prerendered to static HTML. Only the Keystatic admin routes run on Cloudflare Workers.
-
-### Cloudflare Pages settings
-
-- **Build command**: `npm run build`
-- **Build output directory**: `dist`
-- **Node version**: 18 or higher
-
-## Notes before launch
-
-See **[HANDOFF.md](./HANDOFF.md)** for the current state, the non-obvious
-decisions, and the outstanding checklist.
-
-Resolved since this list was written: the contact form now actually sends (it
-previously discarded every submission), testimonials are real client reviews,
-and images are optimised and converted at build time.
-
-Still open:
-
-- **Web3Forms**: restrict both forms to `mandrexvaservices.com` in the dashboard.
-  The access keys are public by design, so this is what prevents abuse.
-- **Analytics**: nothing is installed.
-- **Service details**: turnaround times and tool lists are inferences — confirm
-  with the client. They currently read as published commitments.
-- **Images**: photography is still stock apart from the testimonials closing band.
