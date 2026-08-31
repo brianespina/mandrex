@@ -148,10 +148,12 @@ Service page routes do not match their CMS keys. The mapping lives in
 - **Self-hosted fonts** — Archivo (headings) + Karla (body), variable woff2 in `public/fonts/`
 - **Vanilla JS** — mobile nav, services dropdown, forms, booking modal, world map
 
-The site loads **no third-party resources at runtime** — no analytics, no
-pixels, no embedded scripts, no CDN fonts. The only outbound call is the form
-submission described below, and it happens only when a visitor submits a form.
-`src/pages/privacy.astro` states this, so preserve it.
+The site loads Google Analytics 4 (`G-R8P4NZCHZZ`, hardcoded in
+`src/layouts/Layout.astro`) and no other third-party resources at runtime — no
+pixels, no embedded scripts, no CDN fonts. The only other outbound call is the
+form submission described below, and it happens only when a visitor submits a
+form. `src/pages/privacy.astro` discloses the GA4 usage — keep it in sync if
+this changes.
 
 ## Project structure
 

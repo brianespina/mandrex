@@ -109,6 +109,9 @@ Nothing here needs your attention; it is listed so you know it is covered.
 - **Security and speed.** The site is served through Cloudflare's global network.
 - **Backups.** Every change is version-controlled — any previous version of any
   page can be restored.
+- **Analytics.** Google Analytics 4 (`G-R8P4NZCHZZ`) tracks visitor traffic on
+  every page. Sign in to [analytics.google.com](https://analytics.google.com)
+  with the account that owns this property to see the data.
 
 ---
 
@@ -137,10 +140,6 @@ Web3Forms domain restriction and the Keystatic Cloud project URL both need the
 - **Calendar booking.** The site takes call *requests*; it does not connect to a
   calendar or reserve slots. Real scheduling (Calendly, Cal.com or similar)
   could be added later.
-- **Analytics.** No visitor tracking is installed, so there is no data on
-  traffic or where enquiries come from. This is a deliberate choice — the
-  privacy policy states it — but it does mean past traffic cannot be recovered
-  later if you change your mind.
 - **Ongoing content updates.** The site is yours to edit.
 
 ---
